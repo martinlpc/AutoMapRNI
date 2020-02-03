@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GeocodeResponse>
+ <status>OK</status>
+ <result>
+  <type>street_address</type>
+  <formatted_address>Coihue 548, Malvinas Argentinas, Buenos Aires, Argentina</formatted_address>
+  <address_component>
+   <long_name>548</long_name>
+   <short_name>548</short_name>
+   <type>street_number</type>
+  </address_component>
+  <address_component>
+   <long_name>Coihue</long_name>
+   <short_name>Coihue</short_name>
+   <type>route</type>
+  </address_component>
+  <address_component>
+   <long_name>Malvinas Argentinas</long_name>
+   <short_name>Malvinas Argentinas</short_name>
+   <type>locality</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Almirante Brown</long_name>
+   <short_name>Almte Brown</short_name>
+   <type>administrative_area_level_2</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Buenos Aires</long_name>
+   <short_name>Buenos Aires</short_name>
+   <type>administrative_area_level_1</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Argentina</long_name>
+   <short_name>AR</short_name>
+   <type>country</type>
+   <type>political</type>
+  </address_component>
+  <geometry>
+   <location>
+    <lat>-34.8223089</lat>
+    <lng>-58.4220412</lng>
+   </location>
+   <location_type>RANGE_INTERPOLATED</location_type>
+   <viewport>
+    <southwest>
+     <lat>-34.8236617</lat>
+     <lng>-58.4233981</lng>
+    </southwest>
+    <northeast>
+     <lat>-34.8209638</lat>
+     <lng>-58.4207001</lng>
+    </northeast>
+   </viewport>
+   <bounds>
+    <southwest>
+     <lat>-34.8223166</lat>
+     <lng>-58.4220570</lng>
+    </southwest>
+    <northeast>
+     <lat>-34.8223089</lat>
+     <lng>-58.4220412</lng>
+    </northeast>
+   </bounds>
+  </geometry>
+  <partial_match>true</partial_match>
+  <place_id>EjhDb2lodWUgNTQ4LCBNYWx2aW5hcyBBcmdlbnRpbmFzLCBCdWVub3MgQWlyZXMsIEFyZ2VudGluYQ</place_id>
+ </result>
+ <result>
+  <type>route</type>
+  <formatted_address>Coihue, Burzaco, Buenos Aires, Argentina</formatted_address>
+  <address_component>
+   <long_name>Coihue</long_name>
+   <short_name>Coihue</short_name>
+   <type>route</type>
+  </address_component>
+  <address_component>
+   <long_name>Burzaco</long_name>
+   <short_name>Burzaco</short_name>
+   <type>locality</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Almirante Brown</long_name>
+   <short_name>Almte Brown</short_name>
+   <type>administrative_area_level_2</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Buenos Aires</long_name>
+   <short_name>Buenos Aires</short_name>
+   <type>administrative_area_level_1</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Argentina</long_name>
+   <short_name>AR</short_name>
+   <type>country</type>
+   <type>political</type>
+  </address_component>
+  <geometry>
+   <location>
+    <lat>-34.8394172</lat>
+    <lng>-58.4092566</lng>
+   </location>
+   <location_type>GEOMETRIC_CENTER</location_type>
+   <viewport>
+    <southwest>
+     <lat>-34.8407642</lat>
+     <lng>-58.4106517</lng>
+    </southwest>
+    <northeast>
+     <lat>-34.8380663</lat>
+     <lng>-58.4079538</lng>
+    </northeast>
+   </viewport>
+   <bounds>
+    <southwest>
+     <lat>-34.8406375</lat>
+     <lng>-58.4101882</lng>
+    </southwest>
+    <northeast>
+     <lat>-34.8381930</lat>
+     <lng>-58.4084173</lng>
+    </northeast>
+   </bounds>
+  </geometry>
+  <partial_match>true</partial_match>
+  <place_id>ChIJURV1KYzUvJURpWD-HilpCfQ</place_id>
+ </result>
+</GeocodeResponse>

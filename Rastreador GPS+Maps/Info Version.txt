@@ -1,0 +1,179 @@
+﻿Versión al 08-02-2020: 1.13.8
+	- Se actualizó la leyenda institucional 2020 a "2020 - AÑO DEL GENERAL MANUEL BELGRANO" en fuente Calibri 10pt
+
+Versión al 10-06-2019: 1.13.7
+	- Se actualizaron los membretes de los reportes con frase institucional de 2019 y logo ENACOM color
+
+Versión al 18-03-2019: 1.13.6
+	- Se incorpora función ZoomIn y ZoomOut con las teclas + y - del teclado numerico
+
+Versión al 05-11-2018: 1.13.5
+	- Lineas 1948 y 1961: se borraron instrucciones de STOP que quedaron olvidadas y podrian haber causado fallas al llegar al punto 1203 de cualquier
+		medición, haciendo que crashee y no se pueda continuar
+
+Versión al 05-11-2018: 1.13.4
+	- Se modifico linea 1953 frmMain: Se agregó un control para evitar errores cuando el numero de Nivel no tiene simbolo decimal
+	
+Versión al 01-11-2018: 1.13.3
+	- Se modificaron las lineas 514 a 526 de frmMain: se copiaron las instrucciones de encriptación en la rutina TRY CATCH.
+		Se intenta evitar que el sistema saltee el encriptado cuando ocurre una excepcion (falla reportada HOY por HANKE) 
+
+Version al 22-05-2018: 1.13.2
+	- Se agregó mi nombre a la ventana principal.
+
+15-06-2018: Se cambió el término GlobalSat BU... a "NMEA" o "Dispositivo NMEA", ya que el programa puede gestionar cualquier GPS por puerto COM virtual que utilice
+	este formato de datos (por ejemplo, el Navilock NL-402U). Instalar driver correspondiente primero.
+
+Version al 22-05-2018: 1.13.1
+	- Se agregaron carpetas con los drivers de GPS GlobalSat y Narda NBM550 en el instalador. Se alojan en directorio raiz de destino de la instalacion
+
+Version al 04-05-2018: 1.13beta
+	- Se modificó el título del cuadro en pantalla de la escala cromática para indicar que no es la UIT (y tambien su tooltip)
+	- Probando incorporación de descarte de punto en caso de que el valor en grados de lat o longitud sea 0 (esperando reportes de comodoro o salta)
+	- Incorporada encriptacion de archivos mrni. Al desencriptar, se genera en el directorio raiz un archivo de texto auxiliar en el escritorio; 
+		esto requiere permisos de escritura en disco (chequear que las computadoras de medición las tengan)
+
+Version al 21-03-2018: 1.12
+	- KMZ con escala de 10 colores basada en la R-UIT K113 (% potencia) y nueva imagen de escala superpuesta en mapa formato PNG
+	- El valor en %P ahora presenta 4 valores decimales, para asemejarse al generador, tanto en KMZ como XLSX
+	- En la seleccion de vehiculo se cambio el texto de los botones 
+
+Version al 19-03-2018: 1.11
+	- Modificación del reporte "_P", ahora se crea reporte para presentación directa a terceros sin info extra, solamente fecha, hora, lat,lon,indice y S%.
+	- Se elimina el valor V/m los KMZ, solamente se muestra S%.
+
+Version al 05-02-2018: 1.10
+	- Agregado archivo de incertidumbre de sondas en camioneta MERCEDES BENZ SPRINTER. Seleccionable. AUN NO SE DEFINIERON LAS INCERT ASI QUE SE 
+		VAN A PONER LAS MISMAS DE LA KANGOO
+
+Version al 24-01-2018: 1.9.1
+	- Cambiado valor de desidad de potencia a valor porcentual de potencia con respecto a la MEP mas estrica [P %]
+	- Corrección de planilla de verificacion, donde el logo de enacom tapaba el titulo (se achico la imagen) y se renombro archivo base desde donde
+		toma la referencia el compilador del setup
+
+Versión al 01-12-2017: 1.9
+	- Se agregó tercer planilla con resultados en densidad de potencia [mW/cm²]
+
+Versión al 19-10-2017: 1.8.2
+	- Corrección de error al guardar un KMZ, donde se cargaba en el nombre del archivo la ruta del ultimo reporte generado.
+	- Se agregó instrucción de desconectar el equipo al generar un XLSX, para evitar error entre hilos
+	
+Versión al 12-05-2017: 1.8.1.9
+	- Corrección de error al guardar un XLSX, donde se cargaba en el nombre del archivo la ruta del MRNI.
+
+Versión al 24-04-2017: 1.8.1.8
+	- Se modificó la funcionalidad al exportar a excel. En el archivo de mediciones a verificar, se deja en blanco a partir de la columna I (Incertidumbre) para 
+		un post-procesamiento mas adecuado y sencillo.
+
+Versión al 24-04-2017: 1.8.1.7
+	- Se quitó la columna "OBSERVACIONES" y se agregaron 4 columnas ("Fuente Sist. Energía", "Fuente AM", "Fuente FM", "Otra fuente") para que el operador
+		indique en el post-proceso que tipo de fuente tiene la emisión considerada.
+		
+Versión al 20-04-2017: 1.8.1.6
+	- Se agregó al modelo de reporte una columna con el nombre "OBSERVACIONES"
+
+Versión al 25-10-2016: 1.8.1.5
+	DEBUGGED:
+	- Se corrigió error en el ordenamiento de puntos en el listado de resultados, cuando la cantidad superaba los 9999 puntos (a partir de que en CCTESAL
+		se modificara manualmente un archivo de mediciones, agregando en total mas de 10k puntos - lo cual no se debe hacer-)
+
+Versión al 25-10-2016: 1.8.1.4
+	DEBUGGED:
+	- Se incorporó al modo debug un GPS Virtual que genera una posición estática sobre el CCTEBA, descartando la necesidad de disponer
+		de un GPS conectado para realizar pruebas de recorrido estando estático.
+	- El modo pausa ya no mantiene los máximos mientras esté activado. El thread de lectura resetea el maxhold mientras este pausado y, al reiniciarlo,
+		 hay un delay de 5 segundos para dar tiempo a descartar todo.
+
+Versión al 10-10-2016: 1.8.1.3
+	- Se agregó pseudoraleatoriedad a la variable MapProviders.GMapProvider.UserAgent para evitar que OpenStreetMaps prohiba la conexión (en frmMain.Load)
+	- Se agrandarón los botones de generar reportes, al mismo tiempo se achicó un poco la ventana de eventos
+	
+Versión al 07-09-2016: 1.8.1.2
+	- Se agregó sonda de nbm550 EF6092, la cual tiene las mismas caracteristicas que la EF0391
+	- Se cambió color naranja de la escala para que inicie a partir de los 20 V/m, a partir del item anterior en este listado. Tambien se cambio el 
+		comparador de ">" a ">=" a la hora de determinar los colores
+	- Se cambió el texto en el excel que se genera para los puntos que requieren mediciones de 3690 y su nombre de archivo
+	- Se agrandaron los botones de iniciar y finalizar recorrido, tambien la casilla de pausar.
+	- Se movió de lugar el indicador de estado actual del recorrido y se agrandó
+	- Se cambiaron las palabras CAMPAÑA por RECORRIDO en varias rutinas y en frmMain.
+	DEBUGGED:
+	- Se corrigió error al levantar y marcar la casilla de los puntos de medición. Arrojaba mal los niveles y los porcentajes de MEP.
+	- Se corrigió un error en el cálculo de porcentaje de la MEP, que se daba por utilizar como base de los cálculos 27,5 V/m en vez de 0,2 mW/cm2
+	- Se reparó el problema de OpenStreetMap agregando la siguiente linea:
+			MapProviders.GMapProvider.UserAgent = Me.Text
+		Parece que se había bloqueado el default de esta propiedad desde los servidores de OSM.
+
+Versión al 07-09-2016: 1.8.1.1
+	- Se agregó al archivo de recorrido la versión del programa que lo creó, detrás del nombre de la campaña (se ve al cargarlo, sobre label en el mapa).
+	- Se agregó al boton de conexion una deshabilitacion mientras se esta conectando, para evitar dobles clicks accidentales.
+	- DEBUGGED: faltaba un espacio entre la unidad y el valor de medicion cuando se tomaban los valores en el equipo durante un recorrido,
+		pero no presentaba excepciones en tiempo de ejecucion al cargar el archivo o durante su creacion. Sin embargo, CCTECOM dice que si pero aca no
+		se pudo reproducir. Se envía v1810 para que testeen.
+	- EMPEZAR A TENER EN CUENTA AGREGAR MAS SERVIDORES DE MAPAS QUE SE INCLUYEN EN LA API, EN CASO DE EMERGENCIAS.
+
+Versión al 07-09-2016: 1.8.1.0
+	- Se implementa Cacheo Manual de Mapas (Prefetch) con SHIFT + CLICK DERECHO ARRASTRANDO. Se descarga desde nivel actual hasta el 19 (máximo seteado).
+	- Se cambió a modo RELEASE, el cual al ignorar conceptos para debug optimiza la velocidad de la aplicación notablemente.
+
+Versión al 30-08-2016: 1.8.0.0
+	- Se agregó un form para loguearse con las credenciales del usuario en caso de requerir proxy
+	- Se detectó que hay problemas con elservidor de OpenStreetMap, se setea como default GOOGLEMAPS.
+
+Versión al 30-08-2016: 1.7.0.1
+	- Se modificó la forma de presentar el nivel en ListaResultados, ya que en Posadas arrojaba un error por conversion a single de por ej "1,4 V",
+		donde al detectar una letra arrojaba excepcion.
+	- Se quitó el zoom automatico al tildar un punto, manteniendo el zoom al nivel actual del momento que se clickeo.
+	- Se corrigió la carga de archivo de resultado (quedaba una variable global cargada y se perdia el archivo si se cancelaba el lanzamiento,
+		porque lo cargaba igual)
+
+Versión al 30-08-2016: 1.7.0.0
+	- Se incorporaron las funciones para ver si se soluciona el problema en CCCOM (no descargan los tiles):
+			GMapProvider.WebProxy = WebRequest.GetSystemWebProxy
+			GMapProvider.WebProxy.Credentials = CredentialCache.DefaultNetworkCredentials
+	- Se agregó información pertinente cuando se conecta una sonda de HF (cambio de unidad automático según el campo de la sonda a A/m).
+	- Se agregó un segundo reporte de excel (Ahora los base son "repexc1.xlsx" y "repexc2.xlsx"), donde este solo se generará en caso
+		de que haya mediciones en un recorrido que superen el 50% de la MEP.
+	- Se cambió el seteo default de inicio para adaptarse al protocolo. Se setea distancia entre puntos de 20 metros.
+
+Versión al 24-08-2016: 1.6.1.7
+	- Se movieron unos frames de lugar a partir de una prueba de funcionamiento de las funciones de buscar lugar/coordenadas. Estas funciones
+		fallan por motivos de los servidores, de los cuales no se tiene control alguno desde acá
+	- Había un error en la carga de resultados (y en la escritura) donde se ponia fecha y hora todo junto, y la hora siempre figuraba como 12 am. 
+		Hay que testear.
+
+Versión al 18-08-2016: 1.6.1.6
+	- Se cambiaron las rutas de los archivos de incertidumbre de sondas (para evitar que los usuarios investiguen o hagan daños).
+		Se colocaron en la carpeta WINDOWS con nombres que no son fáciles de identificar.
+	- Se modificaron las incertidumbres de las sondas de NBM550 (se sacó redondeo y se agregó mas exactitud)
+	
+Versión al 18-08-2016: 1.6.1.5
+	- Debugged: Se había reportado bug en recorrido por distancias. El error estaba en "Loop until distancia >1". Reparado.
+	- Se ocultó la función "modo debug" y ahora solamente se puede activar a través de CTRL+D.
+
+Versión al 09-08-2016: 1.6.1.4
+	- Debugged: Se cambiaron todos los tipos de registro DATE a STRING (parece ser que ahí radica la excepción generada en CCPOSADAS)
+		La versión de .NETFwrk no tienen relación. No presenta errores al medir, guardar kml, xlsx ni al volver a cargar resultados.
+
+Versión al 09-08-2016: 1.6.1.3.
+	- Debugged: Se eliminó conversión de fecha al tomar datos de la sonda conectada en el NBM550 (se presentaron errores en CCPOS y no se solucionó actualizando
+		el .NET Framework a la v4.5). Se  envía esta versión para que sea testeada por ellos.
+	- Debugged: se habilitaba iniciar medicion con un equipo que primero fue conectado y luego desconectado. Faltaba una bandera al principio
+		del loop en la sub IniciarRecorrido.
+
+Versión al 01-08-2016: 1.6.1.1
+A CORREGIR:
+	- El EMR300 ahora estaría funcionando con Max Hold, a través de la implementación de un thread nuevo que se encarga de registrar el valor de nivel
+	  máximo que se haya detectado, guardandolo en una variable publica para usarlo en el resultado y reseteando a 0 al hacerlo.
+	- UPDATE:
+		El 01/08/2016 se solucionó el problema (no se hizo nada, se sospecha que es un problema de ¿calibracion de fabrica?).
+			NBM: No responde el comando remoto "REMOTE_ON;", no lo reconocería como comando válido (pero antes funcionaba). SOLUCIONAR URGENTE!!!!
+Cambios:
+	- El control de NARDA EMR-300 no funciona como se espera, tiene mucha demora en entregar datos.
+	- Se está intentando implementar un LOOP infinito en forma de thread paralelo para que lea el instrumento que esté conectado, se inicia desde el arranque (t_Narda).
+	- Estudiando forma de pre-descargar zonas del mapa a elección del usuario usando la función PREFETCH (con click derecho + shift).
+	- VERIFICAR: Se sacó el INDICE de los KML generados para que los numeros no se repitan en una misma zona, aunque sean de distintos recorridos.
+
+Versión al 14-6-2016: 1.6.0.0
+Cambios:
+	- Agregando control de NARDA EMR-300 con MAXHOLD y ACTUAL únicamente (Average deshabilitado por baja velocidad de transmisión de datos).
+	- Estudiando forma de pre-descargar zonas del mapa a elección del usuario usando la función PREFETCH (con click derecho + shift).

@@ -1,0 +1,11 @@
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Rastreador_GPS_Maps.Form1.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Rastreador_GPS_Maps.Resources.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Rastreador GPS+Maps.vbproj.GenerateResource.Cache
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Rastreador GPS+Maps.vbprojResolveAssemblyReference.cache
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Rastreador_GPS_Maps.frmPrueba.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\Control RNI.exe
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\Control RNI.pdb
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\Control RNI.xml
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Control RNI.exe
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Control RNI.xml
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Debug\Control RNI.pdb

@@ -1,0 +1,5 @@
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Release\ControRNI.About.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Release\ControRNI.Form2.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Release\ControRNI.frmMain.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Release\ControRNI.Resources.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\x86\Release\Control RNI.vbproj.GenerateResource.Cache

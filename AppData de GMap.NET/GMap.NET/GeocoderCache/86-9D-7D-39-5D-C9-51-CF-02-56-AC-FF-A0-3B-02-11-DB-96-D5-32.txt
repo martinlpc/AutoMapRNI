@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GeocodeResponse>
+ <status>OK</status>
+ <result>
+  <type>locality</type>
+  <type>political</type>
+  <formatted_address>Panevėžys, Lithuania</formatted_address>
+  <address_component>
+   <long_name>Panevėžys</long_name>
+   <short_name>Panevėžys</short_name>
+   <type>locality</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Panevėžio miesto savivaldybė</long_name>
+   <short_name>Panevėžio m. sav.</short_name>
+   <type>administrative_area_level_3</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Panevėžio miesto savivaldybė</long_name>
+   <short_name>Panevėžio m. sav.</short_name>
+   <type>administrative_area_level_2</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Panevėžys County</long_name>
+   <short_name>Panevėžys County</short_name>
+   <type>administrative_area_level_1</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Lithuania</long_name>
+   <short_name>LT</short_name>
+   <type>country</type>
+   <type>political</type>
+  </address_component>
+  <geometry>
+   <location>
+    <lat>55.7347915</lat>
+    <lng>24.3574773</lng>
+   </location>
+   <location_type>APPROXIMATE</location_type>
+   <viewport>
+    <southwest>
+     <lat>55.6889910</lat>
+     <lng>24.2351990</lng>
+    </southwest>
+    <northeast>
+     <lat>55.7718708</lat>
+     <lng>24.4332758</lng>
+    </northeast>
+   </viewport>
+   <bounds>
+    <southwest>
+     <lat>55.6889910</lat>
+     <lng>24.2351990</lng>
+    </southwest>
+    <northeast>
+     <lat>55.7718708</lat>
+     <lng>24.4332758</lng>
+    </northeast>
+   </bounds>
+  </geometry>
+  <place_id>ChIJT7EPU4sx5kYRgNrpcIzRAAQ</place_id>
+ </result>
+</GeocodeResponse>

@@ -1,0 +1,3 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<searchresults timestamp='Fri, 18 Sep 15 14:56:16 +0000' attribution='Data © OpenStreetMap contributors, ODbL 1.0. http://www.openstreetmap.org/copyright' querystring='Onofre 3081, Banfield' polygon='false' exclude_place_ids='60756933' more_url='http://nominatim.openstreetmap.org/search.php?format=xml&amp;exclude_place_ids=60756933&amp;q=Onofre+3081%2C+Banfield'>
+<place place_id='60756933' osm_type='way' osm_id='28809358' place_rank='26' boundingbox="-34.7497624,-34.7411313,-58.3705782,-58.3525155" lat='-34.7451751' lon='-58.3617958' display_name='Onofre, Banfield, Partido de Lomas de Zamora, Bs. As., 1828, Argentina' class='highway' type='residential' importance='0.32'/></searchresults>

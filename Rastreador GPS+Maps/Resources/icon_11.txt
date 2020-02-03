@@ -1,0 +1,280 @@
+   <Style id="Nivel1_normal">
+      <IconStyle>
+         <color>9afbc273</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel1_hl">
+      <IconStyle>
+         <color>fffbc273</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel2_normal">
+      <IconStyle>
+         <color>9aff901e</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel2_hl">
+      <IconStyle>
+         <color>ffff901e</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel3_normal">
+      <IconStyle>
+         <color>9abe522a</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel3_hl">
+      <IconStyle>
+         <color>ffbe522a</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style> 
+   <Style id="Nivel4_normal">
+      <IconStyle>
+         <color>9a90ee90</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel4_hl">
+      <IconStyle>
+         <color>ff90ee90</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel5_normal">
+      <IconStyle>
+         <color>9a32cd32</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel5_hl">
+      <IconStyle>
+         <color>ff32cd32</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel6_normal">
+      <IconStyle>
+         <color>9a008000</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel6_hl">
+      <IconStyle>
+         <color>ff008000</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel7_normal">
+      <IconStyle>
+         <color>9a00dfff</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel7_hl">
+      <IconStyle>
+         <color>ff00dfff</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>   
+   <Style id="Nivel8_normal">
+      <IconStyle>
+         <color>9a00a5ff</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel8_hl">
+      <IconStyle>
+         <color>ff00a5ff</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel9_normal">
+      <IconStyle>
+         <color>9a0045ff</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel9_hl">
+      <IconStyle>
+         <color>ff0045ff</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel10_normal">
+      <IconStyle>
+         <color>9a0000ff</color>
+         <scale>1.2</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <Style id="Nivel10_hl">
+      <IconStyle>
+         <color>ff0000ff</color>
+         <scale>1.4</scale>
+         <Icon>
+            <href>http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png</href>
+         </Icon>
+      </IconStyle>
+   </Style>
+   <StyleMap id="Nivel1">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel1_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel1_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel2">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel2_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel2_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel3">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel3_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel3_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel4">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel4_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel4_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel5">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel5_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel5_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel6">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel6_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel6_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel7">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel7_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel7_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel8">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel8_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel8_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel9">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel9_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel9_hl</styleUrl>
+      </Pair>
+   </StyleMap>
+   <StyleMap id="Nivel10">
+      <Pair>
+         <key>normal</key>
+         <styleUrl>#Nivel10_normal</styleUrl>
+      </Pair>
+      <Pair>
+         <key>highlight</key>
+         <styleUrl>#Nivel10_hl</styleUrl>
+      </Pair>
+   </StyleMap>

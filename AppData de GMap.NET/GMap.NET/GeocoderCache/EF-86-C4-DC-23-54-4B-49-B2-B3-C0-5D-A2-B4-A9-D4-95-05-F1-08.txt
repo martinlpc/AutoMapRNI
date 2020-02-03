@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GeocodeResponse>
+ <status>OK</status>
+ <result>
+  <type>street_address</type>
+  <formatted_address>Onofre 2981, B1828JMM Banfield, Buenos Aires, Argentina</formatted_address>
+  <address_component>
+   <long_name>2981</long_name>
+   <short_name>2981</short_name>
+   <type>street_number</type>
+  </address_component>
+  <address_component>
+   <long_name>Onofre</long_name>
+   <short_name>Onofre</short_name>
+   <type>route</type>
+  </address_component>
+  <address_component>
+   <long_name>Banfield</long_name>
+   <short_name>Banfield</short_name>
+   <type>locality</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Lomas de Zamora</long_name>
+   <short_name>Lomas de Zamora</short_name>
+   <type>administrative_area_level_2</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Buenos Aires</long_name>
+   <short_name>Buenos Aires</short_name>
+   <type>administrative_area_level_1</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>Argentina</long_name>
+   <short_name>AR</short_name>
+   <type>country</type>
+   <type>political</type>
+  </address_component>
+  <address_component>
+   <long_name>B1828</long_name>
+   <short_name>B1828</short_name>
+   <type>postal_code</type>
+  </address_component>
+  <address_component>
+   <long_name>JMM</long_name>
+   <short_name>JMM</short_name>
+   <type>postal_code_suffix</type>
+  </address_component>
+  <geometry>
+   <location>
+    <lat>-34.7452501</lat>
+    <lng>-58.3619731</lng>
+   </location>
+   <location_type>RANGE_INTERPOLATED</location_type>
+   <viewport>
+    <southwest>
+     <lat>-34.7465928</lat>
+     <lng>-58.3633271</lng>
+    </southwest>
+    <northeast>
+     <lat>-34.7438948</lat>
+     <lng>-58.3606292</lng>
+    </northeast>
+   </viewport>
+   <bounds>
+    <southwest>
+     <lat>-34.7452501</lat>
+     <lng>-58.3619832</lng>
+    </southwest>
+    <northeast>
+     <lat>-34.7452375</lat>
+     <lng>-58.3619731</lng>
+    </northeast>
+   </bounds>
+  </geometry>
+  <place_id>EjdPbm9mcmUgMjk4MSwgQjE4MjhKTU0gQmFuZmllbGQsIEJ1ZW5vcyBBaXJlcywgQXJnZW50aW5h</place_id>
+ </result>
+</GeocodeResponse>

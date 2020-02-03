@@ -1,0 +1,17 @@
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\My Project\Resources.resx
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\Control RNI.vbproj.GenerateResource.Cache
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\Control RNI.vbprojResolveAssemblyReference.cache
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\Control RNI.vbproj.ResolveComReference.cache
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\Ionic.Zip.dll
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.exe
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.pdb
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.xml
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AMapRNI.About.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AMapRNI.frmDebug.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AMapRNI.frmMain.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AMapRNI.frmNMEA.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AMapRNI.frmSondaEMR.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AMapRNI.Resources.resources
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.exe
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.xml
+C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.pdb

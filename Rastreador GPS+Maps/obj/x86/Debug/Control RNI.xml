@@ -1,0 +1,148 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+ControlRNI
+</name>
+</assembly>
+<members>
+<member name="M:ControRNI.frmMain.CargarSondas">
+	<summary>
+ Carga los números de serie de las sondas de ambos modelos para determinar las incertidumbres y límites de integración de frecuencia
+ </summary>
+	<remarks></remarks>
+</member><member name="M:ControRNI.frmMain.CargarPaleta">
+	<summary>
+ Carga los colores predeterminados para la paleta de puntos (AUN NO IMPLEMENTADO)
+ </summary>
+	<remarks></remarks>
+</member><member name="M:ControRNI.GestionCoor.ConvertirAGMS(System.Double,System.Boolean)">
+	<summary>
+ Convierte una componente de coordenadas geográficas de Grados Decimales a Grados Minutos Segundos Decimales
+ </summary>
+	<param name="Posicion">Coordenada en formato decimal (por ej: -34.3456)</param>
+	<param name="esLng">Booleano que indica si se trata de una coordenada de longitud o no</param>
+	<returns>Devuelve una componente de coordenada en Grados Minutos Segundos Decimales</returns>
+	<remarks></remarks>
+</member><member name="M:ControRNI.GestionCoor.ConvertirAGDec(ControRNI.Estructuras.CoordenadasGMS)">
+	<summary>
+ Convierte la componente geográfica de un punto de Grados Minutos Segundos Decimales a Grados Decimales
+ </summary>
+	<param name="Posicion">Latitud o Longitud en Grados Minutos Segundos Decimales</param>
+	<returns>Devuelve la componente en Grados Decimales</returns>
+	<remarks></remarks>
+</member><member name="M:ControRNI.GestionCoor.CalcularDist(ControRNI.Estructuras.CoordenadasGMS,ControRNI.Estructuras.CoordenadasGMS,ControRNI.Estructuras.CoordenadasGMS,ControRNI.Estructuras.CoordenadasGMS)">
+	<summary>
+ Calcula la distancia aproximada, en metros, entre dos puntos geográficos.
+ Necesitará una estructura GMS para utilizar esta función.
+ </summary>
+	<param name="GMSLat1">Latitud del punto 1 en GradMinSeg decimales</param>
+	<param name="GMSLng1">Longitud del punto 1 en GradMinSeg decimales</param>
+	<param name="GMSLat2">Latitud del punto 2 en GradMinSeg decimales</param>
+	<param name="GMSLng2">Longitud del punto 2 en GradMinSeg decimales</param>
+	<returns>Devuelve la distancia aproximada en metros</returns>
+	<remarks>El cálculo utilizada podría no ser tan exacto para distancias muy grandes (mas de 1000 KMs).</remarks>
+</member><member name="P:ControRNI.My.Resources.Resources.ResourceManager">
+	<summary>
+  Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.Culture">
+	<summary>
+  Reemplaza la propiedad CurrentUICulture del subproceso actual para todas las
+  búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.emr300">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.ENACOM">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.ENACOM1">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.footer">
+	<summary>
+  Busca una cadena traducida similar a &lt;/Document&gt;
+&lt;/kml&gt;.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.google_earth">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.header_1">
+	<summary>
+  Busca una cadena traducida similar a &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" 
+xmlns:atom="http://www.w3.org/2005/Atom"&gt;
+&lt;Document&gt;
+   &lt;name&gt;.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.header_2">
+	<summary>
+  Busca una cadena traducida similar a &lt;/name&gt;.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.icon_1">
+	<summary>
+  Busca una cadena traducida similar a    &lt;Style id="MenorMin_normal"&gt;
+      &lt;IconStyle&gt;
+         &lt;color&gt;9aff0000&lt;/color&gt;
+         &lt;scale&gt;1.2&lt;/scale&gt;
+         &lt;Icon&gt;
+            &lt;href&gt;http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png&lt;/href&gt;
+         &lt;/Icon&gt;
+      &lt;/IconStyle&gt;
+   &lt;/Style&gt;
+   &lt;Style id="MenorMin_hl"&gt;
+      &lt;IconStyle&gt;
+         &lt;color&gt;ffff0000&lt;/color&gt;
+         &lt;scale&gt;1.4&lt;/scale&gt;
+         &lt;Icon&gt;
+            &lt;href&gt;http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png&lt;/href&gt;
+         &lt;/Icon&gt;
+      &lt;/IconSty [resto de la cadena truncado]";.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.icono_aftic">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.nbm550">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.placemark_1">
+	<summary>
+  Busca una cadena traducida similar a    &lt;Placemark&gt;
+      &lt;name&gt;.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.placemark_2">
+	<summary>
+  Busca una cadena traducida similar a &lt;/name&gt;
+      &lt;styleUrl&gt;.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.placemark_3">
+	<summary>
+  Busca una cadena traducida similar a &lt;/styleUrl&gt;
+      &lt;Point&gt;
+         &lt;coordinates&gt;.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.placemark_4">
+	<summary>
+  Busca una cadena traducida similar a ,0&lt;/coordinates&gt;
+      &lt;/Point&gt;
+      &lt;description&gt;&lt;![CDATA[.
+</summary>
+</member><member name="P:ControRNI.My.Resources.Resources.placemark_5">
+	<summary>
+  Busca una cadena traducida similar a ]]&gt;&lt;/description&gt;
+   &lt;/Placemark&gt;.
+</summary>
+</member><member name="T:ControRNI.My.Resources.Resources">
+	<summary>
+  Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
+</summary>
+</member>
+</members>
+</doc>
