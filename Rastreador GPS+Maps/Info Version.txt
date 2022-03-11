@@ -1,4 +1,7 @@
-﻿Versión al 08-02-2020: 1.13.8
+﻿Versión al 08-02-2020: 1.13.9
+	- Se actualizó la leyenda institucional a "2022 - LAS MALVINAS SON ARGENTINAS" en los modelos de reportes
+
+Versión al 08-02-2020: 1.13.8
 	- Se actualizó la leyenda institucional 2020 a "2020 - AÑO DEL GENERAL MANUEL BELGRANO" en fuente Calibri 10pt
 
 Versión al 10-06-2019: 1.13.7

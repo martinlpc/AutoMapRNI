@@ -1488,6 +1488,9 @@ Fin:
     End Sub
 
     Private Sub ExportarAEXcel(sender As System.Object, e As System.EventArgs) Handles btnExcel.Click
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        ' ACTUALIZANDO INSTRUCCIONES PARA OFFICE2010 Y SU RESPECTIVA LIBRERIA INTEROP (EXCEL14)
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         Dim m_Excel, m_Excel2, M_Excel3 As Excel.Application ' Obj Excel
         Dim objLibroExcel, objLibro2, objLibro3 As Excel.Workbook 'Obj Workbook
         Dim objHojaExcel, objHoja2, objHoja3 As Excel.Worksheet 'Obj Worksheet
@@ -1510,9 +1513,15 @@ Fin:
 
         Application.DoEvents()
 
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        '   ACA COMIENZAN LOS CAMBIOS DE INSTRUCCIONES DE INTEROP
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
         Try
             m_Excel = New Excel.Application
-            objLibroExcel = m_Excel.Workbooks.Open(Application.StartupPath & "\rep\repexc1.xlsx")
+            'objLibroExcel = m_Excel.Workbooks.Open(Application.StartupPath & "\rep\repexc1.xlsx")
+            objLibroExcel = m_Excel.Workbooks.Open(Application.StartupPath & "\rep\Modelo_reporte.xlsx")
             'Crear instancia de workbook
             'objLibroExcel = m_Excel.Workbooks.Add
             'Crear instancia de primera hoja de trabajo
@@ -1615,7 +1624,8 @@ Fin:
             ' GENERACION DE PLANILLA CON VALORES EN POTENCIA ''''''''''''
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             M_Excel3 = New Excel.Application
-            objLibro3 = M_Excel3.Workbooks.Open(Application.StartupPath & "\rep\repexc3.xlsx")
+            'objLibro3 = M_Excel3.Workbooks.Open(Application.StartupPath & "\rep\repexc3.xlsx")
+            objLibro3 = M_Excel3.Workbooks.Open(Application.StartupPath & "\rep\Modelo_reporte_P.xlsx")
             objHoja3 = M_Excel3.Worksheets(1)
             With objHoja3
                 'Formato del título principal del formulario
@@ -1699,7 +1709,8 @@ Fin:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If contNivAltos > 0 Then
                 m_Excel2 = New Excel.Application
-                objLibro2 = m_Excel2.Workbooks.Open(Application.StartupPath & "\rep\repexc2.xlsx")
+                'objLibro2 = m_Excel2.Workbooks.Open(Application.StartupPath & "\rep\repexc2.xlsx")
+                objLibro2 = m_Excel2.Workbooks.Open(Application.StartupPath & "\rep\Modelo_averif.xlsx")
                 objHoja2 = m_Excel2.Worksheets(1)
                 With objHoja2
                     'Formato del título principal del formulario

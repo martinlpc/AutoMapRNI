@@ -64,7 +64,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\AMRNI.ico</ApplicationIcon>
+    <ApplicationIcon>AMRNI.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -246,6 +246,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AMRNI.ico" />
     <Content Include="Módulos\TextFile1.txt" />
     <None Include="bin\Debug\files\Escala.bmp" />
     <None Include="bin\Debug\files\Escala.JPG" />
@@ -325,7 +326,7 @@
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
-      <VersionMinor>4</VersionMinor>
+      <VersionMinor>5</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
