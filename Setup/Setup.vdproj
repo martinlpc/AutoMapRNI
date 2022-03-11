@@ -21,19 +21,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0653066ADFBF443482F26874AA1527FE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_06A7204495AD4C7095EDBC40DF7DCF30"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0F983C7EB95E43F2BE6643F1CDDFE4DC"
+        "MsmKey" = "8:_107BA3AB33CA4EC791B8CBD27C366567"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_16DC5EE9B90D450992AD88BDB799A1D1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_238D82F639C64FA9B21A4CB70C69C189"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -41,18 +47,6 @@
         {
         "MsmKey" = "8:_259E31D0310A4BB8A421D6662FD35A6F"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_32502F65418B8BA10280D16A3D441B61"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_326D05CC980DC6984D1570E181AF9C8D"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -81,13 +75,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_41103B611A664696BB0E4DBC332BD06D"
+        "MsmKey" = "8:_43B5EC6903DB4EFFAFC97E45C3C19350"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_43B5EC6903DB4EFFAFC97E45C3C19350"
+        "MsmKey" = "8:_468EC9E410F74594B570E91F8285D469"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -129,12 +123,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_563B72AF775A4B09BE07E4BDE21BF77A"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_5ADF42B22CCB46089967C9EAB04487E5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -153,7 +141,31 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
+        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_85148598FBE84C1CBAAA9C7F08F18780"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
+        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
+        "OwnerKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8C45CAA46ADE4EFB9D6666320011339A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -189,19 +201,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B92281FC97404BD1AAC8C7EBDE536B5C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B9D38137746D46E7A6ADBF947E8C1CC1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_BEE0391975FB37100E1E640874403A94"
+        "MsmKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
         "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -213,14 +219,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_DC2F31EFFBB64F76A72D5D98B6DC2710"
+        "MsmKey" = "8:_CB45A35F6FAA45E6934B8F43791728C3"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DEFDCCABF45F4E1D98F177A256CB0847"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
+        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -233,18 +239,6 @@
         {
         "MsmKey" = "8:_E98B340C31544A77B4599B97FC2EBC2C"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E99B738920788EF4C92E3B19C78D71A9"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E99B738920788EF4C92E3B19C78D71A9"
-        "OwnerKey" = "8:_32502F65418B8BA10280D16A3D441B61"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -262,25 +256,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_326D05CC980DC6984D1570E181AF9C8D"
+        "OwnerKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_32502F65418B8BA10280D16A3D441B61"
+        "OwnerKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E99B738920788EF4C92E3B19C78D71A9"
+        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BEE0391975FB37100E1E640874403A94"
+        "OwnerKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -394,26 +388,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0653066ADFBF443482F26874AA1527FE"
-            {
-            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\Modelo_reporte_P.xlsx"
-            "TargetName" = "8:repexc3.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_A55E53D1387F44A18E39305E7C9846CE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_06A7204495AD4C7095EDBC40DF7DCF30"
             {
             "SourcePath" = "8:..\\Rastreador GPS+Maps\\NARDA USB Driver\\ftdiport.inf"
@@ -434,12 +408,52 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F983C7EB95E43F2BE6643F1CDDFE4DC"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_107BA3AB33CA4EC791B8CBD27C366567"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\..\\Pictures\\Logotipos\\AMRNI.ico"
-            "TargetName" = "8:AMRNI.ico"
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\Modelo_reporte_P.xlsx"
+            "TargetName" = "8:Modelo_reporte_P.xlsx"
             "Tag" = "8:"
-            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
+            "Folder" = "8:_A55E53D1387F44A18E39305E7C9846CE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_16DC5EE9B90D450992AD88BDB799A1D1"
+            {
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\_Escala.bmp"
+            "TargetName" = "8:_Escala.bmp"
+            "Tag" = "8:"
+            "Folder" = "8:_CD2DBD6B78D64713AF3B216A2C8B9470"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_238D82F639C64FA9B21A4CB70C69C189"
+            {
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\Modelo_reporte.xlsx"
+            "TargetName" = "8:Modelo_reporte.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_A55E53D1387F44A18E39305E7C9846CE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -472,68 +486,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_32502F65418B8BA10280D16A3D441B61"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:GMap.NET.WindowsForms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_32502F65418B8BA10280D16A3D441B61"
-                    {
-                    "Name" = "8:GMap.NET.WindowsForms.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:GMap.NET.WindowsForms.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_326D05CC980DC6984D1570E181AF9C8D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MD.Equipos.GPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_326D05CC980DC6984D1570E181AF9C8D"
-                    {
-                    "Name" = "8:MD.Equipos.GPS.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:MD.Equipos.GPS.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_34966CBC070C4972AAE4CFB91D4917FF"
@@ -616,12 +568,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_41103B611A664696BB0E4DBC332BD06D"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_43B5EC6903DB4EFFAFC97E45C3C19350"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\..\\AppData\\Local\\GMap.NET\\Data.gmdb"
-            "TargetName" = "8:Data_03feb16.gmdb"
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\NARDA USB Driver\\i386\\ftserui2.dll"
+            "TargetName" = "8:ftserui2.dll"
             "Tag" = "8:"
-            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
+            "Folder" = "8:_4A6BA6EBFDC04471B5592DE8D1FCFFDF"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -636,12 +588,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_43B5EC6903DB4EFFAFC97E45C3C19350"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_468EC9E410F74594B570E91F8285D469"
             {
-            "SourcePath" = "8:..\\Rastreador GPS+Maps\\NARDA USB Driver\\i386\\ftserui2.dll"
-            "TargetName" = "8:ftserui2.dll"
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Garmin USB Driver\\USBDrivers_2312.exe"
+            "TargetName" = "8:USBDrivers_2312.exe"
             "Tag" = "8:"
-            "Folder" = "8:_4A6BA6EBFDC04471B5592DE8D1FCFFDF"
+            "Folder" = "8:_6A0DB37D58964938A67191700C48B5ED"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -776,26 +728,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_563B72AF775A4B09BE07E4BDE21BF77A"
-            {
-            "SourcePath" = "8:..\\..\\imgs\\Escala.bmp"
-            "TargetName" = "8:_Escala.bmp"
-            "Tag" = "8:"
-            "Folder" = "8:_CD2DBD6B78D64713AF3B216A2C8B9470"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5ADF42B22CCB46089967C9EAB04487E5"
             {
             "SourcePath" = "8:..\\Rastreador GPS+Maps\\bin\\Debug\\sondasnbm550.txt"
@@ -856,12 +788,94 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7564B83898B388932AF8F84D0F3B004F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_7564B83898B388932AF8F84D0F3B004F"
+                    {
+                    "Name" = "8:Ionic.Zip.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Ionic.Zip.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_85148598FBE84C1CBAAA9C7F08F18780"
             {
             "SourcePath" = "8:..\\Rastreador GPS+Maps\\NARDA USB Driver\\amd64\\ftlang.dll"
             "TargetName" = "8:ftlang.dll"
             "Tag" = "8:"
             "Folder" = "8:_AEE4D251891E4C2CB379FF02C044F3BE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_86732ADE0F28D5C1F4A73CF67A09C63E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:GMap.NET.Core, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_86732ADE0F28D5C1F4A73CF67A09C63E"
+                    {
+                    "Name" = "8:GMap.NET.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:GMap.NET.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8C45CAA46ADE4EFB9D6666320011339A"
+            {
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\Modelo_averif.xlsx"
+            "TargetName" = "8:Modelo_averif.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_A55E53D1387F44A18E39305E7C9846CE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -976,26 +990,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B92281FC97404BD1AAC8C7EBDE536B5C"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\GPS\\USBDrivers_2311.exe"
-            "TargetName" = "8:GarminUSBDrivers_2311.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_6A0DB37D58964938A67191700C48B5ED"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9D38137746D46E7A6ADBF947E8C1CC1"
             {
             "SourcePath" = "8:..\\Rastreador GPS+Maps\\bin\\Debug\\sondasemr300.txt"
@@ -1016,20 +1010,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BEE0391975FB37100E1E640874403A94"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BE7317BC82C146A7A9307D060E03FED4"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:GMap.NET.WindowsForms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_BEE0391975FB37100E1E640874403A94"
+                    "_BE7317BC82C146A7A9307D060E03FED4"
                     {
-                    "Name" = "8:Ionic.Zip.dll"
+                    "Name" = "8:GMap.NET.WindowsForms.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Ionic.Zip.dll"
+            "SourcePath" = "8:GMap.NET.WindowsForms.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
@@ -1078,15 +1072,15 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DC2F31EFFBB64F76A72D5D98B6DC2710"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CB45A35F6FAA45E6934B8F43791728C3"
             {
-            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\Modelo_averif.xlsx"
-            "TargetName" = "8:repexc2.xlsx"
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\AMRNI.ico"
+            "TargetName" = "8:AMRNI.ico"
             "Tag" = "8:"
-            "Folder" = "8:_A55E53D1387F44A18E39305E7C9846CE"
+            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
+            "Vital" = "11:FALSE"
             "ReadOnly" = "11:FALSE"
             "Hidden" = "11:FALSE"
             "System" = "11:FALSE"
@@ -1098,12 +1092,23 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DEFDCCABF45F4E1D98F177A256CB0847"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D3874DD70DDCEEE3691E7DD0A6DB669E"
             {
-            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\Modelo_reporte.xlsx"
-            "TargetName" = "8:repexc1.xlsx"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:MD.Equipos.GPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D3874DD70DDCEEE3691E7DD0A6DB669E"
+                    {
+                    "Name" = "8:MD.Equipos.GPS.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:MD.Equipos.GPS.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_A55E53D1387F44A18E39305E7C9846CE"
+            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1115,7 +1120,7 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E4738A34A56149669742E9A74DA5986E"
@@ -1156,37 +1161,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E99B738920788EF4C92E3B19C78D71A9"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:GMap.NET.Core, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_E99B738920788EF4C92E3B19C78D71A9"
-                    {
-                    "Name" = "8:GMap.NET.Core.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:GMap.NET.Core.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB887670F009413EADCE72B298747CA8"
@@ -1353,15 +1327,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AutoMap RNI"
-        "ProductCode" = "8:{C8C25D9A-355E-4789-8145-1E16CA5121FB}"
-        "PackageCode" = "8:{8022904A-A5C3-4D3C-BA6F-4782DDC11C15}"
+        "ProductCode" = "8:{D4B616E8-FCC9-40E1-B277-CA694C1511E7}"
+        "PackageCode" = "8:{AE1A0ED3-6D4B-4255-96AF-2E8708DF38C9}"
         "UpgradeCode" = "8:{8A863FCB-4919-40D3-AA71-325EF8C17E77}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.13.8"
+        "ProductVersion" = "8:1.13.9"
         "Manufacturer" = "8:Ente Nacional de Comunicaciones"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1371,7 +1345,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:www.enacom.gob.ar"
-        "ARPPRODUCTICON" = "8:_0F983C7EB95E43F2BE6643F1CDDFE4DC"
+        "ARPPRODUCTICON" = "8:_CB45A35F6FAA45E6934B8F43791728C3"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1485,7 +1459,7 @@
             "Target" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
             "Folder" = "8:_0BC9FE94282E40A79B8673DBA193C4B5"
             "WorkingFolder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
-            "Icon" = "8:_0F983C7EB95E43F2BE6643F1CDDFE4DC"
+            "Icon" = "8:_CB45A35F6FAA45E6934B8F43791728C3"
             "Feature" = "8:"
             }
         }

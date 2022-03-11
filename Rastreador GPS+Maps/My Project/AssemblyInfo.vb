@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Mediciones georeferenciadas de nivel de Radiaciones No Ionizantes (RNI) por puntos geográficos - Diseñado y ensamblado por Martín L. Pacheco - Área de Mantenimiento Radioeléctrico")> 
 <Assembly: AssemblyCompany("Ente Nacional de Comunicaciones")> 
 <Assembly: AssemblyProduct("AutoMap RNI")> 
-<Assembly: AssemblyCopyright("Copyright MLP © 2015 - 2019")> 
+<Assembly: AssemblyCopyright("Copyright MLP © 2015 - 2022")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' mediante el asterisco ('*'), como se muestra a continuación:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.13.8")> 
-<Assembly: AssemblyFileVersion("1.13.8")> 
+<Assembly: AssemblyVersion("1.13.9")> 
+<Assembly: AssemblyFileVersion("1.13.9")> 

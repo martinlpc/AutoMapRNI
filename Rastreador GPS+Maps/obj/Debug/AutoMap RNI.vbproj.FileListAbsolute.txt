@@ -21,3 +21,21 @@ C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS
 C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.frmSondaNBM.resources
 C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.vbprojResolveAssemblyReference.cache
 C:\Users\buenosaires\Desktop\PROYECTOS\Ejemplos y pruebas propias\Rastreador GPS\Rastreador GPS+Maps\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.vbproj.GenerateResource.Cache
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.exe.config
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.vbproj.ResolveComReference.cache
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.exe
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.xml
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.pdb
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Debug\My Project\Resources.resx
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.exe
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.pdb
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Debug\AutoMap RNI.xml
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Debug\MD.Equipos.GPS.dll
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.About.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.frmDebug.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.frmLogin.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.frmMain.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.frmSondaEMR.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.frmSondaNBM.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMapRNI.Resources.resources
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\Debug\AutoMap RNI.vbproj.GenerateResource.Cache
