@@ -219,12 +219,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_CB45A35F6FAA45E6934B8F43791728C3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
         "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
         "MsmSig" = "8:_UNDEFINED"
@@ -238,6 +232,12 @@
         "Entry"
         {
         "MsmKey" = "8:_E98B340C31544A77B4599B97FC2EBC2C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EA69239031444ACD93C77DD9A3F721C6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1072,26 +1072,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CB45A35F6FAA45E6934B8F43791728C3"
-            {
-            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\AMRNI.ico"
-            "TargetName" = "8:AMRNI.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:FALSE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D3874DD70DDCEEE3691E7DD0A6DB669E"
             {
             "AssemblyRegister" = "3:1"
@@ -1149,6 +1129,26 @@
             "TargetName" = "8:ftd2xx.lib"
             "Tag" = "8:"
             "Folder" = "8:_4A6BA6EBFDC04471B5592DE8D1FCFFDF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EA69239031444ACD93C77DD9A3F721C6"
+            {
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\Resources\\ENACOM_sintexto_final.ico"
+            "TargetName" = "8:AMRNI"
+            "Tag" = "8:"
+            "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1327,15 +1327,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AutoMap RNI"
-        "ProductCode" = "8:{D4B616E8-FCC9-40E1-B277-CA694C1511E7}"
-        "PackageCode" = "8:{AE1A0ED3-6D4B-4255-96AF-2E8708DF38C9}"
+        "ProductCode" = "8:{AD006070-0DF2-4F52-8371-C7EA9BAC2A7D}"
+        "PackageCode" = "8:{FDABD252-A134-4540-B963-DB69BA567C13}"
         "UpgradeCode" = "8:{8A863FCB-4919-40D3-AA71-325EF8C17E77}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.13.9"
+        "ProductVersion" = "8:1.13.10"
         "Manufacturer" = "8:Ente Nacional de Comunicaciones"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1345,7 +1345,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:www.enacom.gob.ar"
-        "ARPPRODUCTICON" = "8:_CB45A35F6FAA45E6934B8F43791728C3"
+        "ARPPRODUCTICON" = "8:_EA69239031444ACD93C77DD9A3F721C6"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1459,7 +1459,7 @@
             "Target" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
             "Folder" = "8:_0BC9FE94282E40A79B8673DBA193C4B5"
             "WorkingFolder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
-            "Icon" = "8:_CB45A35F6FAA45E6934B8F43791728C3"
+            "Icon" = "8:_EA69239031444ACD93C77DD9A3F721C6"
             "Feature" = "8:"
             }
         }

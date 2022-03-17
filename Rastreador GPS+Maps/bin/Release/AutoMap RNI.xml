@@ -55,17 +55,17 @@ AutoMapRNI
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_contexto_final">
+</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_contexto_final1">
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_final">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
 </summary>
 </member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_sintexto_final">
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_sintexto_final1">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
 </summary>
 </member><member name="P:AutoMapRNI.My.Resources.Resources.Escala1">
 	<summary>

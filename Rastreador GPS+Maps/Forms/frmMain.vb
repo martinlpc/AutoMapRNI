@@ -102,7 +102,7 @@ Public Class frmMain
         '---------------------------------------------------------------
         Try
             ' Mapa.CacheLocation = Environment.CurrentDirectory & "\Data.gmdb"
-            Me.Icon = My.Resources.AMRNI
+            'Me.Icon = My.Resources.ENACOM_sintexto_final
             Me.Text = "AutoMap RNI - " & String.Format("v{0}", My.Application.Info.Version.ToString)
             Cursor = Cursors.WaitCursor
             txtEventos.Text &= "[" & Now & "] " & "Sistema iniciado" & vbNewLine

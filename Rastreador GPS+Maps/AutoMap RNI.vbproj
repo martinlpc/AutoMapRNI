@@ -64,7 +64,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>AMRNI.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\ENACOM_sintexto_final.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
@@ -248,6 +248,10 @@
   <ItemGroup>
     <Content Include="AMRNI.ico" />
     <Content Include="Módulos\TextFile1.txt" />
+    <None Include="Resources\ENACOM_sintexto_final.png" />
+    <None Include="Resources\logo solo imagen enacom 2022.png" />
+    <None Include="Resources\ENACOM_contexto_final.png" />
+    <None Include="Resources\ENACOM_sintexto_final.ico" />
     <None Include="bin\Debug\files\Escala.bmp" />
     <None Include="bin\Debug\files\Escala.JPG" />
     <None Include="bin\Debug\files\Escala.PNG" />
