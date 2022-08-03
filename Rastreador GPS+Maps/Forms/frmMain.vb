@@ -1654,29 +1654,13 @@ Fin:
                         auxstrNivel = Split(item.SubItems.Item(1).Text, " ")
                         miArray(item.Index, 5) = _
                             Math.Round((Math.Pow(CSng(auxstrNivel(0)), 2) / 3774) * 100 / 0.2, 4) 'PORCENTAJE DE POTENCIA RESPECTO A LA MEP MAS ESTRICTA
-                        'If auxstrMed(1).Contains("300") Then
-                        'miArray(item.Index, 5) = "TYPE " & auxstrSonda(1) 'MODELO DE LA SONDA
-                        'Else
-                        'miArray(item.Index, 5) = auxstrSonda(1) 'MODELO DE LA SONDA
-                        'End If
-                        'miArray(item.Index, 6) = auxstrSonda(3) 'NUMSERIE DE LA SONDA
-                        'miArray(item.Index, 7) = item.SubItems.Item(9).Text  'FechaCal
-                        'miArray(item.Index, 8) = item.SubItems.Item(10).Text  'Incert db
-                        'auxstrNivel = Split(item.SubItems.Item(1).Text, " ")
-                        'miArray(item.Index, 9) = CSng(((Math.Round(Math.Pow(CSng(auxstrNivel(0)), 2) / 377, 4)) * 100) / 0.02).ToString() 'PORCENTAJE DE POTENCIA RESPECTO A LA MEP MAS ESTRICTA
 
-                        'miArray(item.Index, 9) = _
-                        'Math.Round((Math.Pow(CSng(auxstrNivel(0)), 2) / 3774) * 100 / 0.2, 2) 'PORCENTAJE DE POTENCIA RESPECTO A LA MEP MAS ESTRICTA
-                        'If CSng(miArray(item.Index, 9)) > MaxPot Then
-                        'MaxPot = miArray(item.Index, 9)
-                        'End If
-
-                        'miArray(item.Index, 10) = "S%"
-                        'If RutaRaizRes.EndsWith("mrni") Then
-                        'miArray(item.Index, 11) = "Max Hold"
-                        'ElseIf RutaRaizRes.EndsWith("prni") Then
-                        'miArray(item.Index, 11) = "Max Avg"
-                        'End If
+                        '
+                        '   La operación es  ((((V|m)^2) / 10z0) * 100) / 0.2mW|cm2
+                        '                           
+                        '   No se calcula en base a Volts por metro, sino por miliwatts sobre cm2
+                        '
+                        '
                         Application.DoEvents()
                     Next
                     With objHoja3
