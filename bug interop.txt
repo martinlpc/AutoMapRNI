@@ -1,0 +1,13 @@
+Solución al bug Microsoft.Office.Interop en Win10:
+
+Se da cuando hay distintas versiones de Office instaladas (aunque se haya desinstalado alguna, puede seguir existiendo una clave de registro que cause conflicto)
+
+1 - Instalar o2010pia.msi
+2 - Si continúa el error, proceder de la siguiente forma:
+    a - Anotar el CLSID que arroja el programa en el mensaje de error (número largo entre {})
+    b - Buscar ese CLSID en el Registro de Windows.
+    c - Probablemente se encuentren varias coincidencias, apuntar a una carpeta con ese ID que contenga la carpeta "TypeLib"
+    d - Dentro de TypeLib, probablemente haya otra clave con un nuevo CLSID, anotarla y buscarla en el Registro desde el comienzo
+    e - Si contiene 2 carpetas con diferentes versiones, eliminar la que tenga mayor número de versionado, PERO PRIMERO HACER BACKUP DE ESA ENTRADA.
+
+Testear si el programa deja de arrojar excepcion al crear los reportes xlsx.
