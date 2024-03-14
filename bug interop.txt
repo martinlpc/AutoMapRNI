@@ -11,3 +11,15 @@ Se da cuando hay distintas versiones de Office instaladas (aunque se haya desins
     e - Si contiene 2 carpetas con diferentes versiones, eliminar la que tenga mayor número de versionado, PERO PRIMERO HACER BACKUP DE ESA ENTRADA.
 
 Testear si el programa deja de arrojar excepcion al crear los reportes xlsx.
+
+
+
+000208D5-0000-0000-C000-000000000046
+
+V
+
+{00020813-0000-0000-C000-000000000046} 1.7
+
+en nqn estaba en esta ruta:
+
+Equipo\HKEY_CLASSES_ROOT\TypeLib\{00020813-0000-0000-C000-000000000046}

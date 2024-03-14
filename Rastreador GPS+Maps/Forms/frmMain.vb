@@ -109,7 +109,7 @@ Public Class frmMain
             Try
                 CargarSondas()
             Catch ex As Exception
-                txtEventos.Text &= "[" & Now & "] " & "Excepción ocurrida: no se encuentran los archivos de sondas. Contacte a Mantenimiento Radioeléctrico." & vbNewLine
+                txtEventos.Text &= "[" & Now & "] " & "Error: no se encuentran los archivos de sondas. Contacte a Laboratorio Buenos Aires." & vbNewLine
                 btnIniciarCamp.Enabled = False
                 btnConectar.Enabled = False
             End Try
