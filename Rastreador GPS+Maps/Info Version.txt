@@ -1,4 +1,7 @@
-﻿Versión al 17-03-2022: 1.13.10
+﻿Versión al 29-05-2024: 1.13.11
+	- Se modificaron incertidumbres y factores de las sondas del NBM550
+
+Versión al 17-03-2022: 1.13.10
 	- Se actualizó la imagen institucional ENACOM 2022 en archivos de reportes y ventanas de la aplicación
 
 Versión al 12-03-2022: 1.13.9
