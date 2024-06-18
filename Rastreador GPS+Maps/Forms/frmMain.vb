@@ -86,6 +86,10 @@ Public Class frmMain
 
 #Region "Subprocedimientos LoadForm y asociados a eventos de ventana"
 
+    Sub nuevoMensajeEventos(msg As String)
+        txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine
+    End Sub
+
     Private Sub frmMain_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
         Select Case e.KeyValue
             Case Is = 107
@@ -105,11 +109,13 @@ Public Class frmMain
             'Me.Icon = My.Resources.ENACOM_sintexto_final
             Me.Text = "AutoMap RNI - " & String.Format("v{0}", My.Application.Info.Version.ToString)
             Cursor = Cursors.WaitCursor
-            txtEventos.Text &= "[" & Now & "] " & "Sistema iniciado" & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Sistema iniciado" & vbNewLine
+            nuevoMensajeEventos("Sistema iniciado")
             Try
                 CargarSondas()
             Catch ex As Exception
-                txtEventos.Text &= "[" & Now & "] " & "Error: no se encuentran los archivos de sondas. Contacte a Laboratorio Buenos Aires." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Error: no se encuentran los archivos de sondas. Contacte a Laboratorio Buenos Aires." & vbNewLine
+                nuevoMensajeEventos("Error: no se encuentran los archivos de sondas. Contacte a Laboratorio Buenos Aires.")
                 btnIniciarCamp.Enabled = False
                 btnConectar.Enabled = False
             End Try
@@ -164,7 +170,8 @@ Public Class frmMain
             '.Start()
             'End With
         Catch ex As Exception
-            txtEventos.Text &= "[" & Now & "] " & "Excepción ocurrida en el inicio del sistema: " & ex.Message & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Excepción ocurrida en el inicio del sistema: " & ex.Message & vbNewLine
+            nuevoMensajeEventos("Excepción ocurrida en el inicio del sistema: " & ex.Message)
         Finally
             Cursor = Cursors.Arrow
         End Try
@@ -201,7 +208,8 @@ Public Class frmMain
             Mapa.Manager.Mode = AccessMode.CacheOnly
 
         Catch ex As Exception
-            txtEventos.Text &= "[" & Now & "] " & "Error en prefetching: " & ex.Message & vbNewLine '" (loops: " & loopshechos & ")." & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Error en prefetching: " & ex.Message & vbNewLine '" (loops: " & loopshechos & ")." & vbNewLine
+            nuevoMensajeEventos("Error en prefetching: " & ex.Message)
         Finally
             ovlyPrefetch.Clear()
         End Try
@@ -273,7 +281,8 @@ SeguirCampaña:
                     SW.Write(outHeader & vbNewLine)
                     ListaResultados.Items.Clear()
                     OverlayCarga.Clear()
-                    txtEventos.Text &= "[" & Now & "] Recorrido de medición iniciado" & vbNewLine
+                    'txtEventos.Text &= "[" & Now & "] Recorrido de medición iniciado" & vbNewLine
+                    nuevoMensajeEventos("Recorrido de medición iniciado")
                     btnConectar.Enabled = False
                     tmrCamp.Enabled = True
                     btnDetenerCamp.Enabled = True
@@ -423,7 +432,8 @@ SeguirCampaña:
                         IndiceImg = 3
                         If NivelFinal > 14 Then ' 13.75 Then
                             My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
-                            txtEventos.Text &= "[" & Now & "] El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04" & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04" & vbNewLine
+                            nuevoMensajeEventos("El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04")
                         End If
                     Case Is >= 4
                         ColorMarker = GMarkerGoogleType.green_dot
@@ -505,7 +515,8 @@ Fin:
                 lblCamp.BackColor = Color.Silver
                 lblCamp.Text = "Recorrido finalizado, esperando nuevas instrucciones"
                 lblCargado.Text = "Recorrido finalizado, guardado en " & RutaRaizRes
-                txtEventos.Text &= "[" & Now & "] Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """." & vbNewLine
+                nuevoMensajeEventos("Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """.")
 
                 Dim SR As StreamReader = New StreamReader(RutaRaizRes)
                 outCrypt = Criptografo.EncryptData(SR.ReadToEnd)
@@ -525,7 +536,8 @@ Fin:
                 lblCamp.BackColor = Color.Silver
                 lblCamp.Text = "Recorrido finalizado, esperando nuevas instrucciones"
                 lblCargado.Text = "Recorrido finalizado, guardado en " & RutaRaizRes
-                txtEventos.Text &= "[" & Now & "] Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """." & vbNewLine
+                nuevoMensajeEventos("Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """.")
 
                 Dim SR As StreamReader = New StreamReader(RutaRaizRes)
                 outCrypt = Criptografo.EncryptData(SR.ReadToEnd)
@@ -537,7 +549,8 @@ Fin:
 
             End Try
             If Not ex.Message.Contains("path") Then
-                txtEventos.Text &= "[" & Now & "] EXCEPCION OCURRIDA DURANTE EL RECORRIDO: " & ex.Message & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] EXCEPCION OCURRIDA DURANTE EL RECORRIDO: " & ex.Message & vbNewLine
+                nuevoMensajeEventos("EXCEPCION OCURRIDA DURANTE EL RECORRIDO: " & ex.Message)
             End If
         Finally
             btnIniciarCamp.Enabled = True
@@ -569,7 +582,8 @@ Fin:
         If ArranqueApp Then
             ArranqueApp = False
         Else
-            txtEventos.Text &= "[" & Now & "] " & "Proveedor de mapas cambiado a " & cboProvMapa.Text & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Proveedor de mapas cambiado a " & cboProvMapa.Text & vbNewLine
+            nuevoMensajeEventos("Proveedor de mapas cambiado a " & cboProvMapa.Text)
             ProcesoBuscar()
         End If
         Cursor = Cursors.Default
@@ -581,7 +595,8 @@ Fin:
             '-----------------------------------------------------------------------------
             If cboModoConexion.Text <> "Leer desde caché" Then
                 Cursor = Cursors.WaitCursor
-                txtEventos.Text &= "[" & Now & "] " & "Chequeando si existe conexión a internet..." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Chequeando si existe conexión a internet..." & vbNewLine
+                nuevoMensajeEventos("Chequeando si existe conexión a internet...")
                 Application.DoEvents()
 
                 '-----------------------------------------------------------------------------
@@ -596,7 +611,8 @@ Fin:
                 'Si no encuentra conexión, se setea en el catcher que se use el cache unicamente
                 Dim d As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry("www.google.com")
                 GMapProvider.WebProxy.Credentials = New NetworkCredential(user, pass)
-                txtEventos.Text &= "[" & Now & "] " & "Conexión a internet detectada. Activadas las peticiones al servidor seleccionado" & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Conexión a internet detectada. Activadas las peticiones al servidor seleccionado" & vbNewLine
+                nuevoMensajeEventos("Conexión a internet detectada. Activadas las peticiones al servidor seleccionado")
                 opBuscarLugar.Enabled = True
                 opBuscarCoor.Checked = True
                 btnBuscar.Enabled = True
@@ -604,7 +620,8 @@ Fin:
         Catch ex As Exception
             If ex.Message = "Host desconocido" Or ex.Message = "El nombre solicitado es válido pero no se encontraron datos del tipo solicitado" Then
                 Mapa.Manager.Mode = AccessMode.CacheOnly
-                txtEventos.Text &= "[" & Now & "] " & "No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''" & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''" & vbNewLine
+                nuevoMensajeEventos("No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''")
                 cboModoConexion.Text = "Leer desde caché"
                 opBuscarLugar.Enabled = False
                 opBuscarCoor.Checked = False
@@ -869,14 +886,16 @@ Fin:
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
                             Beep()
-                            txtEventos.Text &= "[" & Now & "] " & "El instrumento no responde, está apagado o no se encuentra conectado" & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "El instrumento no responde, está apagado o no se encuentra conectado" & vbNewLine
+                            nuevoMensajeEventos("El instrumento no responde, está apagado o no se encuentra conectado")
                             chkMaxAvg.Enabled = True
                             chkMaxHold.Enabled = True
                             btnIniciarCamp.Enabled = False
                             btnConectar.Text = "Conectar"
                             Exit Sub
                         Else
-                            txtEventos.Text &= "[" & Now & "] " & "NBM-550 conectado. Activando el modo REMOTO." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "NBM-550 conectado. Activando el modo REMOTO." & vbNewLine
+                            nuevoMensajeEventos("NBM-550 conectado. Activando el modo REMOTO.")
                         End If
                         PictureBox1.Image = AutoMapRNI.My.Resources.nbm550
                         .WriteLine("DEVICE_INFO?;")
@@ -989,11 +1008,13 @@ Fin:
                         Rta = .ReadExisting
                         If Not Rta.Contains("EMR-300") Then
                             Beep()
-                            txtEventos.Text &= "[" & Now & "] " & "El instrumento no responde o no se encuentra conectado" & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "El instrumento no responde o no se encuentra conectado" & vbNewLine
+                            nuevoMensajeEventos("El instrumento no responde o no se encuentra conectado")
                             btnIniciarCamp.Enabled = False
                             Exit Sub
                         Else
-                            txtEventos.Text &= "[" & Now & "] " & "EMR-300 conectado." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "EMR-300 conectado." & vbNewLine
+                            nuevoMensajeEventos("EMR-300 conectado.")
                         End If
                         Dim Vec1() As String = Rta.Split(separadores, StringSplitOptions.None)
                         lblInstrumento.Text = Vec1(1).Trim(trimmers) & " - S/N: " & Vec1(2).Trim(trimmers)
@@ -1065,7 +1086,8 @@ Fin:
                         .DiscardInBuffer()
                         .WriteLine("REMOTE OFF;")
                         .DiscardInBuffer()
-                        txtEventos.Text &= "[" & Now & "] " & "Se desconectó correctamente el instrumento. Apagando el modo REMOTO." & vbNewLine
+                        'txtEventos.Text &= "[" & Now & "] " & "Se desconectó correctamente el instrumento. Apagando el modo REMOTO." & vbNewLine
+                        nuevoMensajeEventos("Se desconectó correctamente el instrumento. Apagando el modo REMOTO.")
                         With SondaSel
                             .Marca = ""
                             .Modelo = ""
@@ -1081,7 +1103,8 @@ Fin:
                         .WriteLine("FAST:MODE OFF")
                         Retardo(100)
                         .DiscardInBuffer()
-                        txtEventos.Text &= "[" & Now & "] " & "Se desconectó correctamente el instrumento." & vbNewLine
+                        'txtEventos.Text &= "[" & Now & "] " & "Se desconectó correctamente el instrumento." & vbNewLine
+                        nuevoMensajeEventos("Se desconectó correctamente el instrumento.")
                     End If
                     picBateria.Visible = False
                     lblInstrumento.Text = ""
@@ -1106,13 +1129,17 @@ Fin:
             End With
         Catch ex As Exception
             If ex.Message.Contains("no existe") Then
-                txtEventos.Text &= "[" & Now & "] " & "Error con instrumento - " & ex.Message & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento - " & ex.Message & vbNewLine
+                nuevoMensajeEventos("Error con instrumento - " & ex.Message)
             ElseIf ex.Message.Contains("Se ha denegado el acceso al puerto 'COM2'.") Then
-                txtEventos.Text &= "[" & Now & "] " & "Error con instrumento - " & ex.Message & " (El puerto está siendo utilizado por otro instrumento o dispositivo)" & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento - " & ex.Message & " (El puerto está siendo utilizado por otro instrumento o dispositivo)" & vbNewLine
+                nuevoMensajeEventos("Error con instrumento - " & ex.Message & " (El puerto está siendo utilizado por otro instrumento o dispositivo)")
             ElseIf ex.Message.Contains("no es correcto") Then
-                txtEventos.Text &= "[" & Now & "] " & "Error con puerto seleccionado: " & ex.Message & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Error con puerto seleccionado: " & ex.Message & vbNewLine
+                nuevoMensajeEventos("Error con puerto seleccionado: " & ex.Message)
             Else
-                txtEventos.Text &= "[" & Now & "] " & "EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: " & ex.Message & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: " & ex.Message & vbNewLine
+                nuevoMensajeEventos("EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: " & ex.Message)
             End If
             Beep()
             tmrNarda.Enabled = False
@@ -1480,10 +1507,12 @@ Fin:
                 File.Delete(RutaKML)
             End If
 
-            txtEventos.Text &= "[" & Now & "] " & "Se ha creado el archivo de puntos en ''" & RutaKML & "''." & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Se ha creado el archivo de puntos en ''" & RutaKML & "''." & vbNewLine
+            nuevoMensajeEventos("Se ha creado el archivo de puntos en ''" & RutaKML & "''.")
         Catch ex As Exception
             MsgBox(ex.Message)
-            txtEventos.Text &= "[" & Now & "] " & "Excepción al crear KMZ: " & ex.Message & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Error al crear KMZ: " & ex.Message & vbNewLine
+            nuevoMensajeEventos("Error al crear KMZ: " & ex.Message)
         End Try
     End Sub
 
@@ -1782,9 +1811,11 @@ Fin:
             End If
             'm_Excel.Visible = True
             'm_Excel2.Visible = True
-            txtEventos.Text &= "[" & Now & "] " & "Reporte(s) generado(s) con éxito en la ruta seleccionada." & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Reporte(s) generado(s) con éxito en la ruta seleccionada." & vbNewLine
+            nuevoMensajeEventos("Reporte(s) generado(s) con éxito en la ruta seleccionada.")
         Catch ex As Exception
-            txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine & vbNewLine & ex.StackTrace
+            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine & vbNewLine & ex.StackTrace
+            nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message & vbNewLine & vbNewLine & ex.StackTrace)
             MsgBox(ex.Message)
         Finally
             'm_Excel.Calculation = Excel.XlCalculation.xlCalculationAutomatic
@@ -2077,7 +2108,8 @@ HacerLoop:      Loop
             lblCargado.Text = ""
             lblCargado.Visible = False
             MsgBox(ex.Message & vbNewLine & ex.StackTrace, MsgBoxStyle.Critical)
-            txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
+            nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message)
         Finally
             'FileClose(1)
             boolCheck = True
@@ -2277,7 +2309,8 @@ HacerLoop:      Loop
             lblCargado.Text = ""
             lblCargado.Visible = False
             MsgBox(ex.Message, MsgBoxStyle.Critical)
-            txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
+            nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message)
         Finally
             'FileClose(1)
             boolCheck = True
@@ -2441,14 +2474,17 @@ HacerLoop:      Loop
                 If NivelAlarma > 0 Then
                     hayAlarma = True
                     EstablecerAlarmaToolStripMenuItem.Checked = True
-                    txtEventos.Text &= "[" & Now & "] " & "Alarma de nivel activada en " & NivelAlarma & " V/m." & vbNewLine
+                    'txtEventos.Text &= "[" & Now & "] " & "Alarma de nivel activada en " & NivelAlarma & " V/m." & vbNewLine
+                    nuevoMensajeEventos("Alarma de nivel activada en " & NivelAlarma & " V/m.")
                 Else
                     hayAlarma = False
                     EstablecerAlarmaToolStripMenuItem.Checked = False
-                    txtEventos.Text &= "[" & Now & "] " & "Alarma de nivel desactivada." & vbNewLine
+                    'txtEventos.Text &= "[" & Now & "] " & "Alarma de nivel desactivada." & vbNewLine
+                    nuevoMensajeEventos("Alarma de nivel desactivada.")
                 End If
             Else
-                txtEventos.Text &= "[" & Now & "] " & "Alarma de nivel desactivada." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Alarma de nivel desactivada." & vbNewLine
+                nuevoMensajeEventos("Alarma de nivel desactivada.")
                 EstablecerAlarmaToolStripMenuItem.Checked = False
                 hayAlarma = False
             End If
@@ -2678,7 +2714,7 @@ HacerLoop:      Loop
             If sDialog.ShowDialog = Windows.Forms.DialogResult.Cancel Then
                 Return False
             End If
-            
+
             RutaFichero = sDialog.FileName
             FileSystem.FileOpen(1, RutaFichero, OpenMode.Output)
             FileClose(1)
@@ -2687,7 +2723,8 @@ HacerLoop:      Loop
             Return True
         Catch ex As Exception
             Beep()
-            txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
+            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
+            nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message)
             Return False
         End Try
     End Function
@@ -2854,7 +2891,7 @@ HacerLoop:      Loop
         'Setear el intervalo en 100 milisegundos para una respuesta rápida de localización
         'y actualización de posición en tiempo real (con el GARMIN 18X USB)
         'El GPS GlobalSat debería tener dwells de por lo menos 1000 ms
-        Select ProcesoGPS.ThreadState
+        Select Case ProcesoGPS.ThreadState
             Case ThreadState.Stopped
                 ProcesoGPS = Nothing
                 ProcesoGPS = New Thread(AddressOf LeerGPS)
@@ -2945,7 +2982,8 @@ HacerLoop:      Loop
                     Application.DoEvents()
                     If Not StatusGpS Then
                         My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                        txtEventos.Text &= "[" & Now & "] " & "<GPS POSICIONADO EN MODO DEBUG>" & vbNewLine
+                        'txtEventos.Text &= "[" & Now & "] " & "<GPS POSICIONADO EN MODO DEBUG>" & vbNewLine
+                        nuevoMensajeEventos("<GPS POSICIONADO EN MODO DEBUG>")
                         StatusGpS = True
                         Application.DoEvents()
                     End If
@@ -2968,7 +3006,8 @@ HacerLoop:      Loop
                             Beep()
                             OverlayPosActual.Markers.Clear()
                             StatusGpS = False
-                            txtEventos.Text &= "[" & Now & "] " & "GPS desconectado." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "GPS desconectado." & vbNewLine
+                            nuevoMensajeEventos("GPS desconectado.")
                         End If
                         txtLatActual.Text = "--"
                         txtLngActual.Text = "--"
@@ -2981,7 +3020,8 @@ HacerLoop:      Loop
                             If StatusGpS Then
                                 OverlayPosActual.Markers.Clear()
                                 Beep()
-                                txtEventos.Text &= "[" & Now & "] " & "GPS sin posición." & vbNewLine
+                                'txtEventos.Text &= "[" & Now & "] " & "GPS sin posición." & vbNewLine
+                                nuevoMensajeEventos("GPS sin posición.")
                                 txtLatActual.Text = "--"
                                 txtLngActual.Text = "--"
                                 StatusGpS = False
@@ -2993,7 +3033,8 @@ HacerLoop:      Loop
                             lblStatusGPS.BackColor = Color.GreenYellow
                             If Not StatusGpS Then
                                 My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                                txtEventos.Text &= "[" & Now & "] " & "GPS posicionado." & vbNewLine
+                                'txtEventos.Text &= "[" & Now & "] " & "GPS posicionado." & vbNewLine
+                                nuevoMensajeEventos("GPS posicionado.")
                                 StatusGpS = True
                                 Application.DoEvents()
                             End If
@@ -3030,7 +3071,8 @@ ReIntGSAT:
                             Beep()
                             OverlayPosActual.Markers.Clear()
                             StatusGpS = False
-                            txtEventos.Text &= "[" & Now & "] " & "GPS desconectado." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "GPS desconectado." & vbNewLine
+                            nuevoMensajeEventos("GPS desconectado.")
                         End If
                         txtLatActual.Text = "--"
                         txtLngActual.Text = "--"
@@ -3079,7 +3121,8 @@ ReIntGSAT:
                         If StatusGpS Then
                             OverlayPosActual.Markers.Clear()
                             Beep()
-                            txtEventos.Text &= "[" & Now & "] " & "GPS sin posición." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "GPS sin posición." & vbNewLine
+                            nuevoMensajeEventos("GPS sin posición.")
                             txtLatActual.Text = "--"
                             txtLngActual.Text = "--"
                             StatusGpS = False
@@ -3111,7 +3154,8 @@ ReIntGSAT:
                         lblStatusGPS.BackColor = Color.GreenYellow
                         If Not StatusGpS Then
                             My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                            txtEventos.Text &= "[" & Now & "] " & "GPS posicionado." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "GPS posicionado." & vbNewLine
+                            nuevoMensajeEventos("GPS posicionado.")
                             StatusGpS = True
                         End If
                     End If
@@ -3153,7 +3197,7 @@ ReIntGSAT:
                     txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf
                 End With
                 Application.DoEvents()
-                End If
+            End If
         Catch ex As Exception
             If ex.Message.Contains("Datos no válidos") Then
                 Application.DoEvents()
@@ -3183,7 +3227,7 @@ ReStartNarda:
             Else
                 If Conectado Then
                     With comNarda
-                        
+
                         If chkNBM550.Checked Then
                             If chkPausa.Checked Then
                                 ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
@@ -3211,9 +3255,11 @@ ReStartNarda:
                             Application.DoEvents()
                             Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
                                 Case Is <= 10
-                                    txtEventos.Text &= "[" & Now & "] " & _
-                                        "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                        inBuffer & " %" & vbNewLine
+                                    'txtEventos.Text &= "[" & Now & "] " & _
+                                    '   "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                                    '   inBuffer & " %" & vbNewLine
+                                    nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                                        inBuffer & " %")
                                     picBateria.Image = My.Resources.bat_10
                                 Case Is <= 25
                                     picBateria.Image = My.Resources.bat_25
@@ -3270,7 +3316,8 @@ ReStartNarda:
                                     My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
                                 Catch
                                 End Try
-                                txtEventos.Text &= "[" & Now & "] " & "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías." & vbNewLine
+                                'txtEventos.Text &= "[" & Now & "] " & "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías." & vbNewLine
+                                nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
                             End If
                             'If boolResetMaxEMR Then
                             'NivelNarda = 0
@@ -3287,7 +3334,8 @@ ReStartNarda:
             'Beep()
             If ex.Message.Contains("418;") Then
                 tmrNarda.Enabled = False
-                txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: No hay sonda conectada al mismo. Desconectando." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: No hay sonda conectada al mismo. Desconectando." & vbNewLine
+                nuevoMensajeEventos("Error con instrumento: No hay sonda conectada al mismo. Desconectando.")
                 MsgBox("No hay sonda conectada al instrumento. Apague el instrumento, conéctela al mismo y reintente conexión remota.", vbExclamation)
                 comNarda.WriteLine("REMOTE OFF;")
                 comNarda.DiscardInBuffer()
@@ -3302,7 +3350,8 @@ ReStartNarda:
                 Exit Try
             ElseIf ex.Message.Contains("Uno de los dispositivos conectados al sistema no funciona") Then
                 tmrNarda.Enabled = False
-                txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: Posible desconexión del cable." & vbNewLine
+                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: Posible desconexión del cable." & vbNewLine
+                nuevoMensajeEventos("Error con instrumento: Posible desconexión del cable.")
                 MsgBox("No puede encontrarse instrumento conectado, el mismo parece haberse desconectado.", vbExclamation)
                 lblSonda.Text = ""
                 lblInstrumento.Text = ""
@@ -3323,7 +3372,8 @@ ReStartNarda:
                         If VecNarda(0).Contains("418;") Then
                             Application.DoEvents()
                             tmrNarda.Enabled = False
-                            txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: No hay sonda conectada al mismo. Desconectando." & vbNewLine
+                            'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: No hay sonda conectada al mismo. Desconectando." & vbNewLine
+                            nuevoMensajeEventos("Error con instrumento: No hay sonda conectada al mismo. Desconectando.")
                             lblDisplay.Text = "- error -"
                             ' NivelNarda =-1 indica que ocurrio un error de lectura y que no está disponible el valor actual
                             NivelNarda = -1
@@ -3338,7 +3388,8 @@ ReStartNarda:
                     End Try
                 Else
                     Application.DoEvents()
-                    txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: " & ex.Message & " Deteniendo adquisición" & vbNewLine
+                    'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: " & ex.Message & " Deteniendo adquisición" & vbNewLine
+                    nuevoMensajeEventos("Error con instrumento: " & ex.Message & " Deteniendo adquisición")
                     tmrNarda.Enabled = False
                     lblDisplay.Text = "- error -"
                     ' NivelNarda =-1 indica que ocurrio un error de lectura y que no está disponible el valor actual
@@ -3420,7 +3471,8 @@ restart:
                                     My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
                                 Catch
                                 End Try
-                                txtEventos.Text &= "[" & Now & "] " & "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías." & vbNewLine
+                                'txtEventos.Text &= "[" & Now & "] " & "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías." & vbNewLine
+                                nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
                             End If
                             If boolResetMaxEMR Then
                                 NivelNarda = 0
@@ -3459,9 +3511,11 @@ restart:
                                         My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
                                     Catch
                                     End Try
-                                    txtEventos.Text &= "[" & Now & "] " & _
-                                        "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                        inBuffer & " %" & vbNewLine
+                                    'txtEventos.Text &= "[" & Now & "] " & _
+                                    '   "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                                    '  inBuffer & " %" & vbNewLine
+                                    nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                                        inBuffer & " %")
                                     picBateria.Image = My.Resources.bat_10
                                 Case Is <= 25
                                     picBateria.Image = My.Resources.bat_25
