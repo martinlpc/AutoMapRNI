@@ -105,16 +105,12 @@ Public Class frmMain
         'CheckForIllegalCrossThreadCalls = False
         '---------------------------------------------------------------
         Try
-            ' Mapa.CacheLocation = Environment.CurrentDirectory & "\Data.gmdb"
-            'Me.Icon = My.Resources.ENACOM_sintexto_final
             Me.Text = "AutoMap RNI - " & String.Format("v{0}", My.Application.Info.Version.ToString)
             Cursor = Cursors.WaitCursor
-            'txtEventos.Text &= "[" & Now & "] " & "Sistema iniciado" & vbNewLine
             nuevoMensajeEventos("Sistema iniciado")
             Try
                 CargarSondas()
             Catch ex As Exception
-                'txtEventos.Text &= "[" & Now & "] " & "Error: no se encuentran los archivos de sondas. Contacte a Laboratorio Buenos Aires." & vbNewLine
                 nuevoMensajeEventos("Error: no se encuentran los archivos de sondas. Contacte a Laboratorio Buenos Aires.")
                 btnIniciarCamp.Enabled = False
                 btnConectar.Enabled = False
@@ -123,8 +119,7 @@ Public Class frmMain
             PrimerMuestreo = True
             cboIntervalo.SelectedItem = "5"
             Mapa.IgnoreMarkerOnMouseWheel = True
-            'Mapa.LevelsKeepInMemmory = 6
-
+            
             'Agrega todos los puertos COM disponibles en el ComboBox NARDA
             For Each sp As String In My.Computer.Ports.SerialPortNames
                 cboPuertoNarda.Items.Add(sp)
@@ -146,12 +141,6 @@ Public Class frmMain
                 String.Format("Mozilla/5.0 (Windows NT {1}.0; {2}rv:{0}.0) Gecko/20100101 Firefox/{0}.0",
                               random1, random2, random3)
 
-
-            'Stuff.random.Next(DateTime.Today.Year - 1969 - 5, DateTime.Today.Year - 1969),
-            'Stuff.random.Next(0, 10) % 2 == 0 ? 10 : 6,
-            'Stuff.random.Next(0, 10) % 2 == 1 ? string.Empty : "WOW64; ")
-
-
             GMapProvider.Language = LanguageType.Spanish
             BuscoCoor = True
             IrAInicio(Mapa, e)
@@ -164,13 +153,7 @@ Public Class frmMain
             Mapa.Overlays.Add(OverlayResultados)
             Mapa.Overlays.Add(OverlayBusqueda)
             Mapa.Overlays.Add(ovlyPrefetch)
-            ' ProcesoNarda = New Thread(AddressOf t_Narda)
-            'With ProcesoNarda
-            '.IsBackground = True
-            '.Start()
-            'End With
         Catch ex As Exception
-            'txtEventos.Text &= "[" & Now & "] " & "Excepción ocurrida en el inicio del sistema: " & ex.Message & vbNewLine
             nuevoMensajeEventos("Excepción ocurrida en el inicio del sistema: " & ex.Message)
         Finally
             Cursor = Cursors.Arrow
@@ -178,37 +161,30 @@ Public Class frmMain
     End Sub
 
     Private Sub PrefetchAreaSeleccionadaToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles PrefetchAreaSeleccionadaToolStripMenuItem.Click
-        'Dim loopshechos As Integer
         Try
             If ModoConexion = AccessMode.CacheOnly Then
                 MsgBox("No es posible realizar la descarga si el modo de conexión es ''Solo caché''.", vbExclamation, "Aplicación en modo desconectado")
                 Exit Sub
-            Else
-                If Mapa.SelectedArea.Size = New SizeLatLng(0, 0) Then
-                    MsgBox("Seleccione un área para descargar manteniendo SHIFT y arrastrando con el boton derecho del mouse.", vbInformation, "No hay area seleccionada")
-                    Exit Sub
-                End If
             End If
+            If Mapa.SelectedArea.Size = New SizeLatLng(0, 0) Then
+                MsgBox("Seleccione un área para descargar manteniendo SHIFT y arrastrando con el boton derecho del mouse.", vbInformation, "No hay area seleccionada")
+                Exit Sub
+            End If
+
             trkZoom.Value = Mapa.Zoom
             For zoom As Integer = Mapa.Zoom To Mapa.MaxZoom
-                Using coso As TilePrefetcher = New GMap.NET.TilePrefetcher()
+                Using TP As TilePrefetcher = New GMap.NET.TilePrefetcher()
                     Mapa.Manager.Mode = AccessMode.ServerAndCache
-                    coso.Overlay = ovlyPrefetch
-                    coso.Owner = Me
-
-                    'coso.ShowCompleteMessage = True
-                    'For zoom As Integer = Mapa.Zoom To Mapa.MaxZoom
-                    coso.Start(Mapa.SelectedArea, zoom, Mapa.MapProvider, 10, 1)
-
-                    'loopshechos += 1
-                    'Next
+                    TP.Overlay = ovlyPrefetch
+                    TP.Owner = Me
+                    TP.Start(Mapa.SelectedArea, zoom, Mapa.MapProvider, 10, 1)
                 End Using
+
                 ovlyPrefetch.Clear()
             Next
             Mapa.Manager.Mode = AccessMode.CacheOnly
 
         Catch ex As Exception
-            'txtEventos.Text &= "[" & Now & "] " & "Error en prefetching: " & ex.Message & vbNewLine '" (loops: " & loopshechos & ")." & vbNewLine
             nuevoMensajeEventos("Error en prefetching: " & ex.Message)
         Finally
             ovlyPrefetch.Clear()
@@ -242,7 +218,6 @@ Public Class frmMain
         Dim NivelPuro, NivelFinal As Single
         Dim IndiceImg As Integer
         Dim SW As StreamWriter
-        'Dim NombreCampaña As String
         Dim outHeader As String
         Dim outReg As Registro
         Dim outBuffer As String
@@ -254,7 +229,8 @@ SeguirCampaña:
         Try
             'Se pone en cero la medicion del EMR para que empiece a tomar desde el arranque del recorido y no antes
             If chkEMR300.Checked Then boolResetMaxEMR = True
-            Do While Not boolStopCamp And Conectado 'And tmrNarda.Enabled 'If Not boolStopCamp And tmrNarda.Enabled = True Then
+
+            Do While Not boolStopCamp And Conectado
                 If PrimerBucle Then
                     Try
                         If SeleccionarDestino() = False Then
@@ -281,7 +257,6 @@ SeguirCampaña:
                     SW.Write(outHeader & vbNewLine)
                     ListaResultados.Items.Clear()
                     OverlayCarga.Clear()
-                    'txtEventos.Text &= "[" & Now & "] Recorrido de medición iniciado" & vbNewLine
                     nuevoMensajeEventos("Recorrido de medición iniciado")
                     btnConectar.Enabled = False
                     tmrCamp.Enabled = True
@@ -290,7 +265,6 @@ SeguirCampaña:
                     chkPausa.Enabled = True
                     CargarArchivoDePuntosToolStripMenuItem.Enabled = False
                 End If
-                'If chkEMR300.Checked Then NivelPuro = 0
 
                 If chkPausa.Checked Then 'Do While chkPausa.Checked
                     lblCamp.Text = "Aguardando reanudación de recorrido"
@@ -306,21 +280,11 @@ SeguirCampaña:
                     NivelNarda = 0
                     lblDisplay.Text = "..."
                     If Not boolStopCamp Then
-                        lblCamp.Text = "Reanudando en 5 segundos..."
-                        Retardo(1000)
-                        Application.DoEvents()
-                        lblCamp.Text = "Reanudando en 4 segundos..."
-                        Retardo(1000)
-                        Application.DoEvents()
-                        lblCamp.Text = "Reanudando en 3 segundos..."
-                        Retardo(1000)
-                        Application.DoEvents()
-                        lblCamp.Text = "Reanudando en 2 segundos..."
-                        Retardo(1000)
-                        Application.DoEvents()
-                        lblCamp.Text = "Reanudando en 1 segundo..."
-                        Retardo(1000)
-                        Application.DoEvents()
+                        For i = 5 To 1
+                            lblCamp.Text = "Reanudando en " & i & " segundos..."
+                            Retardo(1000)
+                            Application.DoEvents()
+                        Next
                     End If
                 End If
 
@@ -336,11 +300,7 @@ SeguirCampaña:
                 lblCamp.Text = "Ejecutando medición"
 
                 If opIntervalo.Checked Then
-                    'lblDisplay.Text = "0 V/m"
                     Do Until tmrCamp.Enabled = False
-                        'If chkEMR300.Checked = True And chkMaxHold.Checked = True Then
-                        'If NivelNarda > NivelPuro Then NivelPuro = NivelNarda
-                        'End If
                         Application.DoEvents()
                         If boolStopCamp Then GoTo Fin
                     Loop
@@ -351,9 +311,6 @@ SeguirCampaña:
                         'DEBE SUPERAR LA DISTANCIA ESTABLECIDA EN EL CAMPO DE TEXTO
                         DistUltPunto = CalcularDist(UltimaLat, UltimaLng, LatitudActual, LongitudActual)
                         lblDistAct.Text = "Actual: " & Math.Round(DistUltPunto).ToString & " mts."
-                        'If chkEMR300.Checked = True And chkMaxHold.Checked = True Then
-                        'If NivelNarda > NivelPuro Then NivelPuro = NivelNarda
-                        'End If
 
                         If opDistancia.Checked Then
                             If DistUltPunto > CSng(txtDistancia.Text) Then Exit Do
@@ -373,7 +330,7 @@ SeguirCampaña:
                             Application.DoEvents()
                         End If
                         If boolStopCamp Then GoTo Fin
-                    Loop 'Until DistUltPunto > 1
+                    Loop
                     lblCamp.BackColor = Color.GreenYellow
                     lblCamp.Text = "Ejecutando medición"
                 Else
@@ -387,10 +344,8 @@ SeguirCampaña:
                 Else
                     NivelPuro = NivelNarda
                 End If
-                'NivelPuro = NivelNarda
 
                 Application.DoEvents()
-
 
                 '----------------------------------------------------------------------------------------------'
                 '-- PROBANDO DESCARTE DE PUNTOS QUE TENGAN EN SUS GRADOS DE LATITUD O LONGITUD EL VALOR CERO --'
@@ -398,8 +353,6 @@ SeguirCampaña:
                     GoTo SeguirCampaña ' Si los grados estan en cero, vuelve al inicio. Como las banderas estan en orden, deberia volver a medir sin problemas
                 End If
                 '----------------------------------------------------------------------------------------------'
-
-
 
                 ActLatGDEC = ConvertirAGDec(LatitudActual)
                 ActLngGDEC = ConvertirAGDec(LongitudActual)
@@ -409,11 +362,7 @@ SeguirCampaña:
                 If chkNBM550.Checked Then
                     comNarda.WriteLine("RESET_MMA;") 'RESETEA CUALQUIER TIPO DE VALOR EN EL INSTRUMENTO (MAX, MIN, AVG, MAX_AVG)
                     Retardo(300)
-                    'Dim rta As String = comNarda.ReadExisting()
-                    'txtEventos.Text &= "[" & Now & "] rta a RESET:" & rta & "." & vbNewLine
                     comNarda.DiscardInBuffer()
-                    'ElseIf chkEMR300.Checked Then
-                    'NivelNarda = 0
                 End If
                 boolResetMaxEMR = True
                 Application.DoEvents()
@@ -430,11 +379,6 @@ SeguirCampaña:
                     Case Is >= 8
                         ColorMarker = GMarkerGoogleType.purple_dot
                         IndiceImg = 3
-                        If NivelFinal > 14 Then ' 13.75 Then
-                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
-                            'txtEventos.Text &= "[" & Now & "] El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04" & vbNewLine
-                            nuevoMensajeEventos("El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04")
-                        End If
                     Case Is >= 4
                         ColorMarker = GMarkerGoogleType.green_dot
                         IndiceImg = 4
@@ -445,9 +389,16 @@ SeguirCampaña:
                         ColorMarker = GMarkerGoogleType.blue_dot
                         IndiceImg = 6
                 End Select
+
+                If NivelFinal > 14 Then
+                    My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+                    nuevoMensajeEventos("El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04")
+                End If
+
                 If hayAlarma And NivelFinal >= NivelAlarma Then
                     My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
                 End If
+
                 Dim Marker As GMarkerGoogle = New GMarkerGoogle(New PointLatLng(ActLatGDEC, ActLngGDEC), ColorMarker)
                 Marker.ToolTipMode = MarkerTooltipMode.OnMouseOver
 
@@ -498,7 +449,6 @@ SeguirCampaña:
                     .SubItems.Add(SondaSel.IncertDB) '11
                     .SubItems.Add(SondaSel.Factor) '12
                 End With
-                'Agrega el item a la lista
                 ListaResultados.Items.Add(nReg)
                 'Asigna la imagen correspondiente al item segun el nivel detectado
                 ListaResultados.Items(IndiceRes - 1).ImageIndex = IndiceImg
@@ -507,7 +457,7 @@ SeguirCampaña:
                 nReg.EnsureVisible()
 Fin:
                 tmrCamp.Enabled = True
-            Loop    'Else
+            Loop
 
             If boolStopCamp Then
                 SW.Close()
@@ -515,7 +465,6 @@ Fin:
                 lblCamp.BackColor = Color.Silver
                 lblCamp.Text = "Recorrido finalizado, esperando nuevas instrucciones"
                 lblCargado.Text = "Recorrido finalizado, guardado en " & RutaRaizRes
-                'txtEventos.Text &= "[" & Now & "] Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """." & vbNewLine
                 nuevoMensajeEventos("Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """.")
 
                 Dim SR As StreamReader = New StreamReader(RutaRaizRes)
@@ -528,7 +477,7 @@ Fin:
             Else
                 MsgBox("No puede iniciarse un recorrido si no se encuentra conectado un instrumento de medición.", vbExclamation)
             End If
-            'End If
+
         Catch ex As Exception
             Try
                 SW.Close()
@@ -536,7 +485,6 @@ Fin:
                 lblCamp.BackColor = Color.Silver
                 lblCamp.Text = "Recorrido finalizado, esperando nuevas instrucciones"
                 lblCargado.Text = "Recorrido finalizado, guardado en " & RutaRaizRes
-                'txtEventos.Text &= "[" & Now & "] Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """." & vbNewLine
                 nuevoMensajeEventos("Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """.")
 
                 Dim SR As StreamReader = New StreamReader(RutaRaizRes)
@@ -549,8 +497,7 @@ Fin:
 
             End Try
             If Not ex.Message.Contains("path") Then
-                'txtEventos.Text &= "[" & Now & "] EXCEPCION OCURRIDA DURANTE EL RECORRIDO: " & ex.Message & vbNewLine
-                nuevoMensajeEventos("EXCEPCION OCURRIDA DURANTE EL RECORRIDO: " & ex.Message)
+                nuevoMensajeEventos("EXCEPCION OCURRIDA DURANTE EL RECORRIDO: " & ex.Message & vbNewLine & "INFO: " & ex.StackTrace)
             End If
         Finally
             btnIniciarCamp.Enabled = True
@@ -636,8 +583,6 @@ Fin:
     Private Sub IrAInicio(sender As System.Object, e As System.EventArgs)
         Cursor = Cursors.WaitCursor
         If LatitudActual.Grados = 0 Then
-            'PosicionStr = "Buenos Aires"
-            'Posicionar(False)
             Dim coorlat, coorlon As CoordenadasGMS
             With coorlat
                 .Grados = 40
@@ -676,8 +621,7 @@ Fin:
 
             Marker.ToolTipMode = MarkerTooltipMode.Always
             Mapa.Overlays.Add(OverlayResultados)
-            'OverlayResultados.Markers.Add(Marker)
-
+            
 
         End If
         Cursor = Cursors.Default
@@ -757,18 +701,14 @@ Fin:
             BuscoCoor = True
         End If
         ProcesoBuscar()
-        'Mapa.Overlays.Clear()
-        'OverlayResultados.Markers.Clear()
+        
         Dim LatEnGMS, LngEnGMS As CoordenadasGMS
-        'Dim MarkersOverlay As GMapOverlay = New GMapOverlay("Markers")
-        Dim Marker As GMarkerGoogle = New GMarkerGoogle(Mapa.Position, GMarkerGoogleType.yellow)
 
-        'Mapa.Overlays.Add(MarkersOverlay)
+        Dim Marker As GMarkerGoogle = New GMarkerGoogle(Mapa.Position, GMarkerGoogleType.yellow)
 
         LatEnGMS = ConvertirAGMS(Mapa.Position.Lat, False)
         LngEnGMS = ConvertirAGMS(Mapa.Position.Lng, True)
-        'OverlayResultados.Markers.Clear()
-        'Mapa.Overlays.Clear()
+
         Dim TituloMarker As String
         If BuscoCoor = False Then
             TituloMarker = txtLugar.Text
@@ -782,7 +722,6 @@ Fin:
 
         OverlayBusqueda.Markers.Add(Marker)
 
-        'OverlayResultados.Markers.Add(Marker)
         Cursor = Cursors.Default
     End Sub
 
@@ -886,7 +825,6 @@ Fin:
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
                             Beep()
-                            'txtEventos.Text &= "[" & Now & "] " & "El instrumento no responde, está apagado o no se encuentra conectado" & vbNewLine
                             nuevoMensajeEventos("El instrumento no responde, está apagado o no se encuentra conectado")
                             chkMaxAvg.Enabled = True
                             chkMaxHold.Enabled = True
@@ -894,7 +832,6 @@ Fin:
                             btnConectar.Text = "Conectar"
                             Exit Sub
                         Else
-                            'txtEventos.Text &= "[" & Now & "] " & "NBM-550 conectado. Activando el modo REMOTO." & vbNewLine
                             nuevoMensajeEventos("NBM-550 conectado. Activando el modo REMOTO.")
                         End If
                         PictureBox1.Image = AutoMapRNI.My.Resources.nbm550
@@ -922,7 +859,6 @@ Fin:
                             auxfecha = auxfecha.Substring(3, 3) & auxfecha.Substring(0, 3) & auxfecha.Substring(6, 2)
 
                             '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                            '.FechaCal = Convert.ToDateTime(auxfecha) 'auxfecha.ToString("dd/mm/yyyy") 
                             .FechaCal = auxfecha
                             '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -984,11 +920,7 @@ Fin:
                         .WriteLine("AUTO_ZERO OFF;") 'APAGA EL AUTOCERO 
                         Retardo(100)
                         .DiscardInBuffer()
-                        'If Not SondaSel.Modelo.Contains("0391") Then
-                        ' MsgBox("El protocolo de medición exige que las muestras se efectúen con la sonda EF-0391 para campo eléctrico. De otra manera, los resultados no serán válidos." _
-                        '    , MsgBoxStyle.Exclamation, "Sonda no apta para medición bajo protocolo")
-                        'txtEventos.Text &= "[" & Now & "] " & "La sonda detectada no es apta para medición bajo protocolo!" & vbNewLine
-                        'End If
+                        
 
                     ElseIf chkEMR300.Checked Then
                         '----------------------------------------
@@ -1008,12 +940,10 @@ Fin:
                         Rta = .ReadExisting
                         If Not Rta.Contains("EMR-300") Then
                             Beep()
-                            'txtEventos.Text &= "[" & Now & "] " & "El instrumento no responde o no se encuentra conectado" & vbNewLine
                             nuevoMensajeEventos("El instrumento no responde o no se encuentra conectado")
                             btnIniciarCamp.Enabled = False
                             Exit Sub
                         Else
-                            'txtEventos.Text &= "[" & Now & "] " & "EMR-300 conectado." & vbNewLine
                             nuevoMensajeEventos("EMR-300 conectado.")
                         End If
                         Dim Vec1() As String = Rta.Split(separadores, StringSplitOptions.None)
@@ -1086,7 +1016,6 @@ Fin:
                         .DiscardInBuffer()
                         .WriteLine("REMOTE OFF;")
                         .DiscardInBuffer()
-                        'txtEventos.Text &= "[" & Now & "] " & "Se desconectó correctamente el instrumento. Apagando el modo REMOTO." & vbNewLine
                         nuevoMensajeEventos("Se desconectó correctamente el instrumento. Apagando el modo REMOTO.")
                         With SondaSel
                             .Marca = ""
@@ -1103,7 +1032,6 @@ Fin:
                         .WriteLine("FAST:MODE OFF")
                         Retardo(100)
                         .DiscardInBuffer()
-                        'txtEventos.Text &= "[" & Now & "] " & "Se desconectó correctamente el instrumento." & vbNewLine
                         nuevoMensajeEventos("Se desconectó correctamente el instrumento.")
                     End If
                     picBateria.Visible = False
@@ -1119,8 +1047,6 @@ Fin:
                     lblIncert.Text = ""
                     Conectado = False
                     btnConectar.Text = "Conectar"
-                    'chkMaxAvg.Enabled = True
-                    'chkMaxHold.Enabled = True
                     If .IsOpen Then .Close()
                     chkNBM550.Enabled = True
                     chkEMR300.Enabled = True
@@ -1129,16 +1055,12 @@ Fin:
             End With
         Catch ex As Exception
             If ex.Message.Contains("no existe") Then
-                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento - " & ex.Message & vbNewLine
                 nuevoMensajeEventos("Error con instrumento - " & ex.Message)
             ElseIf ex.Message.Contains("Se ha denegado el acceso al puerto 'COM2'.") Then
-                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento - " & ex.Message & " (El puerto está siendo utilizado por otro instrumento o dispositivo)" & vbNewLine
                 nuevoMensajeEventos("Error con instrumento - " & ex.Message & " (El puerto está siendo utilizado por otro instrumento o dispositivo)")
             ElseIf ex.Message.Contains("no es correcto") Then
-                'txtEventos.Text &= "[" & Now & "] " & "Error con puerto seleccionado: " & ex.Message & vbNewLine
                 nuevoMensajeEventos("Error con puerto seleccionado: " & ex.Message)
             Else
-                'txtEventos.Text &= "[" & Now & "] " & "EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: " & ex.Message & vbNewLine
                 nuevoMensajeEventos("EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: " & ex.Message)
             End If
             Beep()
@@ -1148,8 +1070,6 @@ Fin:
             lblDisplay.Text = ""
             Conectado = False
             btnConectar.Text = "Conectar"
-            'chkMaxAvg.Enabled = True
-            'chkMaxHold.Enabled = True
             If comNarda.IsOpen Then comNarda.Close()
         Finally
             btnConectar.Enabled = True
@@ -1174,14 +1094,11 @@ Fin:
     End Sub
 
     Private Sub btnGEarth_Click(sender As System.Object, e As System.EventArgs) Handles btnGEarth.Click
-        'Dim Color As String
         Dim Punto As Registro
         Dim i As Integer
         Dim Header1 As String
         Dim Header2 As String
-        'Dim Icon1 As String
         Dim Icon11 As String
-        'Dim IconAdy As String
         Dim PlaceMrk1 As String
         Dim PlaceMrk2 As String
         Dim PlaceMrk3 As String
@@ -1190,21 +1107,11 @@ Fin:
         Dim ScreenOverlay As String
         Dim Footer As String
         Dim RutaKML As String
-        'Dim Intensidad(0 To 9) As String ' Aca se definen las gamas de colores
-        'Dim VecPunto() As String
-        'Dim VecPunto2() As String
-        'Dim VecPunto3() As String
         Dim Latit() As String
         Dim Longit() As String
-        'Dim Latit2() As String
-        'Dim Longit2() As String
         Dim Nombre As String
-        'Dim Ruta As String
         Dim InputText As String
-        'Dim InputText2 As String
-        'Dim InputText3 As String
         Dim OutputText As String
-        'Dim Resta As Double
         Dim TipoResultado As String 'Depende de la extension del archivo cargado/creado en el ultimo recorrido
 
         Try
@@ -1233,21 +1140,6 @@ Fin:
                 MsgBox("Se canceló la creación del archivo .kml", vbExclamation, "KML cancelado")
                 Exit Sub
             End If
-            ' Indicadores para el color de icono que se usaran google earth para saber que color asignar
-            'Intensidad(0) = "#MenorMin"
-            'Intensidad(1) = "#NivelUno"
-            'Intensidad(2) = "#NivelDos"
-            'Intensidad(3) = "#NivelTres"
-            'Intensidad(4) = "#NivelCuatro"
-            'Intensidad(5) = "#NivelCinco"
-            'Intensidad(6) = "#Maximo"
-            'Intensidad(0) = "#Maximo"
-            'Intensidad(1) = "#NivelCinco"
-            'Intensidad(2) = "#NivelCuatro"
-            'Intensidad(3) = "#NivelTres"
-            'Intensidad(4) = "#NivelDos"
-            'Intensidad(5) = "#NivelUno"
-            'Intensidad(6) = "#MenorMin"
 
             Using SR As New StringReader(AutoMapRNI.My.Resources.header_1.ToString)
                 ' Asignar a variables los pedazos de código que se van a usar mas adelante
@@ -1334,31 +1226,23 @@ Fin:
                 Loop
             End Using
 
-            'FileOpen(1, RutaKML, OpenMode.Output)
-            'Using SW As StreamWriter = New StreamWriter(RutaKML)
             Using SW As New StreamWriter(RutaKML)
                 SW.AutoFlush = True
-                'FileOpen(2, txtruta, OpenMode.Input)
-                'Open txtRuta For Input As #2
-
                 ' Escribir encabezado(header) y codigo de colores de icono en el archivo
                 OutputText = Header1 & Nombre & Header2 & Icon11
                 SW.WriteLine(OutputText)
-                'Print(1, OutputText)
                 Dim cont As Integer = 1
                 Dim strInstrumento, strSonda As String
                 For Each item As ListViewItem In ListaResultados.Items
                     With Punto
                         Dim aux() As String
-                        '.Indice = CInt(item.Text) 'VecPunto(0).Substring(Len(VecPunto(0)) - 5, 5) 'Right(VecPunto(0), 5)
-                        .Fecha = item.SubItems.Item(4).Text 'VecPunto(1)
-                        .Hora = item.SubItems.Item(3).Text.Substring(0, 8) 'Format(VecPunto(2), "hh:mm:ss")
-                        .Lat = item.SubItems.Item(5).Text 'VecPunto(4).Substring(0, 11) 'Left(VecPunto(4), 11)
-                        .Lon = item.SubItems.Item(6).Text 'VecPunto(5).Substring(0, 11) 'Left(VecPunto(5), 11)
+                        .Fecha = item.SubItems.Item(4).Text
+                        .Hora = item.SubItems.Item(3).Text.Substring(0, 8)
+                        .Lat = item.SubItems.Item(5).Text
+                        .Lon = item.SubItems.Item(6).Text
                         aux = Split(item.SubItems.Item(1).Text)
-                        'aux = Split(VecPunto(1), " ")
                         .Nivel = CSng(aux(0)) '/ 1000     'ES EL VALOR CON INCERTIDUMBRE INCLUIDA
-                        .Unidad = "V/m" 'VecPunto(7).Substring(0, 4) 'Left(VecPunto(7), 4)
+                        .Unidad = "V/m"
                         .PorcentMEP = Math.Round(((.Nivel ^ 2) / 3770) * 100 / 0.2, 4)
                         aux = Split(item.SubItems.Item(2).Text)
                         .NivelPuro = CSng(aux(0))   'SIN LA INCERTIDUMBRE INCLUIDA
@@ -1373,20 +1257,20 @@ Fin:
                     'Acotar los valores a los primeros dos caracteres (se eliminan espacios y signos de unidades)
                     For i = 0 To 1
                         If Len(Latit(i)) > 2 Then
-                            Latit(i) = Latit(i).Substring(0, 2) 'Left(Latit(i), 2)
+                            Latit(i) = Latit(i).Substring(0, 2)
                         Else
                             Latit(i) = Latit(i).Substring(0, 1)
                         End If
                         If Len(Longit(i)) > 2 Then
-                            Longit(i) = Longit(i).Substring(0, 2) 'Left(Longit(i), 2)
+                            Longit(i) = Longit(i).Substring(0, 2)
                         Else
-                            Longit(i) = Longit(i).Substring(0, 1) 'Left(Longit(i), 2)
+                            Longit(i) = Longit(i).Substring(0, 1)
                         End If
                     Next i
 
-                    Latit(2) = Latit(2).Substring(0, Len(Latit(2)) - 3) 'Latit(2).Substring(0, 5).TrimEnd(trimmers)
+                    Latit(2) = Latit(2).Substring(0, Len(Latit(2)) - 3)
                     Latit(2) = CSng(Latit(2))
-                    Longit(2) = Longit(2).Substring(0, Len(Longit(2)) - 3) 'Longit(2).Substring(0, 5).TrimEnd(trimmers)
+                    Longit(2) = Longit(2).Substring(0, Len(Longit(2)) - 3)
                     Longit(2) = CSng(Longit(2))
 
                     'Se convierte de coordenadas en grados, min y seg a grados decimales
@@ -1408,29 +1292,6 @@ Fin:
                     '>>>>>>>>>>>> DEFINIR ACA LOS VALORES QUE DETERMINAN DONDE HAY ACTIVIDAD O SOLO PISO DE RUIDO <<<<><<<<<<<
                     '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
                     'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-                    'Intensidad(0) = "#Maximo"
-                    'Intensidad(1) = "#NivelCinco"
-                    'Intensidad(2) = "#NivelCuatro"
-                    'Intensidad(3) = "#NivelTres"
-                    'Intensidad(4) = "#NivelDos"
-                    'Intensidad(5) = "#NivelUno"
-                    'Intensidad(6) = "#MenorMin"
-                    'Select Case Punto.Nivel 'CON INCERTIDUMBRE
-                    'Case Is >= 27.5
-                    '    i = 0
-                    'Case Is >= 20
-                    '    i = 1
-                    'Case Is >= 14
-                    '    i = 2
-                    'Case Is >= 8
-                    '    i = 3
-                    'Case Is >= 4
-                    '    i = 4
-                    'Case Is >= 2
-                    '    i = 5
-                    'Case Else
-                    '    i = 6
-                    'End Select
                     Select Case Punto.PorcentMEP
                         Case Is <= 1
                             i = 1
@@ -1473,28 +1334,15 @@ Fin:
                                      "Tipo de resultado: " & TipoResultado & " sobre móvil" & vbNewLine & _
                                      "Instrumento - N°/S: " & strInstrumento & vbNewLine & _
                                      "Sonda - N°/S: " & strSonda & PlaceMrk5
-                        'Math.Round(((.Nivel ^ 2) / 3770) * 100 / 0.2, 2).ToString & "%" & vbNewLine & _
-                        ' "<u>Fecha:</u> " & .Fecha & vbNewLine & _
-                        '"<u>Hora:</u> " & .Hora & vbNewLine & vbNewLine & _
-                        '"<b>Nivel:</b> " & .Nivel & " V/m" & vbNewLine & _
-                        '"<b>Porcentaje de la MEP:</b> " & Math.Round(.Nivel * 100 / 27.5, 2).ToString & "%" & vbNewLine & _
-                        '"<u>Tipo de resultado:</u> " & TipoResultado & vbNewLine & _
-                        '"<u>Instrumento - N°/S:</u> " & strInstrumento & vbNewLine & _
-                        '"<u>Sonda - N°/S:</u> " & strSonda & PlaceMrk5
                     End With
-                    'Print #1, OutputText
                     SW.WriteLine(OutputText)
                     cont += 1
                 Next
-                'Loop1
-
+                
                 ' Escribir el segmento para añadir la imagen de la escala cromatica
                 SW.WriteLine(ScreenOverlay)
 
-                ' Escribir terminador(footer) del archivo
-                'Print #1, Footer
                 SW.WriteLine(Footer)
-                'Close()
             End Using
 
             Using zip As ZipFile = New ZipFile
@@ -1507,11 +1355,9 @@ Fin:
                 File.Delete(RutaKML)
             End If
 
-            'txtEventos.Text &= "[" & Now & "] " & "Se ha creado el archivo de puntos en ''" & RutaKML & "''." & vbNewLine
             nuevoMensajeEventos("Se ha creado el archivo de puntos en ''" & RutaKML & "''.")
         Catch ex As Exception
             MsgBox(ex.Message)
-            'txtEventos.Text &= "[" & Now & "] " & "Error al crear KMZ: " & ex.Message & vbNewLine
             nuevoMensajeEventos("Error al crear KMZ: " & ex.Message)
         End Try
     End Sub
@@ -1546,36 +1392,25 @@ Fin:
         '   ACA COMIENZAN LOS CAMBIOS DE INSTRUCCIONES DE INTEROP
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-
         Try
             m_Excel = New Excel.Application
-            'objLibroExcel = m_Excel.Workbooks.Open(Application.StartupPath & "\rep\repexc1.xlsx")
             objLibroExcel = m_Excel.Workbooks.Open(Application.StartupPath & "\rep\Modelo_reporte.xlsx")
-            'Crear instancia de workbook
-            'objLibroExcel = m_Excel.Workbooks.Add
             'Crear instancia de primera hoja de trabajo
             objHojaExcel = m_Excel.Worksheets(1)
-            'm_Excel.Calculation = Excel.XlCalculation.xlCalculationManual
-            'm_Excel.ScreenUpdating = False
-            'm_Excel.EnableLivePreview = False
-            'm_Excel.Visible = True
             'Encabezado y pie de página del archivo:
             '------------------------------------------------------------------
             '   TODO ESTÁ PREFIJADO EN EL ARCHIVO .XLSX BASE INCLUIDO EN LA APP
             '------------------------------------------------------------------
             With objHojaExcel
                 'Formato del título principal del formulario
-                '.Range("A7:L7").Merge()
                 .Range("A7:L7").Value = "Tabla de mediciones - " & Application.ProductName & " - Versión " & Application.ProductVersion
                 .Range("A7:L7").Font.Bold = True
                 .Range("A7:L7").Font.Underline = True
-                '.Range("A7:L7").Font.Size = 14
                 '--------------------------------------------
                 Using SR As New StreamReader(RutaRaizRes)
                     inBuffer = SR.ReadLine
                     Dim MaxVal As Single = 0
                     Dim ItemsTot As Integer = ListaResultados.Items.Count
-                    'Dim i As Integer = 0
                     Dim auxstrSonda, auxstrNivel As String()
                     Dim miArray(ItemsTot, 11) As String
 
@@ -1646,29 +1481,23 @@ Fin:
 
                 End Using
             End With
-            'objHojaExcel = Nothing
-            'objLibroExcel = Nothing
-
+            
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             ' GENERACION DE PLANILLA CON VALORES EN POTENCIA ''''''''''''
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             M_Excel3 = New Excel.Application
-            'objLibro3 = M_Excel3.Workbooks.Open(Application.StartupPath & "\rep\repexc3.xlsx")
             objLibro3 = M_Excel3.Workbooks.Open(Application.StartupPath & "\rep\Modelo_reporte_P.xlsx")
             objHoja3 = M_Excel3.Worksheets(1)
             With objHoja3
                 'Formato del título principal del formulario
-                '.Range("A7:L7").Merge()
                 .Range("A9:H9").Value = "Reporte de mediciones de Radiaciones No Ionizantes"
                 .Range("A9:H9").Font.Bold = True
                 .Range("A9:H9").Font.Underline = True
-                '.Range("A7:L7").Font.Size = 14
                 '--------------------------------------------
                 Using SR As New StreamReader(RutaRaizRes)
                     Dim MaxPot As Single = 0
                     inBuffer = SR.ReadLine
                     Dim ItemsTot As Integer = ListaResultados.Items.Count
-                    'Dim i As Integer = 0
                     Dim auxstrSonda, auxstrNivel As String()
                     Dim miArray(ItemsTot, 5) As String
 
@@ -1700,7 +1529,6 @@ Fin:
                     'Borde alrededor de todo el cuadro, incluido nombres de campos y registros
                     .Range("B11:G" & ItemsTot + 11).BorderAround(1, Excel.XlBorderWeight.xlMedium)
                     .Range("B11:G" & ItemsTot + 11).Font.Size = 8
-                    '.Range("M9").Font.Size = 7
                     '-------------------------------------------------------------------------
                     'Bordes internos separadores de columnas
                     .Range("B11:B" & ItemsTot + 11).BorderAround(1, Excel.XlBorderWeight.xlMedium)
@@ -1722,16 +1550,13 @@ Fin:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If contNivAltos > 0 Then
                 m_Excel2 = New Excel.Application
-                'objLibro2 = m_Excel2.Workbooks.Open(Application.StartupPath & "\rep\repexc2.xlsx")
                 objLibro2 = m_Excel2.Workbooks.Open(Application.StartupPath & "\rep\Modelo_averif.xlsx")
                 objHoja2 = m_Excel2.Worksheets(1)
                 With objHoja2
                     'Formato del título principal del formulario
-                    '.Range("A7:L7").Merge()
                     .Range("A7:L7").Value = "Tabla de mediciones a verificar - " & Application.ProductName & " - Versión " & Application.ProductVersion
                     .Range("A7:L7").Font.Bold = True
                     .Range("A7:L7").Font.Underline = True
-                    '.Range("A7:L7").Font.Size = 14
                     '--------------------------------------------
                     Using SR As New StreamReader(RutaRaizRes)
                         inBuffer = SR.ReadLine
@@ -1758,12 +1583,6 @@ Fin:
                                 miArray(i, 7) = item.SubItems.Item(9).Text  'FechaCal
                                 miArray(i, 8) = item.SubItems.Item(10).Text  'Incert db vehiculo
                                 miArray(i, 9) = CSng(auxstrNivel(0)).ToString 'RESULTADO CON INCERTIDUMBRE VEHICULO en V/m
-                                'miArray(i, 10) = "V/m"
-                                'If RutaRaizRes.EndsWith("mrni") Then
-                                'miArray(i, 11) = "Max Hold"
-                                'ElseIf RutaRaizRes.EndsWith("prni") Then
-                                'miArray(i, 11) = "Max Avg"
-                                'End If
                                 Application.DoEvents()
                                 i += 1
                             End If
@@ -1809,18 +1628,11 @@ Fin:
                 Dim RutaRep2 As String = sDialog.FileName.Substring(0, Len(sDialog.FileName) - 5) & " (A VERIFICAR).xlsx"
                 objHoja2.SaveAs(RutaRep2)
             End If
-            'm_Excel.Visible = True
-            'm_Excel2.Visible = True
-            'txtEventos.Text &= "[" & Now & "] " & "Reporte(s) generado(s) con éxito en la ruta seleccionada." & vbNewLine
             nuevoMensajeEventos("Reporte(s) generado(s) con éxito en la ruta seleccionada.")
         Catch ex As Exception
-            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine & vbNewLine & ex.StackTrace
             nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message & vbNewLine & vbNewLine & ex.StackTrace)
             MsgBox(ex.Message)
         Finally
-            'm_Excel.Calculation = Excel.XlCalculation.xlCalculationAutomatic
-            'm_Excel.ScreenUpdating = True
-            'm_Excel.EnableLivePreview = True
             ' Cerrado de la aplicación
             If Not m_Excel Is Nothing Then
                 objHojaExcel = Nothing
@@ -1895,31 +1707,25 @@ Fin:
         Try
 
             boolCheck = False
-            'oDialog.Filter = "Mediciones RNI de valores máximos (*.mrni)|*.mrni|Mediciones RNI de valores promediados (*.prni)|*.prni"
             oDialog.Filter = "Mediciones RNI de valores máximos (*.mrni)|*.mrni"
             oDialog.FileName = ""
             If oDialog.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
             RutaFichero = oDialog.FileName
             RutaRaizRes = RutaFichero
             Using SR As StreamReader = New StreamReader(RutaFichero)
-                'FileOpen(1, RutaFichero, OpenMode.Input)
                 Dim Crypt As Encriptador = New Encriptador("029112")
                 Dim InBuffer As String
                 Dim PlainData As String
-
-                'Dim VecesDB As Single
 
                 ' Se lee todo el archivo cifrado
                 InBuffer = SR.ReadToEnd
 
                 ' Se chequea si el archivo está encriptado (no empieza con "#")
                 If Not InBuffer.StartsWith("#") Then
-                    ' Se desencripta
                     PlainData = Crypt.DecryptData(InBuffer)
                 Else
                     PlainData = InBuffer
                 End If
-
 
                 Dim respaldo As StreamWriter = New StreamWriter(RutaBackup)
                 respaldo.Write(PlainData)
@@ -1932,7 +1738,6 @@ Fin:
                 Dim InBuffer As String
                 Dim VecPunto() As String
                 'Extraer nombre de campaña
-                'InBuffer = LineInput(1)
                 InBuffer = SR.ReadLine
                 InBuffer = InBuffer.Substring(20, Len(InBuffer) - 20)
                 Dim NombreCamp As String = InBuffer
@@ -1944,10 +1749,8 @@ Fin:
                 'Extraer equipo utilizado
                 InBuffer = SR.ReadLine
                 Dim EquipoNom As String = InBuffer.Substring(26, Len(InBuffer) - 26)
-                'Extraer numero de serie del equipo
                 InBuffer = SR.ReadLine
                 Dim EquipoNumSerie As String = InBuffer.Substring(33, Len(InBuffer) - 33)
-                'Extraer sonda utilizada
                 InBuffer = SR.ReadLine
                 Dim SondaNom As String = InBuffer.Substring(18, Len(InBuffer) - 18)
                 If SondaNom.Contains("EF") Then
@@ -1955,16 +1758,12 @@ Fin:
                 Else
                     UnidadActual = "A/m"
                 End If
-                'Extraer numero de serie de la sonda
                 InBuffer = SR.ReadLine
                 Dim SondaNumSerie As String = InBuffer.Substring(27, Len(InBuffer) - 27)
-                'Extrar fecha de ultima calibracion de la sonda
                 InBuffer = SR.ReadLine
                 Dim SondaFechaCal As String = InBuffer.Substring(39, Len(InBuffer) - 39)
-                'Extraer incertidumbre de la sonda
                 InBuffer = SR.ReadLine
                 Dim SondaIncert As String = Replace(InBuffer.Substring(35, Len(InBuffer) - 35), ".", ",")
-                'Extraer factor de multiplicacion
                 InBuffer = SR.ReadLine
                 Dim SondaFactor As Single = CSng(Replace(InBuffer.Substring(9, Len(InBuffer) - 9), ".", ",")) 'queremos las veces (FACTOR)
                 'Se borran todos los markers de la capa de puntos cargados desde archivo
@@ -1979,7 +1778,6 @@ Fin:
                 InBuffer = SR.ReadLine
                 Do Until InBuffer = Nothing
                     Dim aux() As String
-                    'InBuffer = LineInput(1)
                     VecPunto = Split(InBuffer, ",")
                     'vecpunto(i):
                     '0= numero de registro
@@ -2023,7 +1821,6 @@ Fin:
                         lblZoom.Text = Mapa.Zoom.ToString
                     End If
 
-                    'Dim Pos As New PointLatLng(latfactor, lonfactor)
                     Dim ColorMarker As GMarkerGoogleType
                     Dim IndiceImg As Integer
 
@@ -2062,17 +1859,10 @@ Fin:
                     LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
                     LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisf
 
-                    '"Punto " & Punto.Indice & vbNewLine & _
-                    '"Nivel c/incert: " & Punto.Nivel * SondaFactor & " V/m" & vbNewLine & _
-                    '"Fecha: " & Punto.Fecha & " - Hora: " & Punto.Hora & vbNewLine & vbNewLine & _
-                    'LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-                    'LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisf
-
                     NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
                     OverlayCarga.Markers.Add(NuevoMarker)
                     ListaResultados.Sorting = SortOrder.None
                     'La columna principal es este dato (el item en si)
-                    'Dim nReg As New ListViewItem(Format(Punto.Indice, "0000"))
                     Dim nReg As New ListViewItem(Punto.Indice)
                     With nReg
                         'Cada subitem es la columna 2 en adelante (los atributos del item)
@@ -2088,9 +1878,7 @@ Fin:
                         .SubItems.Add(SondaIncert.ToString & " dB")
                         .SubItems.Add(SondaFactor.ToString)
                     End With
-                    'Agrega el item a la lista
                     ListaResultados.Items.Add(nReg)
-                    'Asigna la imagen correspondiente al item segun el nivel detectado
                     ListaResultados.Items(Punto.Indice - 1).ImageIndex = IndiceImg
                     'Tilda el checkbox del item para que se muestre en mapa
                     ListaResultados.Items(Punto.Indice - 1).Checked = True
@@ -2108,10 +1896,8 @@ HacerLoop:      Loop
             lblCargado.Text = ""
             lblCargado.Visible = False
             MsgBox(ex.Message & vbNewLine & ex.StackTrace, MsgBoxStyle.Critical)
-            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
             nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message)
         Finally
-            'FileClose(1)
             boolCheck = True
             File.Delete(RutaBackup)
         End Try
@@ -2128,15 +1914,12 @@ HacerLoop:      Loop
             RutaFichero = oDialog.FileName
             RutaRaizRes = RutaFichero
             Using SR As StreamReader = New StreamReader(RutaFichero)
-                'FileOpen(1, RutaFichero, OpenMode.Input)
                 Dim Punto As Registro
                 Dim LatEnGMS, LngEnGMS As CoordenadasGMS
                 Dim InBuffer As String
                 Dim VecPunto() As String
-                'Dim VecesDB As Single
-
+                
                 'Extraer nombre de campaña
-                'InBuffer = LineInput(1)
                 InBuffer = SR.ReadLine
                 InBuffer = InBuffer.Substring(20, Len(InBuffer) - 20)
                 Dim NombreCamp As String = InBuffer
@@ -2145,10 +1928,8 @@ HacerLoop:      Loop
 
                 'Saltear la fecha de inicio
                 InBuffer = SR.ReadLine
-                'Extraer equipo utilizado
                 InBuffer = SR.ReadLine
                 Dim EquipoNom As String = InBuffer.Substring(26, Len(InBuffer) - 26)
-                'Extraer numero de serie del equipo
                 InBuffer = SR.ReadLine
                 Dim EquipoNumSerie As String = InBuffer.Substring(33, Len(InBuffer) - 33)
                 'Extraer sonda utilizada
@@ -2159,16 +1940,12 @@ HacerLoop:      Loop
                 Else
                     UnidadActual = "A/m"
                 End If
-                'Extraer numero de serie de la sonda
                 InBuffer = SR.ReadLine
                 Dim SondaNumSerie As String = InBuffer.Substring(27, Len(InBuffer) - 27)
-                'Extrar fecha de ultima calibracion de la sonda
                 InBuffer = SR.ReadLine
                 Dim SondaFechaCal As String = InBuffer.Substring(39, Len(InBuffer) - 39)
-                'Extraer incertidumbre de la sonda
                 InBuffer = SR.ReadLine
                 Dim SondaIncert As String = Replace(InBuffer.Substring(35, Len(InBuffer) - 35), ".", ",")
-                'Extraer factor de multiplicacion
                 InBuffer = SR.ReadLine
                 Dim SondaFactor As Single = CSng(Replace(InBuffer.Substring(9, Len(InBuffer) - 9), ".", ",")) 'queremos las veces (FACTOR)
                 'Se borran todos los markers de la capa de puntos cargados desde archivo
@@ -2183,7 +1960,6 @@ HacerLoop:      Loop
                 InBuffer = SR.ReadLine
                 Do Until InBuffer = Nothing
                     Dim aux() As String
-                    'InBuffer = LineInput(1)
                     VecPunto = Split(InBuffer, ",")
                     'vecpunto(i):
                     '0= numero de registro
@@ -2195,7 +1971,6 @@ HacerLoop:      Loop
                     With Punto
                         .Indice = CInt(VecPunto(0))
                         aux = Split(VecPunto(1), " ")
-                        '.Nivel = CDbl(aux(0)) / 1000
                         If Len(aux(0)) > 1 Then
                             If aux(0).Substring(2, 1) = "." Then
                                 .Nivel = CSng(aux(0).Replace(".", ","))
@@ -2225,7 +2000,6 @@ HacerLoop:      Loop
                         lblZoom.Text = Mapa.Zoom.ToString
                     End If
 
-                    'Dim Pos As New PointLatLng(latfactor, lonfactor)
                     Dim ColorMarker As GMarkerGoogleType
                     Dim IndiceImg As Integer
 
@@ -2264,17 +2038,10 @@ HacerLoop:      Loop
                     LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
                     LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisf
 
-                    '"Punto " & Punto.Indice & vbNewLine & _
-                    '"Nivel c/incert: " & Punto.Nivel * SondaFactor & " V/m" & vbNewLine & _
-                    '"Fecha: " & Punto.Fecha & " - Hora: " & Punto.Hora & vbNewLine & vbNewLine & _
-                    'LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-                    'LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisf
-
                     NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
                     OverlayCarga.Markers.Add(NuevoMarker)
                     ListaResultados.Sorting = SortOrder.None
                     'La columna principal es este dato (el item en si)
-                    'Dim nReg As New ListViewItem(Format(Punto.Indice, "0000"))
                     Dim nReg As New ListViewItem(Punto.Indice)
                     With nReg
                         'Cada subitem es la columna 2 en adelante (los atributos del item)
@@ -2309,10 +2076,8 @@ HacerLoop:      Loop
             lblCargado.Text = ""
             lblCargado.Visible = False
             MsgBox(ex.Message, MsgBoxStyle.Critical)
-            'txtEventos.Text &= "[" & Now & "] " & "Ha ocurrido una excepción: " & ex.Message & vbNewLine
             nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message)
         Finally
-            'FileClose(1)
             boolCheck = True
         End Try
     End Sub
@@ -3219,7 +2984,7 @@ ReIntGSAT:
         Dim VecNarda As String()
         Dim ContError As Integer
         Dim inBuffer As String
-        'Dim bufferNivel As Single 'Se guarda localmente la lectura actual y se compara para saber si reemplazar el máximo (con maxhold = on)
+
         Try
 ReStartNarda:
             If Me.InvokeRequired Then
@@ -3233,7 +2998,6 @@ ReStartNarda:
                                 ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
                                 .WriteLine("RESET_MAX;")
                                 Retardo(200)
-                                'Application.DoEvents()
                                 inBuffer = .ReadExisting
                                 Exit Sub
                             End If
@@ -3255,9 +3019,6 @@ ReStartNarda:
                             Application.DoEvents()
                             Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
                                 Case Is <= 10
-                                    'txtEventos.Text &= "[" & Now & "] " & _
-                                    '   "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                    '   inBuffer & " %" & vbNewLine
                                     nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
                                         inBuffer & " %")
                                     picBateria.Image = My.Resources.bat_10
@@ -3283,19 +3044,8 @@ ReStartNarda:
                             End Try
                             Application.DoEvents()
                             .DiscardInBuffer()
-                            'If chkMaxHold.Checked Then
-                            'Try
-                            'bufferNivel = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
-                            'If bufferNivel > NivelNarda Then NivelNarda = bufferNivel
-                            'Catch
-                            'Exit Sub
-                            'End Try
-                            'Else
-                            'Try
+                           
                             NivelNarda = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
-                            'Catch
-                            'Exit Sub
-                            'End Try
 
                             If chkMaxHold.Checked Then
                                 lblDisplay.Text = NivMax & " " & UnidadActual 'NivelNarda & " V/m"
@@ -3316,25 +3066,19 @@ ReStartNarda:
                                     My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
                                 Catch
                                 End Try
-                                'txtEventos.Text &= "[" & Now & "] " & "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías." & vbNewLine
                                 nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
                             End If
-                            'If boolResetMaxEMR Then
-                            'NivelNarda = 0
-                            'bufferNivel = 0
-                            'boolResetMaxEMR = False
-                            'End If
+
                         End If
                         ContError = 0
                     End With
                 End If
             End If
-            'End If
+
         Catch ex As Exception
-            'Beep()
+
             If ex.Message.Contains("418;") Then
                 tmrNarda.Enabled = False
-                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: No hay sonda conectada al mismo. Desconectando." & vbNewLine
                 nuevoMensajeEventos("Error con instrumento: No hay sonda conectada al mismo. Desconectando.")
                 MsgBox("No hay sonda conectada al instrumento. Apague el instrumento, conéctela al mismo y reintente conexión remota.", vbExclamation)
                 comNarda.WriteLine("REMOTE OFF;")
@@ -3350,7 +3094,6 @@ ReStartNarda:
                 Exit Try
             ElseIf ex.Message.Contains("Uno de los dispositivos conectados al sistema no funciona") Then
                 tmrNarda.Enabled = False
-                'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: Posible desconexión del cable." & vbNewLine
                 nuevoMensajeEventos("Error con instrumento: Posible desconexión del cable.")
                 MsgBox("No puede encontrarse instrumento conectado, el mismo parece haberse desconectado.", vbExclamation)
                 lblSonda.Text = ""
@@ -3372,7 +3115,6 @@ ReStartNarda:
                         If VecNarda(0).Contains("418;") Then
                             Application.DoEvents()
                             tmrNarda.Enabled = False
-                            'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: No hay sonda conectada al mismo. Desconectando." & vbNewLine
                             nuevoMensajeEventos("Error con instrumento: No hay sonda conectada al mismo. Desconectando.")
                             lblDisplay.Text = "- error -"
                             ' NivelNarda =-1 indica que ocurrio un error de lectura y que no está disponible el valor actual
@@ -3388,7 +3130,6 @@ ReStartNarda:
                     End Try
                 Else
                     Application.DoEvents()
-                    'txtEventos.Text &= "[" & Now & "] " & "Error con instrumento: " & ex.Message & " Deteniendo adquisición" & vbNewLine
                     nuevoMensajeEventos("Error con instrumento: " & ex.Message & " Deteniendo adquisición")
                     tmrNarda.Enabled = False
                     lblDisplay.Text = "- error -"
@@ -3435,10 +3176,8 @@ restart:
                                 Retardo(500)
                                 VecNarda = Split(.ReadExisting, ",")
                             Catch ex As Exception
-                                'MsgBox(ex.Message & " - " & ex.StackTrace)
                                 Exit Do
                             End Try
-                            'bufferNivel = 0
                             Application.DoEvents()
                             If chkMaxHold.Checked = True Then
                                 Try
@@ -3461,17 +3200,18 @@ restart:
                                 Retardo(100)
                                 inBuffer = .ReadExisting
                             Catch ex As Exception
-                                'MsgBox(ex.Message & " - " & ex.StackTrace)
                                 Exit Do
                             End Try
                             Application.DoEvents()
                             If inBuffer.Contains("LOW") Then
-                                'Beep()
                                 Try
                                     My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
                                 Catch
+                                    Try
+                                        My.Computer.Audio.Play("C:\Windows\Media\Windows Print complete.wav")
+                                    Catch
+                                    End Try
                                 End Try
-                                'txtEventos.Text &= "[" & Now & "] " & "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías." & vbNewLine
                                 nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
                             End If
                             If boolResetMaxEMR Then
@@ -3491,7 +3231,6 @@ restart:
                                 Retardo(200)
                                 VecNarda = Split(.ReadExisting, ",")
                             Catch ex As Exception
-                                'MsgBox(ex.Message & " - " & ex.StackTrace)
                                 Exit Do
                             End Try
                             Application.DoEvents()
@@ -3510,21 +3249,22 @@ restart:
                                     Try
                                         My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
                                     Catch
+                                        Try
+                                            My.Computer.Audio.Play("C:\Windows\Media\Windows Print complete.wav")
+                                        Catch
+                                        End Try
                                     End Try
-                                    'txtEventos.Text &= "[" & Now & "] " & _
-                                    '   "EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                    '  inBuffer & " %" & vbNewLine
-                                    nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                        inBuffer & " %")
-                                    picBateria.Image = My.Resources.bat_10
+                                        nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                                            inBuffer & " %")
+                                        picBateria.Image = My.Resources.bat_10
                                 Case Is <= 25
-                                    picBateria.Image = My.Resources.bat_25
+                                        picBateria.Image = My.Resources.bat_25
                                 Case Is <= 50
-                                    picBateria.Image = My.Resources.bat_50
+                                        picBateria.Image = My.Resources.bat_50
                                 Case Is <= 75
-                                    picBateria.Image = My.Resources.bat_75
+                                        picBateria.Image = My.Resources.bat_75
                                 Case Else
-                                    picBateria.Image = My.Resources.bat_full
+                                        picBateria.Image = My.Resources.bat_full
                             End Select
                             picBateria.Visible = True
                             ContError = 0
@@ -3545,10 +3285,7 @@ restart:
     ''' </summary>
     ''' <remarks>Usar "boolResetMaxEMR" en la rutina de recorrido para finalizar la lectura actual y resetear el nivel a 0 V/m. Usar "boolKillThrMaxEMR" para terminar el thread</remarks>
     Sub t_EMRMAX()
-        'If Me.InvokeRequired Then
-        'Me.Invoke(New MaxEMRThread(AddressOf t_EMRMAX))
-        'Else
-        Do 'Until boolKillThrMaxEMR
+        Do
             NivMax = 0
             boolResetMaxEMR = False
             Do While Not boolResetMaxEMR
@@ -3556,7 +3293,6 @@ restart:
                 Application.DoEvents()
             Loop
         Loop
-        'End If
     End Sub
 
 #End Region
