@@ -31,7 +31,6 @@ C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Release\AutoM
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Release\AutoMap RNI.pdb
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Release\AutoMap RNI.xml
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Release\MD.Equipos.GPS.dll
-C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMap RNI.vbprojResolveAssemblyReference.cache
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMapRNI.About.resources
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMapRNI.frmDebug.resources
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMapRNI.frmLogin.resources
@@ -40,3 +39,4 @@ C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\A
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMapRNI.frmSondaNBM.resources
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMapRNI.Resources.resources
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMap RNI.vbproj.GenerateResource.Cache
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMap RNI.vbprojResolveAssemblyReference.cache

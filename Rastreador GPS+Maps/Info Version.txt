@@ -1,4 +1,9 @@
-﻿Versión al 29-05-2024: 1.13.11
+﻿Versión al 01-07-2024: 1.14.0
+	- Se refactorizó parte del código para mejor lectura y rendimiento
+	- Se aplicó un TableLayout para autoalinear los controles al maximizar y aprovechar espacio en el mapa
+	- Se eliminó la tabla de referencia de colores
+
+Versión al 29-05-2024: 1.13.11
 	- Se modificaron incertidumbres y factores de las sondas del NBM550
 
 Versión al 17-03-2022: 1.13.10
