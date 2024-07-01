@@ -133,6 +133,7 @@ Public Class frmMain
             trkZoom.Maximum = Mapa.MaxZoom
             trkZoom.Minimum = Mapa.MinZoom
 
+            ' Valores aleatorios para evitar el bloqueo de las APIs de mapa
             Dim random1 As Integer = CInt(Math.Floor((100 - 1 + 1) * Rnd())) + 1
             Dim random2 As Integer = CInt(Math.Floor((99 - 1 + 1) * Rnd())) + 1
             Dim random3 As Integer = CInt(Math.Floor((90 - 1 + 1) * Rnd())) + 1
@@ -2228,9 +2229,6 @@ HacerLoop:      Loop
         Mapa.ShowExportDialog()
     End Sub
 
-    Private Sub LinkLabel1_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
-        Clipboard.SetText(txtEventos.Text)
-    End Sub
 
     Private Sub EstablecerAlarmaToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles EstablecerAlarmaToolStripMenuItem.Click
         Try
