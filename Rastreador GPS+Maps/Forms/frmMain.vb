@@ -67,21 +67,11 @@ Public Class frmMain
 #Region "Declaración de Threads (Subprocesos/hilos de ejecución) y delegados"
     Dim ProcesoLeerNarda As New Thread(AddressOf LeerNarda)
     Dim ProcesoEMRMax As New Thread(AddressOf t_EMRMax)
-    'Dim ProcesoNarda As New Thread(AddressOf t_Narda)
     Dim ProcesoUbicar As Thread
     Dim ProcesoGPS As New Thread(AddressOf LeerGPS)
     Delegate Sub LeerGPSthread()
     Delegate Sub LeerNardaThread()
     Delegate Sub MaxEMRThread()
-#End Region
-
-#Region "Delegados y variables asociados al control del GPS USB"
-    'Public GPS As New GarminUSBDevice
-    'Dim GPS_State As String = "Desconocido"
-    'Dim saved_pvt_data As pvt_data_type
-    'Delegate Sub EstadoConexionThread(Conectado As Boolean)
-    'Delegate Sub ProcesarDatosPVTThread(ByRef pvt_data As pvt_data_type)
-    'Delegate Sub ProcesarDatosSATThread(ByRef sat_data_array As sat_data_type())
 #End Region
 
 #Region "Subprocedimientos LoadForm y asociados a eventos de ventana"
@@ -119,7 +109,7 @@ Public Class frmMain
             PrimerMuestreo = True
             cboIntervalo.SelectedItem = "5"
             Mapa.IgnoreMarkerOnMouseWheel = True
-            
+
             'Agrega todos los puertos COM disponibles en el ComboBox NARDA
             For Each sp As String In My.Computer.Ports.SerialPortNames
                 cboPuertoNarda.Items.Add(sp)
@@ -225,6 +215,18 @@ Public Class frmMain
         Dim factorSonda As Single = SondaSel.Factor
         Dim outCrypt As String
         Dim Criptografo As Encriptador = New Encriptador("029112")
+
+        ' Diccionario para crear los markers segun nivel
+        Dim thresholds As Dictionary(Of Double, Tuple(Of GMarkerGoogleType, Integer))
+        thresholds = New Dictionary(Of Double, Tuple(Of GMarkerGoogleType, Integer)) From {
+            {27.5, Tuple.Create(GMarkerGoogleType.red, 0)},
+            {20.0, Tuple.Create(GMarkerGoogleType.orange_dot, 1)},
+            {14.0, Tuple.Create(GMarkerGoogleType.yellow_dot, 2)},
+            {8.0, Tuple.Create(GMarkerGoogleType.purple_dot, 3)},
+            {4.0, Tuple.Create(GMarkerGoogleType.green_dot, 4)},
+            {2.0, Tuple.Create(GMarkerGoogleType.lightblue_dot, 5)},
+            {0.0, Tuple.Create(GMarkerGoogleType.blue_dot, 6)}
+        }
 
 SeguirCampaña:
         Try
@@ -367,29 +369,38 @@ SeguirCampaña:
                 End If
                 boolResetMaxEMR = True
                 Application.DoEvents()
-                Select Case NivelFinal
-                    Case Is >= 27.5
-                        ColorMarker = GMarkerGoogleType.red
-                        IndiceImg = 0
-                    Case Is >= 20
-                        ColorMarker = GMarkerGoogleType.orange_dot
-                        IndiceImg = 1
-                    Case Is >= 14
-                        ColorMarker = GMarkerGoogleType.yellow_dot
-                        IndiceImg = 2
-                    Case Is >= 8
-                        ColorMarker = GMarkerGoogleType.purple_dot
-                        IndiceImg = 3
-                    Case Is >= 4
-                        ColorMarker = GMarkerGoogleType.green_dot
-                        IndiceImg = 4
-                    Case Is >= 2
-                        ColorMarker = GMarkerGoogleType.lightblue_dot
-                        IndiceImg = 5
-                    Case Else
-                        ColorMarker = GMarkerGoogleType.blue_dot
-                        IndiceImg = 6
-                End Select
+
+                'Select NivelFinal
+                '   Case Is >= 27.5
+                'ColorMarker = GMarkerGoogleType.red
+                'IndiceImg = 0
+                '    Case Is >= 20
+                'ColorMarker = GMarkerGoogleType.orange_dot
+                'IndiceImg = 1
+                '    Case Is >= 14
+                'ColorMarker = GMarkerGoogleType.yellow_dot
+                'IndiceImg = 2
+                '    Case Is >= 8
+                'ColorMarker = GMarkerGoogleType.purple_dot
+                'IndiceImg = 3
+                '    Case Is >= 4
+                ''ColorMarker = GMarkerGoogleType.green_dot
+                'IndiceImg = 4
+                '    Case Is >= 2
+                'ColorMarker = GMarkerGoogleType.lightblue_dot
+                'IndiceImg = 5
+                '    Case Else
+                'ColorMarker = GMarkerGoogleType.blue_dot
+                'IndiceImg = 6
+                'End Select
+
+                For Each threshold In thresholds
+                    If NivelFinal >= threshold.Key Then
+                        ColorMarker = threshold.Value.Item1
+                        IndiceImg = threshold.Value.Item2
+                        Exit For
+                    End If
+                Next
 
                 If NivelFinal > 14 Then
                     My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
@@ -622,7 +633,7 @@ Fin:
 
             Marker.ToolTipMode = MarkerTooltipMode.Always
             Mapa.Overlays.Add(OverlayResultados)
-            
+
 
         End If
         Cursor = Cursors.Default
@@ -702,7 +713,7 @@ Fin:
             BuscoCoor = True
         End If
         ProcesoBuscar()
-        
+
         Dim LatEnGMS, LngEnGMS As CoordenadasGMS
 
         Dim Marker As GMarkerGoogle = New GMarkerGoogle(Mapa.Position, GMarkerGoogleType.yellow)
@@ -921,7 +932,7 @@ Fin:
                         .WriteLine("AUTO_ZERO OFF;") 'APAGA EL AUTOCERO 
                         Retardo(100)
                         .DiscardInBuffer()
-                        
+
 
                     ElseIf chkEMR300.Checked Then
                         '----------------------------------------
@@ -1339,7 +1350,7 @@ Fin:
                     SW.WriteLine(OutputText)
                     cont += 1
                 Next
-                
+
                 ' Escribir el segmento para añadir la imagen de la escala cromatica
                 SW.WriteLine(ScreenOverlay)
 
@@ -1482,7 +1493,7 @@ Fin:
 
                 End Using
             End With
-            
+
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             ' GENERACION DE PLANILLA CON VALORES EN POTENCIA ''''''''''''
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1919,7 +1930,7 @@ HacerLoop:      Loop
                 Dim LatEnGMS, LngEnGMS As CoordenadasGMS
                 Dim InBuffer As String
                 Dim VecPunto() As String
-                
+
                 'Extraer nombre de campaña
                 InBuffer = SR.ReadLine
                 InBuffer = InBuffer.Substring(20, Len(InBuffer) - 20)
@@ -2228,7 +2239,6 @@ HacerLoop:      Loop
     Private Sub ExportarDatosDeMapaToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ExportarDatosDeMapaToolStripMenuItem.Click
         Mapa.ShowExportDialog()
     End Sub
-
 
     Private Sub EstablecerAlarmaToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles EstablecerAlarmaToolStripMenuItem.Click
         Try
@@ -2796,7 +2806,6 @@ HacerLoop:      Loop
                             lblStatusGPS.BackColor = Color.GreenYellow
                             If Not StatusGpS Then
                                 My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                                'txtEventos.Text &= "[" & Now & "] " & "GPS posicionado." & vbNewLine
                                 nuevoMensajeEventos("GPS posicionado.")
                                 StatusGpS = True
                                 Application.DoEvents()
@@ -2819,7 +2828,6 @@ HacerLoop:      Loop
                     End If
 
                     Dim inBufferGPS As String
-                    'Dim lat, lng, status As String
 ReIntGSAT:
                     If reintHechos > 5 Then
                         Throw New ApplicationException("Demasiados reintentos de conexión del GPS.")
@@ -2834,7 +2842,6 @@ ReIntGSAT:
                             Beep()
                             OverlayPosActual.Markers.Clear()
                             StatusGpS = False
-                            'txtEventos.Text &= "[" & Now & "] " & "GPS desconectado." & vbNewLine
                             nuevoMensajeEventos("GPS desconectado.")
                         End If
                         txtLatActual.Text = "--"
@@ -2884,7 +2891,6 @@ ReIntGSAT:
                         If StatusGpS Then
                             OverlayPosActual.Markers.Clear()
                             Beep()
-                            'txtEventos.Text &= "[" & Now & "] " & "GPS sin posición." & vbNewLine
                             nuevoMensajeEventos("GPS sin posición.")
                             txtLatActual.Text = "--"
                             txtLngActual.Text = "--"
@@ -2917,7 +2923,6 @@ ReIntGSAT:
                         lblStatusGPS.BackColor = Color.GreenYellow
                         If Not StatusGpS Then
                             My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                            'txtEventos.Text &= "[" & Now & "] " & "GPS posicionado." & vbNewLine
                             nuevoMensajeEventos("GPS posicionado.")
                             StatusGpS = True
                         End If
