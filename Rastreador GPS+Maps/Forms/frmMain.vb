@@ -11,6 +11,7 @@ Imports System
 Imports System.Threading
 Imports System.Globalization
 Imports System.IO
+Imports System.IO.Ports
 Imports Ionic.Zip
 Imports System.Net
 
@@ -108,6 +109,7 @@ Public Class frmMain
             CargarPaleta()
             PrimerMuestreo = True
             cboIntervalo.SelectedItem = "5"
+            comboGPSSelected.SelectedIndex = 0
             Mapa.IgnoreMarkerOnMouseWheel = True
 
             'Agrega todos los puertos COM disponibles en el ComboBox NARDA
@@ -192,7 +194,7 @@ Public Class frmMain
                 ModoDebug.Checked = False
             End If
         End If
-        If e.Control And e.KeyCode = Keys.G And ModoDebug.Checked Then
+        If e.Control And e.KeyCode = Keys.G Then 'And ModoDebug.Checked Then
             frmDebug.Show()
             frmDebug.BringToFront()
         End If
@@ -541,7 +543,7 @@ Fin:
         If ArranqueApp Then
             ArranqueApp = False
         Else
-            'txtEventos.Text &= "[" & Now & "] " & "Proveedor de mapas cambiado a " & cboProvMapa.Text & vbNewLine
+
             nuevoMensajeEventos("Proveedor de mapas cambiado a " & cboProvMapa.Text)
             ProcesoBuscar()
         End If
@@ -570,11 +572,7 @@ Fin:
                 'Si no encuentra conexión, se setea en el catcher que se use el cache unicamente
                 Dim d As System.Net.IPHostEntry = System.Net.Dns.GetHostEntry("www.google.com")
                 GMapProvider.WebProxy.Credentials = New NetworkCredential(user, pass)
-                'txtEventos.Text &= "[" & Now & "] " & "Conexión a internet detectada. Activadas las peticiones al servidor seleccionado" & vbNewLine
                 nuevoMensajeEventos("Conexión a internet detectada. Activadas las peticiones al servidor seleccionado")
-                opBuscarLugar.Enabled = True
-                opBuscarCoor.Checked = True
-                btnBuscar.Enabled = True
             End If
         Catch ex As Exception
             If ex.Message = "Host desconocido" Or ex.Message = "El nombre solicitado es válido pero no se encontraron datos del tipo solicitado" Then
@@ -582,9 +580,6 @@ Fin:
                 'txtEventos.Text &= "[" & Now & "] " & "No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''" & vbNewLine
                 nuevoMensajeEventos("No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''")
                 cboModoConexion.Text = "Leer desde caché"
-                opBuscarLugar.Enabled = False
-                opBuscarCoor.Checked = False
-                btnBuscar.Enabled = False
             End If
         Finally
             Cursor = Cursors.Arrow
@@ -677,106 +672,11 @@ Fin:
         'End If
     End Sub
 
-    Private Sub BotonBuscar(sender As System.Object, e As System.EventArgs) Handles btnBuscar.Click
-        Cursor = Cursors.WaitCursor
-        If opBuscarLugar.Checked = True Then
-            PosicionStr = txtLugar.Text
-            BuscoCoor = False
-        Else
-            If txtLat.Text.Contains(" ") Then 'Si hay espacios en el textbox, es porque son coordenadas GMS
-                Dim LatConvertir, LngConvertir As CoordenadasGMS
-                With LatConvertir
-                    .Grados = Trim(txtLat.Text.Substring(0, 4))
-                    .Minutos = Trim(txtLat.Text.Substring(4, 2))
-                    .Segundos = Trim(CDbl(txtLat.Text.Substring(7, txtLat.TextLength - 7)))
-                    If .Grados > 0 Then
-                        .Hemisf = "N"
-                    Else
-                        .Hemisf = "S"
-                    End If
-                End With
-                PosicionCoor.Lat = ConvertirAGDec(LatConvertir)
-                With LngConvertir
-                    .Grados = Trim(txtLng.Text.Substring(0, 4))
-                    .Minutos = Trim(txtLng.Text.Substring(4, 2))
-                    .Segundos = Trim(CSng(txtLng.Text.Substring(7, txtLat.TextLength - 7)))
-                    If Math.Sign(.Grados) > 0 Then
-                        .Hemisf = "E"
-                    Else
-                        .Hemisf = "O"
-                    End If
-                End With
-                PosicionCoor.Lng = ConvertirAGDec(LngConvertir)
-            Else 'Sino, las coordenadas estan en decimales....
-                PosicionCoor = New PointLatLng(CDbl(txtLat.Text), CDbl(txtLng.Text))
-            End If
-            BuscoCoor = True
-        End If
-        ProcesoBuscar()
-
-        Dim LatEnGMS, LngEnGMS As CoordenadasGMS
-
-        Dim Marker As GMarkerGoogle = New GMarkerGoogle(Mapa.Position, GMarkerGoogleType.yellow)
-
-        LatEnGMS = ConvertirAGMS(Mapa.Position.Lat, False)
-        LngEnGMS = ConvertirAGMS(Mapa.Position.Lng, True)
-
-        Dim TituloMarker As String
-        If BuscoCoor = False Then
-            TituloMarker = txtLugar.Text
-        Else
-            TituloMarker = "Coordenadas:"
-        End If
-        Marker.ToolTipText = TituloMarker & vbNewLine & vbNewLine & LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 2) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-            LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 2) & Chr(34) & " " & LngEnGMS.Hemisf
-
-        Marker.ToolTipMode = MarkerTooltipMode.Always
-
-        OverlayBusqueda.Markers.Add(Marker)
-
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub SeleccionadoBuscarCoor(sender As System.Object, e As System.EventArgs) Handles opBuscarCoor.CheckedChanged
-        btnBuscar.Text = "Buscar coordenadas"
-        BuscoCoor = True
-
-        tTip.SetToolTip(btnBuscar, "Ingrese las coordenadas que desea buscar de las siguientes formas posibles:" & vbNewLine & vbNewLine & _
-                        "   -34.609327" & vbNewLine & _
-                        "ó" & vbNewLine & _
-                        "   -34 36 33")
-    End Sub
-
-    Private Sub SeleccionadoBuscarLugar(sender As System.Object, e As System.EventArgs) Handles opBuscarLugar.CheckedChanged
-        btnBuscar.Text = "Buscar lugar"
-        BuscoCoor = False
-
-        tTip.SetToolTip(btnBuscar, "Ingrese el lugar que desea buscar y presione este botón." & vbNewLine & vbNewLine & _
-                        "Ejemplos:" & vbNewLine & _
-                        "  ''Avellaneda, Buenos Aires''" & vbNewLine & _
-                        "  ''Misiones, Argentina''" & vbNewLine & _
-                        "  ''Obelisco''")
-    End Sub
-
     Private Sub CambioTrkZoom(sender As System.Object, e As System.EventArgs) Handles trkZoom.Scroll
         Mapa.Zoom = trkZoom.Value
         lblZoom.Text = Mapa.Zoom.ToString
     End Sub
 
-    Private Sub txtLat_GotFocus(sender As Object, e As System.EventArgs) Handles txtLat.GotFocus
-        SeleccionadoBuscarCoor(opBuscarCoor, e)
-        opBuscarCoor.Checked = True
-    End Sub
-
-    Private Sub txtLng_GotFocus(sender As Object, e As System.EventArgs) Handles txtLng.GotFocus
-        SeleccionadoBuscarCoor(opBuscarCoor, e)
-        opBuscarCoor.Checked = True
-    End Sub
-
-    Private Sub txtLugar_GotFocus(sender As Object, e As System.EventArgs) Handles txtLugar.GotFocus
-        SeleccionadoBuscarLugar(opBuscarLugar, e)
-        opBuscarLugar.Checked = True
-    End Sub
 
     Private Sub Mapa_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Mapa.MouseWheel
         Try
@@ -842,6 +742,7 @@ Fin:
                             chkMaxHold.Enabled = True
                             btnIniciarCamp.Enabled = False
                             btnConectar.Text = "Conectar"
+                            btnConectar.BackColor = SystemColors.Control
                             Exit Sub
                         Else
                             nuevoMensajeEventos("NBM-550 conectado. Activando el modo REMOTO.")
@@ -1046,7 +947,9 @@ Fin:
                         .DiscardInBuffer()
                         nuevoMensajeEventos("Se desconectó correctamente el instrumento.")
                     End If
-                    picBateria.Visible = False
+                    'picBateria.Visible = False
+                    barBateria.Value = 0
+                    lblBattery.Text = ""
                     lblInstrumento.Text = ""
                     lblTipoRes.Text = ""
                     PictureBox1.Image = Nothing
@@ -1059,6 +962,7 @@ Fin:
                     lblIncert.Text = ""
                     Conectado = False
                     btnConectar.Text = "Conectar"
+                    btnConectar.BackColor = SystemColors.Control
                     If .IsOpen Then .Close()
                     chkNBM550.Enabled = True
                     chkEMR300.Enabled = True
@@ -1915,185 +1819,6 @@ HacerLoop:      Loop
         End Try
     End Sub
 
-    Private Sub OLDCargarArchivo(sender As System.Object, e As System.EventArgs)
-        Try
-            Dim RutaFichero As String
-            Dim alertaNivel As Boolean = False
-            boolCheck = False
-            oDialog.Filter = "Mediciones RNI de valores máximos (*.mrni)|*.mrni|Mediciones RNI de valores promediados (*.prni)|*.prni"
-            oDialog.FileName = ""
-            If oDialog.ShowDialog = Windows.Forms.DialogResult.Cancel Then Exit Sub
-            RutaFichero = oDialog.FileName
-            RutaRaizRes = RutaFichero
-            Using SR As StreamReader = New StreamReader(RutaFichero)
-                Dim Punto As Registro
-                Dim LatEnGMS, LngEnGMS As CoordenadasGMS
-                Dim InBuffer As String
-                Dim VecPunto() As String
-
-                'Extraer nombre de campaña
-                InBuffer = SR.ReadLine
-                InBuffer = InBuffer.Substring(20, Len(InBuffer) - 20)
-                Dim NombreCamp As String = InBuffer
-                lblCargado.Text = "Recorrido cargado: " & Chr(34) & NombreCamp & Chr(34) & " (" & RutaFichero & ")"
-                lblCargado.Visible = True
-
-                'Saltear la fecha de inicio
-                InBuffer = SR.ReadLine
-                InBuffer = SR.ReadLine
-                Dim EquipoNom As String = InBuffer.Substring(26, Len(InBuffer) - 26)
-                InBuffer = SR.ReadLine
-                Dim EquipoNumSerie As String = InBuffer.Substring(33, Len(InBuffer) - 33)
-                'Extraer sonda utilizada
-                InBuffer = SR.ReadLine
-                Dim SondaNom As String = InBuffer.Substring(18, Len(InBuffer) - 18)
-                If SondaNom.Contains("EF") Then
-                    UnidadActual = "V/m"
-                Else
-                    UnidadActual = "A/m"
-                End If
-                InBuffer = SR.ReadLine
-                Dim SondaNumSerie As String = InBuffer.Substring(27, Len(InBuffer) - 27)
-                InBuffer = SR.ReadLine
-                Dim SondaFechaCal As String = InBuffer.Substring(39, Len(InBuffer) - 39)
-                InBuffer = SR.ReadLine
-                Dim SondaIncert As String = Replace(InBuffer.Substring(35, Len(InBuffer) - 35), ".", ",")
-                InBuffer = SR.ReadLine
-                Dim SondaFactor As Single = CSng(Replace(InBuffer.Substring(9, Len(InBuffer) - 9), ".", ",")) 'queremos las veces (FACTOR)
-                'Se borran todos los markers de la capa de puntos cargados desde archivo
-                OverlayCarga.Markers.Clear()
-
-                'EVALUAR SI ES EFICIENTE BORRAR LOS MARKERS DE RESULTADOS RECIENTEMENTE TOMADOS (PARA NO MEZCLAR)
-                'Y SI CONVIENE TENER MEZCLADOS EN LA LISTA LOS DE AMBOS EVENTOS
-                'OverlayResultados.Clear()
-                'Se limpia la lista de markers
-                ListaResultados.Items.Clear()
-
-                InBuffer = SR.ReadLine
-                Do Until InBuffer = Nothing
-                    Dim aux() As String
-                    VecPunto = Split(InBuffer, ",")
-                    'vecpunto(i):
-                    '0= numero de registro
-                    '1= nivel y unidad
-                    '2= hora
-                    '3= fecha
-                    '4= lat gdec
-                    '5= lng gdec
-                    With Punto
-                        .Indice = CInt(VecPunto(0))
-                        aux = Split(VecPunto(1), " ")
-                        If Len(aux(0)) > 1 Then
-                            If aux(0).Substring(2, 1) = "." Then
-                                .Nivel = CSng(aux(0).Replace(".", ","))
-                            ElseIf aux(0).Substring(1, 1) = "." Then
-                                .Nivel = CSng(aux(0).Replace(".", ","))
-                            End If
-                        Else
-                            .Nivel = CSng(aux(0))
-                        End If
-                        .NivelPuro = FormatNumber(.Nivel, 3)
-                        .Nivel = .NivelPuro * SondaFactor
-                        .Hora = VecPunto(3).Substring(0, 8)
-                        .Fecha = VecPunto(2)
-                        .Lat = VecPunto(4)
-                        .Lon = VecPunto(5)
-
-                    End With
-
-                    Dim latfactor As Double = Convert.ToDouble(Replace(Punto.Lat, ".", ","))
-                    Dim lonfactor As Double = Convert.ToDouble(Replace(Punto.Lon, ".", ","))
-                    LatEnGMS = ConvertirAGMS(latfactor, False)
-                    LngEnGMS = ConvertirAGMS(lonfactor, True)
-
-                    If Punto.Indice = 1 Then
-                        Mapa.Position = New PointLatLng(latfactor, lonfactor)
-                        Mapa.Zoom = 14
-                        lblZoom.Text = Mapa.Zoom.ToString
-                    End If
-
-                    Dim ColorMarker As GMarkerGoogleType
-                    Dim IndiceImg As Integer
-
-                    Select Case Punto.Nivel
-                        Case Is >= 27.5
-                            ColorMarker = GMarkerGoogleType.red_dot
-                            IndiceImg = 0
-                            alertaNivel = True
-                        Case Is >= 20
-                            ColorMarker = GMarkerGoogleType.orange_dot
-                            IndiceImg = 1
-                        Case Is >= 14
-                            ColorMarker = GMarkerGoogleType.yellow_dot
-                            IndiceImg = 2
-                        Case Is >= 8
-                            ColorMarker = GMarkerGoogleType.purple_dot
-                            IndiceImg = 3
-                        Case Is >= 4
-                            ColorMarker = GMarkerGoogleType.green_dot
-                            IndiceImg = 4
-                        Case Is >= 2
-                            ColorMarker = GMarkerGoogleType.lightblue_dot
-                            IndiceImg = 5
-                        Case Else
-                            ColorMarker = GMarkerGoogleType.blue_dot
-                            IndiceImg = 6
-                    End Select
-
-                    Dim NuevoMarker As GMarkerGoogle = New GMarkerGoogle(New PointLatLng(latfactor, lonfactor), ColorMarker)
-                    NuevoMarker.Tag = Punto.Indice
-                    NuevoMarker.ToolTipText = "Punto " & Punto.Indice & vbNewLine & _
-                    "Nivel c/incert.: " & Punto.Nivel & " " & UnidadActual & vbNewLine & _
-                    "Nivel s/incert.: " & Punto.NivelPuro & " " & UnidadActual & vbNewLine & _
-                    "Porcentaje de la MEP: " & Math.Round(((Punto.Nivel ^ 2) / 3770) * 100 / 0.2, 2).ToString & "%" & vbNewLine & _
-                    Punto.Fecha & " - " & Punto.Hora & vbNewLine & _
-                    LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-                    LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisf
-
-                    NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
-                    OverlayCarga.Markers.Add(NuevoMarker)
-                    ListaResultados.Sorting = SortOrder.None
-                    'La columna principal es este dato (el item en si)
-                    Dim nReg As New ListViewItem(Punto.Indice)
-                    With nReg
-                        'Cada subitem es la columna 2 en adelante (los atributos del item)
-                        .SubItems.Add(FormatNumber(Punto.Nivel, 3) & " " & UnidadActual)   'con incert
-                        .SubItems.Add(Punto.NivelPuro & " " & UnidadActual)                 'sin incert
-                        .SubItems.Add(Punto.Hora)
-                        .SubItems.Add(Punto.Fecha)
-                        .SubItems.Add(LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & LatEnGMS.Segundos & Chr(34) & " " & LatEnGMS.Hemisf)
-                        .SubItems.Add(LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & LngEnGMS.Segundos & Chr(34) & " " & LngEnGMS.Hemisf)
-                        .SubItems.Add(EquipoNom & " - " & EquipoNumSerie)
-                        .SubItems.Add(SondaNom & " - " & SondaNumSerie)
-                        .SubItems.Add(SondaFechaCal)
-                        .SubItems.Add(SondaIncert.ToString & " dB")
-                        .SubItems.Add(SondaFactor.ToString)
-                    End With
-                    'Agrega el item a la lista
-                    ListaResultados.Items.Add(nReg)
-                    'Asigna la imagen correspondiente al item segun el nivel detectado
-                    ListaResultados.Items(Punto.Indice - 1).ImageIndex = IndiceImg
-                    'Tilda el checkbox del item para que se muestre en mapa
-                    ListaResultados.Items(Punto.Indice - 1).Checked = True
-                    nReg.EnsureVisible()
-
-                    InBuffer = SR.ReadLine
-                    Application.DoEvents()
-HacerLoop:      Loop
-            End Using
-            If alertaNivel Then
-                MsgBox("Atención: Hay puntos con energía que superan la Máxima Exposición Permitida!", MsgBoxStyle.Exclamation, "Se detectaron puntos calientes")
-            End If
-        Catch ex As Exception
-            lblCargado.Text = ""
-            lblCargado.Visible = False
-            MsgBox(ex.Message, MsgBoxStyle.Critical)
-            nuevoMensajeEventos("Ha ocurrido una excepción: " & ex.Message)
-        Finally
-            boolCheck = True
-        End Try
-    End Sub
-
     Private Sub ListaResultados_ItemChecked(sender As Object, e As System.Windows.Forms.ItemCheckedEventArgs) Handles ListaResultados.ItemChecked
 
         Dim mID As String = e.Item.SubItems.Item(0).Text
@@ -2125,8 +1850,7 @@ HacerLoop:      Loop
                 longms.Hemisf = vecc(3)
                 .Lon = ConvertirAGDec(longms)
             End With
-            'Dim latfactor As Double = Convert.ToDouble(Replace(Punto.Lat, ".", ","))
-            'Dim lonfactor As Double = Convert.ToDouble(Replace(Punto.Lon, ".", ","))
+
             Dim LatEnGMS As CoordenadasGMS = ConvertirAGMS(Punto.Lat, False)
             Dim LngEnGMS As CoordenadasGMS = ConvertirAGMS(Punto.Lon, True)
             Dim ColorMarker As GMarkerGoogleType
@@ -2194,12 +1918,6 @@ HacerLoop:      Loop
                 OverlayClick.Markers.Remove(item)
         End Select
 
-    End Sub
-
-    Private Sub txtLugar_KeyPress(sender As Object, e As System.Windows.Forms.KeyPressEventArgs) Handles txtLugar.KeyPress
-        If e.KeyChar = Chr(13) Then
-            BotonBuscar(sender, e)
-        End If
     End Sub
 
     Private Sub AcercaDeToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles AcercaDeToolStripMenuItem.Click
@@ -2276,54 +1994,21 @@ HacerLoop:      Loop
             DispositivoNMEAToolStripMenuItem.Checked = False
             GPSSel = 1
             Label6.Text = "Estado del GPS [18X USB]"
-            'comGPS.Close()
+            comGPS.Close()
         End If
         tmrGPS.Interval = 100
     End Sub
 
     Private Sub cboCOMGlobalSat_Click(sender As System.Object, e As System.EventArgs) Handles cboCOMGlobalSat.Click
-        If cboCOMGlobalSat.Text = "" Then Exit Sub
-        tmrGPS.Interval = 1200
-        If DispositivoNMEAToolStripMenuItem.Checked = False Then
-            DispositivoNMEAToolStripMenuItem.Checked = True
-            Garmin18XUSBToolStripMenuItem.Checked = False
-            Label6.Text = "Estado del GPS [NMEA]"
-            GPSSel = 2
-        End If
-        If comGPS.IsOpen Then
-            comGPS.Close()
-        End If
-        comGPS.PortName = cboCOMGlobalSat.Text
+        SetNMEASettings()
     End Sub
 
     Private Sub cboCOMGlobalSat_DropDownClosed(sender As Object, e As System.EventArgs) Handles cboCOMGlobalSat.DropDownClosed
-        If cboCOMGlobalSat.Text = "" Then Exit Sub
-        tmrGPS.Interval = 1200
-        If DispositivoNMEAToolStripMenuItem.Checked = False Then
-            DispositivoNMEAToolStripMenuItem.Checked = True
-            Garmin18XUSBToolStripMenuItem.Checked = False
-            Label6.Text = "Estado del GPS [NMEA]"
-            GPSSel = 2
-        End If
-        If comGPS.IsOpen Then
-            comGPS.Close()
-        End If
-        comGPS.PortName = cboCOMGlobalSat.Text
+        SetNMEASettings()
     End Sub
 
     Private Sub cboCOMGlobalSat_MouseDown(sender As Object, e As System.EventArgs) Handles cboCOMGlobalSat.MouseDown
-        If cboCOMGlobalSat.Text = "" Then Exit Sub
-        tmrGPS.Interval = 1200
-        If DispositivoNMEAToolStripMenuItem.Checked = False Then
-            DispositivoNMEAToolStripMenuItem.Checked = True
-            Garmin18XUSBToolStripMenuItem.Checked = False
-            Label6.Text = "Estado del GPS [NMEA]"
-            GPSSel = 2
-        End If
-        If comGPS.IsOpen Then
-            comGPS.Close()
-        End If
-        comGPS.PortName = cboCOMGlobalSat.Text
+        SetNMEASettings()
     End Sub
 
     Private Sub LinkLabel2_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel2.LinkClicked
@@ -2357,6 +2042,22 @@ HacerLoop:      Loop
 #End Region
 
 #Region "Procedimientos varios"
+
+    Sub SetNMEASettings()
+        If cboCOMGlobalSat.Text = "" Then Exit Sub
+        tmrGPS.Interval = 1200
+        If DispositivoNMEAToolStripMenuItem.Checked = False Then
+            DispositivoNMEAToolStripMenuItem.Checked = True
+            Garmin18XUSBToolStripMenuItem.Checked = False
+            Label6.Text = "Estado del GPS [NMEA]"
+            GPSSel = 2
+        End If
+        If comGPS.IsOpen Then
+            comGPS.Close()
+        End If
+        comGPS.PortName = cboCOMGlobalSat.Text
+    End Sub
+
     ''' <summary>
     ''' Carga los números de serie de las sondas de ambos modelos para determinar las incertidumbres y límites de integración de frecuencia
     ''' </summary>
@@ -2755,7 +2456,6 @@ HacerLoop:      Loop
                     Application.DoEvents()
                     If Not StatusGpS Then
                         My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                        'txtEventos.Text &= "[" & Now & "] " & "<GPS POSICIONADO EN MODO DEBUG>" & vbNewLine
                         nuevoMensajeEventos("<GPS POSICIONADO EN MODO DEBUG>")
                         StatusGpS = True
                         Application.DoEvents()
@@ -2779,7 +2479,6 @@ HacerLoop:      Loop
                             Beep()
                             OverlayPosActual.Markers.Clear()
                             StatusGpS = False
-                            'txtEventos.Text &= "[" & Now & "] " & "GPS desconectado." & vbNewLine
                             nuevoMensajeEventos("GPS desconectado.")
                         End If
                         txtLatActual.Text = "--"
@@ -2793,7 +2492,6 @@ HacerLoop:      Loop
                             If StatusGpS Then
                                 OverlayPosActual.Markers.Clear()
                                 Beep()
-                                'txtEventos.Text &= "[" & Now & "] " & "GPS sin posición." & vbNewLine
                                 nuevoMensajeEventos("GPS sin posición.")
                                 txtLatActual.Text = "--"
                                 txtLngActual.Text = "--"
@@ -2987,6 +2685,7 @@ ReIntGSAT:
         Dim VecNarda As String()
         Dim ContError As Integer
         Dim inBuffer As String
+        Dim nivelBateria As Integer
 
         Try
 ReStartNarda:
@@ -3020,21 +2719,26 @@ ReStartNarda:
                             Retardo(200)
                             inBuffer = .ReadExisting
                             Application.DoEvents()
-                            Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
-                                Case Is <= 10
-                                    nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                        inBuffer & " %")
-                                    picBateria.Image = My.Resources.bat_10
-                                Case Is <= 25
-                                    picBateria.Image = My.Resources.bat_25
-                                Case Is <= 50
-                                    picBateria.Image = My.Resources.bat_50
-                                Case Is <= 75
-                                    picBateria.Image = My.Resources.bat_75
-                                Case Else
-                                    picBateria.Image = My.Resources.bat_full
-                            End Select
-                            picBateria.Visible = True
+                            'Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
+                            '    Case Is <= 10
+                            'nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                            '    inBuffer & " %")
+                            'picBateria.Image = My.Resources.bat_10
+                            '    Case Is <= 25
+                            'picBateria.Image = My.Resources.bat_25
+                            '    Case Is <= 50
+                            'picBateria.Image = My.Resources.bat_50
+                            '    Case Is <= 75
+                            'picBateria.Image = My.Resources.bat_75
+                            '    Case Else
+                            'picBateria.Image = My.Resources.bat_full
+                            'End Select
+                            'picBateria.Visible = True
+
+                            nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
+                            barBateria.Value = nivelBateria
+                            lblBattery.Text = nivelBateria
+                            If nivelBateria <= 10 Then nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & nivelBateria & "%")
                             ContError = 0
                             Application.DoEvents()
                         ElseIf chkEMR300.Checked Then
@@ -3047,7 +2751,7 @@ ReStartNarda:
                             End Try
                             Application.DoEvents()
                             .DiscardInBuffer()
-                           
+
                             NivelNarda = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
 
                             If chkMaxHold.Checked Then
@@ -3090,7 +2794,6 @@ ReStartNarda:
                 lblInstrumento.Text = ""
                 lblTipoRes.Text = ""
                 btnConectar.Text = "Conectar"
-                picBateria.Visible = False
                 btnIniciarCamp.Enabled = False
                 PictureBox1.Image = Nothing
                 Conectado = False
@@ -3106,7 +2809,6 @@ ReStartNarda:
                 btnConectar.Text = "Conectar"
                 btnIniciarCamp.Enabled = False
                 PictureBox1.Image = Nothing
-                picBateria.Visible = False
                 Conectado = False
                 Exit Try
             End If
@@ -3159,6 +2861,7 @@ ReStartNarda:
         Dim VecNarda As String()
         Dim ContError As Integer
         Dim inBuffer As String
+        Dim nivelBateria As Integer
         Dim bufferNivel As Single 'Se guarda localmente la lectura actual y se compara para saber si reemplazar el máximo (con maxhold = on)
 restart:
         Do
@@ -3247,29 +2950,34 @@ restart:
                             Retardo(200)
                             inBuffer = .ReadExisting
                             Application.DoEvents()
-                            Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
-                                Case Is <= 10
-                                    Try
-                                        My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
-                                    Catch
-                                        Try
-                                            My.Computer.Audio.Play("C:\Windows\Media\Windows Print complete.wav")
-                                        Catch
-                                        End Try
-                                    End Try
-                                        nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                                            inBuffer & " %")
-                                        picBateria.Image = My.Resources.bat_10
-                                Case Is <= 25
-                                        picBateria.Image = My.Resources.bat_25
-                                Case Is <= 50
-                                        picBateria.Image = My.Resources.bat_50
-                                Case Is <= 75
-                                        picBateria.Image = My.Resources.bat_75
-                                Case Else
-                                        picBateria.Image = My.Resources.bat_full
-                            End Select
-                            picBateria.Visible = True
+                            'Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
+                            '    Case Is <= 10
+                            'Try
+                            ' My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
+                            ' Catch
+                            ' Try
+                            'My.Computer.Audio.Play("C:\Windows\Media\Windows Print complete.wav")
+                            'Catch
+                            'End Try
+                            'End Try
+                            'nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
+                            '    inBuffer & " %")
+                            'picBateria.Image = My.Resources.bat_10
+                            '    Case Is <= 25
+                            'picBateria.Image = My.Resources.bat_25
+                            '    Case Is <= 50
+                            'picBateria.Image = My.Resources.bat_50
+                            '    Case Is <= 75
+                            'picBateria.Image = My.Resources.bat_75
+                            '    Case Else
+                            'picBateria.Image = My.Resources.bat_full
+                            'End Select
+                            nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
+                            barBateria.Value = nivelBateria
+                            If nivelBateria <= 10 Then
+                                nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & nivelBateria & "%")
+
+                            End If
                             ContError = 0
                             Application.DoEvents()
                         End If
@@ -3300,4 +3008,111 @@ restart:
 
 #End Region
 
+
+    Private Sub linkScanNardaPorts_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles linkScanNardaPorts.LinkClicked
+        Dim ports As String() = SerialPort.GetPortNames()
+        Dim nardaDetected As Boolean = False
+        ' Buscamos el puerto que tiene conectado el NBM utilizando sus parámetros de conexión
+        For Each port In ports
+            Try
+                Using serialPort As New SerialPort(port)
+                    ' Config COM para el puerto USB
+                    serialPort.BaudRate = 460800
+                    serialPort.DataBits = 8
+                    serialPort.Parity = Parity.None
+                    serialPort.StopBits = StopBits.One
+                    serialPort.Handshake = Handshake.None
+
+                    If Not serialPort.IsOpen() Then serialPort.Open()
+
+                    serialPort.DiscardInBuffer()
+                    serialPort.WriteLine("REMOTE ON;")
+                    Retardo(100)
+                    Dim data As String = serialPort.ReadExisting()
+
+                    If data.Contains("0;") Then
+                        ' NBM-550 encontrado
+                        comNarda.PortName = port
+                        nuevoMensajeEventos("Se encontró NARDA NBM-550 en el puerto " & port)
+                        nuevoMensajeEventos("Puerto " & port & " asignado al medidor de RNI, presione el botón CONECTAR para iniciar el enlace.")
+                        btnConectar.BackColor = Color.YellowGreen
+                        nardaDetected = True
+                        Exit For
+                    End If
+
+                End Using
+            Catch ex As Exception
+                nuevoMensajeEventos("Error relevando puerto " & port & ": " & ex.Message)
+            End Try
+        Next
+        If Not nardaDetected Then nuevoMensajeEventos("No se encontraron dispositivos conectados. Revise que esten conectados y encendidos para intentar nuevamente.")
+    End Sub
+
+    Private Sub linkScanGPSPorts_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles linkScanGPSPorts.LinkClicked
+        Dim ports As String() = SerialPort.GetPortNames()
+        Dim gpsDetected As Boolean = False
+        Dim data As String
+
+        If GPSSel <> 2 Then Exit Sub
+
+        For Each port In ports
+            Try
+                Using serialPort As New SerialPort(port)
+                    serialPort.BaudRate = 4800
+                    serialPort.DataBits = 8
+                    serialPort.Parity = Parity.None
+                    serialPort.StopBits = StopBits.One
+                    serialPort.Handshake = Handshake.None
+
+                    Try
+                        serialPort.Open()
+                    Catch ex As UnauthorizedAccessException
+                        nuevoMensajeEventos("El puerto " & port & " está ocupado, continuando detección...")
+                        Continue For
+                    End Try
+
+                    Retardo(300)
+
+                    If Not gpsDetected Then
+                        Try
+                            data = serialPort.ReadExisting()
+                            If data.Contains("$GP") Then
+                                ' NMEA encontrado
+                                comGPS.PortName = port
+                                nuevoMensajeEventos("Se encontró GPS NMEA en el puerto " & port)
+                                nuevoMensajeEventos("Puerto " & port & " asignado al GPS NMEA. Recibiendo información de posición.")
+                                gpsDetected = True
+                                cboCOMGlobalSat.Text = port
+                                cboCOMGlobalSat.PerformClick() ' Acá se establecen timeouts y otros parámetros
+
+                                comGPS.PortName = cboCOMGlobalSat.Text
+                                Exit For
+                            End If
+                        Catch ex As TimeoutException
+                            ' Hay equipo conectado pero no responde, puede ser el medidor RNI
+                            nuevoMensajeEventos("[TimeoutException] No se recibieron datos del dispositivo en el puerto " & port & ".")
+                        End Try
+                    End If
+
+                End Using
+            Catch ex As Exception
+                nuevoMensajeEventos("Error relevando puerto " & port & ": " & ex.Message)
+            End Try
+        Next
+
+    End Sub
+
+    Private Sub comboGPSSelected_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles comboGPSSelected.SelectedIndexChanged
+        If comboGPSSelected.Text.Contains("Garmin") Then
+            linkScanGPSPorts.Enabled = False
+            Label6.Text = "Estado del GPS [18X USB]"
+            GPSSel = 1
+        End If
+
+        If comboGPSSelected.Text.Contains("NMEA") Then
+            linkScanGPSPorts.Enabled = True
+            Label6.Text = "Estado del GPS [NMEA]"
+            GPSSel = 2
+        End If
+    End Sub
 End Class

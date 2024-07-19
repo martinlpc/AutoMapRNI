@@ -1,4 +1,11 @@
-﻿Versión al 15-07-2024: 1.15.0
+﻿Versión al 17-07-2024: 2.0.0
+	- Cambio de disposición de controles
+	- Eliminación del grupo de controles "Búsqueda"
+	- Incorporación de opciones de instrumento y GPS en pantalla, además de los existentes en el menú superior
+	- Agregado de links para búsqueda de puertos COM de GPS NMEA y medidor de RNI, eliminando necesidad de búsqueda manual
+	
+
+Versión al 15-07-2024: 1.15.0
 	- Refactorización de algunas partes del código
 	- Modificación de incertidumbres para las sondas de campo E con los valores calculados por Hernán Jerez
 	

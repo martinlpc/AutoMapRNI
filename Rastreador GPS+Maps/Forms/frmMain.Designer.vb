@@ -28,15 +28,6 @@ Partial Class frmMain
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.lblCargado = New System.Windows.Forms.Label()
         Me.trkZoom = New System.Windows.Forms.TrackBar()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.btnBuscar = New System.Windows.Forms.Button()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtLat = New System.Windows.Forms.TextBox()
-        Me.txtLng = New System.Windows.Forms.TextBox()
-        Me.opBuscarCoor = New System.Windows.Forms.RadioButton()
-        Me.opBuscarLugar = New System.Windows.Forms.RadioButton()
-        Me.txtLugar = New System.Windows.Forms.TextBox()
         Me.LinkLabel2 = New System.Windows.Forms.LinkLabel()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.lblZoom = New System.Windows.Forms.Label()
@@ -46,30 +37,35 @@ Partial Class frmMain
         Me.cboProvMapa = New System.Windows.Forms.ComboBox()
         Me.cboModoConexion = New System.Windows.Forms.ComboBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.lblTipoRes = New System.Windows.Forms.Label()
-        Me.lblIncert = New System.Windows.Forms.Label()
-        Me.chkPausa = New System.Windows.Forms.CheckBox()
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.lblBattery = New System.Windows.Forms.Label()
+        Me.linkScanNardaPorts = New System.Windows.Forms.LinkLabel()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.groupBoxRecorrido = New System.Windows.Forms.GroupBox()
+        Me.opK83 = New System.Windows.Forms.RadioButton()
+        Me.lblCamp = New System.Windows.Forms.Label()
         Me.lblDistAct = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
         Me.txtDistancia = New System.Windows.Forms.TextBox()
+        Me.btnIniciarCamp = New System.Windows.Forms.Button()
         Me.opDistancia = New System.Windows.Forms.RadioButton()
         Me.Label13 = New System.Windows.Forms.Label()
+        Me.btnDetenerCamp = New System.Windows.Forms.Button()
+        Me.chkPausa = New System.Windows.Forms.CheckBox()
         Me.opIntervalo = New System.Windows.Forms.RadioButton()
         Me.cboIntervalo = New System.Windows.Forms.ComboBox()
         Me.Label14 = New System.Windows.Forms.Label()
+        Me.barBateria = New System.Windows.Forms.ProgressBar()
+        Me.lblTipoRes = New System.Windows.Forms.Label()
+        Me.lblIncert = New System.Windows.Forms.Label()
         Me.lblDisplay = New System.Windows.Forms.Label()
         Me.lblSonda = New System.Windows.Forms.Label()
         Me.lblSondaDetect = New System.Windows.Forms.Label()
         Me.lblInstrumento = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.picBateria = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.btnDetenerCamp = New System.Windows.Forms.Button()
         Me.btnConectar = New System.Windows.Forms.Button()
-        Me.btnIniciarCamp = New System.Windows.Forms.Button()
-        Me.lblCamp = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
         Me.tTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.comGPS = New System.IO.Ports.SerialPort(Me.components)
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
@@ -122,6 +118,8 @@ Partial Class frmMain
         Me.tmrRetardo = New System.Windows.Forms.Timer(Me.components)
         Me.tmrCamp = New System.Windows.Forms.Timer(Me.components)
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.comboGPSSelected = New System.Windows.Forms.ComboBox()
+        Me.linkScanGPSPorts = New System.Windows.Forms.LinkLabel()
         Me.txtLngActual = New System.Windows.Forms.TextBox()
         Me.txtLatActual = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -136,12 +134,10 @@ Partial Class frmMain
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBox1.SuspendLayout()
         CType(Me.trkZoom, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
+        Me.groupBoxRecorrido.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.picBateria, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -172,7 +168,7 @@ Partial Class frmMain
         Me.Mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.[Integer]
         Me.Mapa.SelectedAreaFillColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(105, Byte), Integer), CType(CType(225, Byte), Integer))
         Me.Mapa.ShowTileGridLines = False
-        Me.Mapa.Size = New System.Drawing.Size(802, 530)
+        Me.Mapa.Size = New System.Drawing.Size(802, 436)
         Me.Mapa.TabIndex = 0
         Me.Mapa.Zoom = 10.0R
         '
@@ -183,10 +179,10 @@ Partial Class frmMain
         Me.GroupBox1.Controls.Add(Me.lblCargado)
         Me.GroupBox1.Controls.Add(Me.Mapa)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox1.Location = New System.Drawing.Point(3, 195)
+        Me.GroupBox1.Location = New System.Drawing.Point(3, 289)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox1, 3)
-        Me.GroupBox1.Size = New System.Drawing.Size(808, 549)
+        Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox1, 2)
+        Me.GroupBox1.Size = New System.Drawing.Size(808, 455)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Mapa (Shift + arrastre con Click derecho para seleccionar área)"
@@ -206,103 +202,16 @@ Partial Class frmMain
         '
         'trkZoom
         '
-        Me.trkZoom.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.trkZoom.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.trkZoom.LargeChange = 3
-        Me.trkZoom.Location = New System.Drawing.Point(9, 100)
+        Me.trkZoom.Location = New System.Drawing.Point(57, 106)
         Me.trkZoom.Maximum = 17
         Me.trkZoom.Name = "trkZoom"
-        Me.trkZoom.Size = New System.Drawing.Size(230, 45)
+        Me.trkZoom.Size = New System.Drawing.Size(206, 45)
         Me.trkZoom.TabIndex = 1
         Me.trkZoom.TickStyle = System.Windows.Forms.TickStyle.TopLeft
         Me.trkZoom.Value = 15
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.btnBuscar)
-        Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Controls.Add(Me.Label3)
-        Me.GroupBox2.Controls.Add(Me.txtLat)
-        Me.GroupBox2.Controls.Add(Me.txtLng)
-        Me.GroupBox2.Controls.Add(Me.opBuscarCoor)
-        Me.GroupBox2.Controls.Add(Me.opBuscarLugar)
-        Me.GroupBox2.Controls.Add(Me.txtLugar)
-        Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.GroupBox2.Location = New System.Drawing.Point(308, 3)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(277, 151)
-        Me.GroupBox2.TabIndex = 2
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Búsqueda"
-        '
-        'btnBuscar
-        '
-        Me.btnBuscar.Location = New System.Drawing.Point(161, 36)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(79, 43)
-        Me.btnBuscar.TabIndex = 6
-        Me.btnBuscar.Text = "Buscar lugar"
-        Me.btnBuscar.UseVisualStyleBackColor = True
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(3, 59)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(48, 13)
-        Me.Label4.TabIndex = 9
-        Me.Label4.Text = "Longitud"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 39)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 13)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Latitud"
-        '
-        'txtLat
-        '
-        Me.txtLat.Location = New System.Drawing.Point(51, 36)
-        Me.txtLat.Name = "txtLat"
-        Me.txtLat.Size = New System.Drawing.Size(104, 20)
-        Me.txtLat.TabIndex = 4
-        '
-        'txtLng
-        '
-        Me.txtLng.Location = New System.Drawing.Point(51, 56)
-        Me.txtLng.Name = "txtLng"
-        Me.txtLng.Size = New System.Drawing.Size(104, 20)
-        Me.txtLng.TabIndex = 5
-        '
-        'opBuscarCoor
-        '
-        Me.opBuscarCoor.AutoSize = True
-        Me.opBuscarCoor.Location = New System.Drawing.Point(6, 19)
-        Me.opBuscarCoor.Name = "opBuscarCoor"
-        Me.opBuscarCoor.Size = New System.Drawing.Size(123, 17)
-        Me.opBuscarCoor.TabIndex = 3
-        Me.opBuscarCoor.Text = "Buscar coordenadas"
-        Me.opBuscarCoor.UseVisualStyleBackColor = True
-        '
-        'opBuscarLugar
-        '
-        Me.opBuscarLugar.AutoSize = True
-        Me.opBuscarLugar.Checked = True
-        Me.opBuscarLugar.Location = New System.Drawing.Point(6, 82)
-        Me.opBuscarLugar.Name = "opBuscarLugar"
-        Me.opBuscarLugar.Size = New System.Drawing.Size(87, 17)
-        Me.opBuscarLugar.TabIndex = 1
-        Me.opBuscarLugar.TabStop = True
-        Me.opBuscarLugar.Text = "Buscar lugar:"
-        Me.opBuscarLugar.UseVisualStyleBackColor = True
-        '
-        'txtLugar
-        '
-        Me.txtLugar.Location = New System.Drawing.Point(6, 105)
-        Me.txtLugar.Name = "txtLugar"
-        Me.txtLugar.Size = New System.Drawing.Size(234, 20)
-        Me.txtLugar.TabIndex = 2
         '
         'LinkLabel2
         '
@@ -324,19 +233,21 @@ Partial Class frmMain
         Me.GroupBox3.Controls.Add(Me.Label1)
         Me.GroupBox3.Controls.Add(Me.cboProvMapa)
         Me.GroupBox3.Controls.Add(Me.cboModoConexion)
-        Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Top
+        Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox3.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(299, 151)
+        Me.GroupBox3.Size = New System.Drawing.Size(299, 280)
         Me.GroupBox3.TabIndex = 3
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Opciones del mapa"
         '
         'lblZoom
         '
+        Me.lblZoom.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblZoom.AutoSize = True
         Me.lblZoom.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.lblZoom.Location = New System.Drawing.Point(104, 128)
+        Me.lblZoom.Location = New System.Drawing.Point(30, 118)
         Me.lblZoom.Name = "lblZoom"
         Me.lblZoom.Size = New System.Drawing.Size(21, 15)
         Me.lblZoom.TabIndex = 5
@@ -344,8 +255,10 @@ Partial Class frmMain
         '
         'Label7
         '
+        Me.Label7.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(15, 89)
+        Me.Label7.Location = New System.Drawing.Point(104, 90)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(74, 13)
         Me.Label7.TabIndex = 4
@@ -391,108 +304,165 @@ Partial Class frmMain
         '
         'GroupBox4
         '
+        Me.TableLayoutPanel1.SetColumnSpan(Me.GroupBox4, 2)
+        Me.GroupBox4.Controls.Add(Me.lblBattery)
+        Me.GroupBox4.Controls.Add(Me.linkScanNardaPorts)
+        Me.GroupBox4.Controls.Add(Me.Label4)
+        Me.GroupBox4.Controls.Add(Me.Label3)
+        Me.GroupBox4.Controls.Add(Me.groupBoxRecorrido)
+        Me.GroupBox4.Controls.Add(Me.barBateria)
         Me.GroupBox4.Controls.Add(Me.lblTipoRes)
         Me.GroupBox4.Controls.Add(Me.lblIncert)
-        Me.GroupBox4.Controls.Add(Me.chkPausa)
-        Me.GroupBox4.Controls.Add(Me.GroupBox7)
         Me.GroupBox4.Controls.Add(Me.lblDisplay)
         Me.GroupBox4.Controls.Add(Me.lblSonda)
         Me.GroupBox4.Controls.Add(Me.lblSondaDetect)
         Me.GroupBox4.Controls.Add(Me.lblInstrumento)
         Me.GroupBox4.Controls.Add(Me.Label5)
         Me.GroupBox4.Controls.Add(Me.Panel1)
-        Me.GroupBox4.Controls.Add(Me.btnDetenerCamp)
         Me.GroupBox4.Controls.Add(Me.btnConectar)
-        Me.GroupBox4.Controls.Add(Me.btnIniciarCamp)
-        Me.GroupBox4.Controls.Add(Me.lblCamp)
-        Me.GroupBox4.Controls.Add(Me.Label12)
-        Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Top
+        Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.GroupBox4.Location = New System.Drawing.Point(817, 3)
+        Me.GroupBox4.Location = New System.Drawing.Point(591, 3)
         Me.GroupBox4.Name = "GroupBox4"
-        Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox4, 2)
-        Me.GroupBox4.Size = New System.Drawing.Size(477, 250)
+        Me.GroupBox4.Size = New System.Drawing.Size(703, 280)
         Me.GroupBox4.TabIndex = 4
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Instrumento de medición RNI"
         '
-        'lblTipoRes
+        'lblBattery
         '
-        Me.lblTipoRes.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblTipoRes.Font = New System.Drawing.Font("Microsoft Sans Serif", 5.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTipoRes.Location = New System.Drawing.Point(268, 63)
-        Me.lblTipoRes.Name = "lblTipoRes"
-        Me.lblTipoRes.Size = New System.Drawing.Size(55, 10)
-        Me.lblTipoRes.TabIndex = 12
-        Me.lblTipoRes.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblBattery.BackColor = System.Drawing.Color.Transparent
+        Me.lblBattery.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblBattery.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblBattery.Location = New System.Drawing.Point(84, 241)
+        Me.lblBattery.Name = "lblBattery"
+        Me.lblBattery.Size = New System.Drawing.Size(35, 23)
+        Me.lblBattery.TabIndex = 29
+        Me.lblBattery.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
-        'lblIncert
+        'linkScanNardaPorts
         '
-        Me.lblIncert.AutoSize = True
-        Me.lblIncert.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.lblIncert.Font = New System.Drawing.Font("Microsoft Sans Serif", 6.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblIncert.Location = New System.Drawing.Point(285, 86)
-        Me.lblIncert.Name = "lblIncert"
-        Me.lblIncert.Size = New System.Drawing.Size(0, 9)
-        Me.lblIncert.TabIndex = 13
-        Me.lblIncert.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        Me.linkScanNardaPorts.AutoSize = True
+        Me.linkScanNardaPorts.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.linkScanNardaPorts.Location = New System.Drawing.Point(175, 198)
+        Me.linkScanNardaPorts.Name = "linkScanNardaPorts"
+        Me.linkScanNardaPorts.Size = New System.Drawing.Size(198, 17)
+        Me.linkScanNardaPorts.TabIndex = 28
+        Me.linkScanNardaPorts.TabStop = True
+        Me.linkScanNardaPorts.Text = "Buscar puerto del instrumento"
         '
-        'chkPausa
+        'Label4
         '
-        Me.chkPausa.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkPausa.Enabled = False
-        Me.chkPausa.Location = New System.Drawing.Point(235, 217)
-        Me.chkPausa.Name = "chkPausa"
-        Me.chkPausa.Size = New System.Drawing.Size(70, 30)
-        Me.chkPausa.TabIndex = 19
-        Me.chkPausa.Text = "Pausar recorrido"
-        Me.chkPausa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.tTip.SetToolTip(Me.chkPausa, "Presione esta casilla para pausar la captura" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "de puntos sin finalizar el recorrid" & _
-        "o actual")
-        Me.chkPausa.UseVisualStyleBackColor = True
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(127, 168)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(74, 13)
+        Me.Label4.TabIndex = 23
+        Me.Label4.Text = "Incertidumbre:"
         '
-        'GroupBox7
+        'Label3
         '
-        Me.GroupBox7.Controls.Add(Me.lblDistAct)
-        Me.GroupBox7.Controls.Add(Me.txtDistancia)
-        Me.GroupBox7.Controls.Add(Me.opDistancia)
-        Me.GroupBox7.Controls.Add(Me.Label13)
-        Me.GroupBox7.Controls.Add(Me.opIntervalo)
-        Me.GroupBox7.Controls.Add(Me.cboIntervalo)
-        Me.GroupBox7.Controls.Add(Me.Label14)
-        Me.GroupBox7.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.GroupBox7.Location = New System.Drawing.Point(127, 100)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(292, 71)
-        Me.GroupBox7.TabIndex = 18
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Criterios de medición"
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(127, 142)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(92, 13)
+        Me.Label3.TabIndex = 22
+        Me.Label3.Text = "Tipo de resultado:"
+        '
+        'groupBoxRecorrido
+        '
+        Me.groupBoxRecorrido.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.groupBoxRecorrido.Controls.Add(Me.opK83)
+        Me.groupBoxRecorrido.Controls.Add(Me.lblCamp)
+        Me.groupBoxRecorrido.Controls.Add(Me.lblDistAct)
+        Me.groupBoxRecorrido.Controls.Add(Me.Label12)
+        Me.groupBoxRecorrido.Controls.Add(Me.txtDistancia)
+        Me.groupBoxRecorrido.Controls.Add(Me.btnIniciarCamp)
+        Me.groupBoxRecorrido.Controls.Add(Me.opDistancia)
+        Me.groupBoxRecorrido.Controls.Add(Me.Label13)
+        Me.groupBoxRecorrido.Controls.Add(Me.btnDetenerCamp)
+        Me.groupBoxRecorrido.Controls.Add(Me.chkPausa)
+        Me.groupBoxRecorrido.Controls.Add(Me.opIntervalo)
+        Me.groupBoxRecorrido.Controls.Add(Me.cboIntervalo)
+        Me.groupBoxRecorrido.Controls.Add(Me.Label14)
+        Me.groupBoxRecorrido.Location = New System.Drawing.Point(408, 0)
+        Me.groupBoxRecorrido.Name = "groupBoxRecorrido"
+        Me.groupBoxRecorrido.Size = New System.Drawing.Size(295, 280)
+        Me.groupBoxRecorrido.TabIndex = 21
+        Me.groupBoxRecorrido.TabStop = False
+        Me.groupBoxRecorrido.Text = "Controles de la medición"
+        '
+        'opK83
+        '
+        Me.opK83.AutoSize = True
+        Me.opK83.Enabled = False
+        Me.opK83.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.opK83.Location = New System.Drawing.Point(6, 70)
+        Me.opK83.Name = "opK83"
+        Me.opK83.Size = New System.Drawing.Size(247, 19)
+        Me.opK83.TabIndex = 24
+        Me.opK83.TabStop = True
+        Me.opK83.Text = "(disabled) Medición puntual (UIT-T K.83)"
+        Me.opK83.UseVisualStyleBackColor = True
+        '
+        'lblCamp
+        '
+        Me.lblCamp.BackColor = System.Drawing.Color.Silver
+        Me.lblCamp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblCamp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCamp.Location = New System.Drawing.Point(6, 123)
+        Me.lblCamp.Name = "lblCamp"
+        Me.lblCamp.Size = New System.Drawing.Size(280, 28)
+        Me.lblCamp.TabIndex = 14
+        Me.lblCamp.Text = "INACTIVO"
+        Me.lblCamp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblDistAct
         '
         Me.lblDistAct.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.lblDistAct.Location = New System.Drawing.Point(188, 43)
+        Me.lblDistAct.Location = New System.Drawing.Point(197, 44)
         Me.lblDistAct.Name = "lblDistAct"
-        Me.lblDistAct.Size = New System.Drawing.Size(85, 15)
+        Me.lblDistAct.Size = New System.Drawing.Size(89, 18)
         Me.lblDistAct.TabIndex = 23
         Me.lblDistAct.Text = "Actual:"
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(60, 106)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(128, 13)
+        Me.Label12.TabIndex = 13
+        Me.Label12.Text = "Estado de recorido actual"
+        '
         'txtDistancia
         '
-        Me.txtDistancia.Location = New System.Drawing.Point(108, 40)
+        Me.txtDistancia.Location = New System.Drawing.Point(129, 44)
         Me.txtDistancia.MaxLength = 4
         Me.txtDistancia.Name = "txtDistancia"
-        Me.txtDistancia.Size = New System.Drawing.Size(51, 20)
+        Me.txtDistancia.Size = New System.Drawing.Size(36, 20)
         Me.txtDistancia.TabIndex = 22
         Me.txtDistancia.Text = "20"
+        '
+        'btnIniciarCamp
+        '
+        Me.btnIniciarCamp.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnIniciarCamp.Location = New System.Drawing.Point(48, 154)
+        Me.btnIniciarCamp.Name = "btnIniciarCamp"
+        Me.btnIniciarCamp.Size = New System.Drawing.Size(205, 35)
+        Me.btnIniciarCamp.TabIndex = 2
+        Me.btnIniciarCamp.Text = "Iniciar recorrido"
+        Me.btnIniciarCamp.UseVisualStyleBackColor = False
         '
         'opDistancia
         '
         Me.opDistancia.AutoSize = True
         Me.opDistancia.Checked = True
-        Me.opDistancia.Location = New System.Drawing.Point(6, 41)
+        Me.opDistancia.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.opDistancia.Location = New System.Drawing.Point(6, 44)
         Me.opDistancia.Name = "opDistancia"
-        Me.opDistancia.Size = New System.Drawing.Size(105, 17)
+        Me.opDistancia.Size = New System.Drawing.Size(117, 19)
         Me.opDistancia.TabIndex = 21
         Me.opDistancia.TabStop = True
         Me.opDistancia.Text = "Dist entre puntos"
@@ -501,18 +471,44 @@ Partial Class frmMain
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(158, 43)
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(164, 46)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(23, 13)
+        Me.Label13.Size = New System.Drawing.Size(27, 15)
         Me.Label13.TabIndex = 20
         Me.Label13.Text = "mts"
+        '
+        'btnDetenerCamp
+        '
+        Me.btnDetenerCamp.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnDetenerCamp.Enabled = False
+        Me.btnDetenerCamp.Location = New System.Drawing.Point(48, 233)
+        Me.btnDetenerCamp.Name = "btnDetenerCamp"
+        Me.btnDetenerCamp.Size = New System.Drawing.Size(205, 34)
+        Me.btnDetenerCamp.TabIndex = 4
+        Me.btnDetenerCamp.Text = "Finalizar recorrido"
+        Me.btnDetenerCamp.UseVisualStyleBackColor = False
+        '
+        'chkPausa
+        '
+        Me.chkPausa.Enabled = False
+        Me.chkPausa.Location = New System.Drawing.Point(88, 195)
+        Me.chkPausa.Name = "chkPausa"
+        Me.chkPausa.Size = New System.Drawing.Size(122, 30)
+        Me.chkPausa.TabIndex = 19
+        Me.chkPausa.Text = "Pausar recorrido"
+        Me.chkPausa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.tTip.SetToolTip(Me.chkPausa, "Presione esta casilla para pausar la captura" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "de puntos sin finalizar el recorrid" & _
+        "o actual")
+        Me.chkPausa.UseVisualStyleBackColor = True
         '
         'opIntervalo
         '
         Me.opIntervalo.AutoSize = True
-        Me.opIntervalo.Location = New System.Drawing.Point(6, 17)
+        Me.opIntervalo.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.opIntervalo.Location = New System.Drawing.Point(6, 20)
         Me.opIntervalo.Name = "opIntervalo"
-        Me.opIntervalo.Size = New System.Drawing.Size(138, 17)
+        Me.opIntervalo.Size = New System.Drawing.Size(156, 19)
         Me.opIntervalo.TabIndex = 18
         Me.opIntervalo.TabStop = True
         Me.opIntervalo.Text = "Intervalo entre muestras"
@@ -523,7 +519,7 @@ Partial Class frmMain
         Me.cboIntervalo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboIntervalo.FormattingEnabled = True
         Me.cboIntervalo.Items.AddRange(New Object() {"3", "4", "5", "6", "7", "8", "9", "10", "15", "20", "25", "30"})
-        Me.cboIntervalo.Location = New System.Drawing.Point(144, 16)
+        Me.cboIntervalo.Location = New System.Drawing.Point(176, 16)
         Me.cboIntervalo.Name = "cboIntervalo"
         Me.cboIntervalo.Size = New System.Drawing.Size(51, 21)
         Me.cboIntervalo.TabIndex = 16
@@ -531,20 +527,51 @@ Partial Class frmMain
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(202, 19)
+        Me.Label14.Location = New System.Drawing.Point(233, 22)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(53, 13)
         Me.Label14.TabIndex = 17
         Me.Label14.Text = "segundos"
+        '
+        'barBateria
+        '
+        Me.barBateria.Location = New System.Drawing.Point(6, 241)
+        Me.barBateria.Name = "barBateria"
+        Me.barBateria.Size = New System.Drawing.Size(72, 23)
+        Me.barBateria.Step = 1
+        Me.barBateria.Style = System.Windows.Forms.ProgressBarStyle.Continuous
+        Me.barBateria.TabIndex = 20
+        '
+        'lblTipoRes
+        '
+        Me.lblTipoRes.BackColor = System.Drawing.SystemColors.Control
+        Me.lblTipoRes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblTipoRes.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
+        Me.lblTipoRes.Location = New System.Drawing.Point(226, 137)
+        Me.lblTipoRes.Name = "lblTipoRes"
+        Me.lblTipoRes.Size = New System.Drawing.Size(78, 21)
+        Me.lblTipoRes.TabIndex = 12
+        Me.lblTipoRes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblIncert
+        '
+        Me.lblIncert.BackColor = System.Drawing.SystemColors.Control
+        Me.lblIncert.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.lblIncert.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold)
+        Me.lblIncert.Location = New System.Drawing.Point(226, 162)
+        Me.lblIncert.Name = "lblIncert"
+        Me.lblIncert.Size = New System.Drawing.Size(78, 21)
+        Me.lblIncert.TabIndex = 13
+        Me.lblIncert.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblDisplay
         '
         Me.lblDisplay.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.lblDisplay.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblDisplay.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDisplay.Location = New System.Drawing.Point(127, 60)
+        Me.lblDisplay.Location = New System.Drawing.Point(129, 90)
         Me.lblDisplay.Name = "lblDisplay"
-        Me.lblDisplay.Size = New System.Drawing.Size(199, 39)
+        Me.lblDisplay.Size = New System.Drawing.Size(264, 39)
         Me.lblDisplay.TabIndex = 11
         Me.lblDisplay.Text = "---"
         Me.lblDisplay.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -554,7 +581,7 @@ Partial Class frmMain
         '
         Me.lblSonda.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblSonda.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSonda.Location = New System.Drawing.Point(248, 38)
+        Me.lblSonda.Location = New System.Drawing.Point(130, 67)
         Me.lblSonda.Name = "lblSonda"
         Me.lblSonda.Size = New System.Drawing.Size(171, 18)
         Me.lblSonda.TabIndex = 10
@@ -563,7 +590,7 @@ Partial Class frmMain
         'lblSondaDetect
         '
         Me.lblSondaDetect.AutoSize = True
-        Me.lblSondaDetect.Location = New System.Drawing.Point(130, 41)
+        Me.lblSondaDetect.Location = New System.Drawing.Point(128, 54)
         Me.lblSondaDetect.Name = "lblSondaDetect"
         Me.lblSondaDetect.Size = New System.Drawing.Size(92, 13)
         Me.lblSondaDetect.TabIndex = 9
@@ -573,7 +600,7 @@ Partial Class frmMain
         '
         Me.lblInstrumento.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblInstrumento.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblInstrumento.Location = New System.Drawing.Point(248, 19)
+        Me.lblInstrumento.Location = New System.Drawing.Point(129, 39)
         Me.lblInstrumento.Name = "lblInstrumento"
         Me.lblInstrumento.Size = New System.Drawing.Size(171, 15)
         Me.lblInstrumento.TabIndex = 7
@@ -581,7 +608,7 @@ Partial Class frmMain
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(126, 19)
+        Me.Label5.Location = New System.Drawing.Point(126, 22)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(116, 13)
         Me.Label5.TabIndex = 6
@@ -590,23 +617,11 @@ Partial Class frmMain
         'Panel1
         '
         Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel1.Controls.Add(Me.picBateria)
         Me.Panel1.Controls.Add(Me.PictureBox1)
-        Me.Panel1.Location = New System.Drawing.Point(6, 30)
+        Me.Panel1.Location = New System.Drawing.Point(6, 27)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(115, 202)
         Me.Panel1.TabIndex = 5
-        '
-        'picBateria
-        '
-        Me.picBateria.Image = Global.AutoMapRNI.My.Resources.Resources.bat_10
-        Me.picBateria.Location = New System.Drawing.Point(3, 157)
-        Me.picBateria.Name = "picBateria"
-        Me.picBateria.Size = New System.Drawing.Size(11, 35)
-        Me.picBateria.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.picBateria.TabIndex = 1
-        Me.picBateria.TabStop = False
-        Me.picBateria.Visible = False
         '
         'PictureBox1
         '
@@ -620,60 +635,15 @@ Partial Class frmMain
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
-        'btnDetenerCamp
-        '
-        Me.btnDetenerCamp.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnDetenerCamp.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
-        Me.btnDetenerCamp.Enabled = False
-        Me.btnDetenerCamp.Location = New System.Drawing.Point(323, 213)
-        Me.btnDetenerCamp.Name = "btnDetenerCamp"
-        Me.btnDetenerCamp.Size = New System.Drawing.Size(102, 30)
-        Me.btnDetenerCamp.TabIndex = 4
-        Me.btnDetenerCamp.Text = "Finalizar recorrido"
-        Me.btnDetenerCamp.UseVisualStyleBackColor = False
-        '
         'btnConectar
         '
-        Me.btnConectar.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.btnConectar.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnConectar.Location = New System.Drawing.Point(337, 58)
+        Me.btnConectar.Location = New System.Drawing.Point(171, 225)
         Me.btnConectar.Name = "btnConectar"
-        Me.btnConectar.Size = New System.Drawing.Size(88, 39)
+        Me.btnConectar.Size = New System.Drawing.Size(205, 39)
         Me.btnConectar.TabIndex = 3
-        Me.btnConectar.Text = "Conectar"
+        Me.btnConectar.Text = "Conectar instrumento"
         Me.btnConectar.UseVisualStyleBackColor = True
-        '
-        'btnIniciarCamp
-        '
-        Me.btnIniciarCamp.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnIniciarCamp.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer))
-        Me.btnIniciarCamp.Location = New System.Drawing.Point(130, 213)
-        Me.btnIniciarCamp.Name = "btnIniciarCamp"
-        Me.btnIniciarCamp.Size = New System.Drawing.Size(93, 30)
-        Me.btnIniciarCamp.TabIndex = 2
-        Me.btnIniciarCamp.Text = "Iniciar recorrido"
-        Me.btnIniciarCamp.UseVisualStyleBackColor = False
-        '
-        'lblCamp
-        '
-        Me.lblCamp.BackColor = System.Drawing.Color.Silver
-        Me.lblCamp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.lblCamp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCamp.Location = New System.Drawing.Point(127, 184)
-        Me.lblCamp.Name = "lblCamp"
-        Me.lblCamp.Size = New System.Drawing.Size(292, 28)
-        Me.lblCamp.TabIndex = 14
-        Me.lblCamp.Text = "INACTIVO"
-        Me.lblCamp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(126, 171)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(128, 13)
-        Me.Label12.TabIndex = 13
-        Me.Label12.Text = "Estado de recorido actual"
         '
         'tTip
         '
@@ -692,12 +662,12 @@ Partial Class frmMain
         Me.GroupBox5.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GroupBox5.Controls.Add(Me.btnExcel)
         Me.GroupBox5.Controls.Add(Me.btnGEarth)
+        Me.GroupBox5.Controls.Add(Me.btnExcel)
         Me.GroupBox5.Controls.Add(Me.ListaResultados)
-        Me.GroupBox5.Location = New System.Drawing.Point(817, 259)
+        Me.GroupBox5.Location = New System.Drawing.Point(817, 289)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(477, 348)
+        Me.GroupBox5.Size = New System.Drawing.Size(477, 313)
         Me.GroupBox5.TabIndex = 5
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Resultados"
@@ -705,11 +675,12 @@ Partial Class frmMain
         'btnExcel
         '
         Me.btnExcel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnExcel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnExcel.Image = Global.AutoMapRNI.My.Resources.Resources.microsoft_excel_128
         Me.btnExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnExcel.Location = New System.Drawing.Point(3, 304)
+        Me.btnExcel.Location = New System.Drawing.Point(18, 252)
         Me.btnExcel.Name = "btnExcel"
-        Me.btnExcel.Size = New System.Drawing.Size(128, 38)
+        Me.btnExcel.Size = New System.Drawing.Size(192, 51)
         Me.btnExcel.TabIndex = 9
         Me.btnExcel.Text = "Exportar a Excel"
         Me.btnExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -718,11 +689,12 @@ Partial Class frmMain
         'btnGEarth
         '
         Me.btnGEarth.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnGEarth.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnGEarth.Image = CType(resources.GetObject("btnGEarth.Image"), System.Drawing.Image)
         Me.btnGEarth.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnGEarth.Location = New System.Drawing.Point(147, 304)
+        Me.btnGEarth.Location = New System.Drawing.Point(245, 252)
         Me.btnGEarth.Name = "btnGEarth"
-        Me.btnGEarth.Size = New System.Drawing.Size(158, 38)
+        Me.btnGEarth.Size = New System.Drawing.Size(207, 51)
         Me.btnGEarth.TabIndex = 5
         Me.btnGEarth.Text = "Exportar a Google Earth"
         Me.btnGEarth.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -742,7 +714,7 @@ Partial Class frmMain
         Me.ListaResultados.GridLines = True
         Me.ListaResultados.Location = New System.Drawing.Point(3, 16)
         Me.ListaResultados.Name = "ListaResultados"
-        Me.ListaResultados.Size = New System.Drawing.Size(471, 282)
+        Me.ListaResultados.Size = New System.Drawing.Size(471, 230)
         Me.ListaResultados.SmallImageList = Me.ListaImgs
         Me.ListaResultados.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListaResultados.TabIndex = 0
@@ -818,13 +790,13 @@ Partial Class frmMain
         'txtEventos
         '
         Me.txtEventos.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtEventos.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEventos.Location = New System.Drawing.Point(817, 613)
+        Me.txtEventos.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtEventos.Location = New System.Drawing.Point(817, 608)
         Me.txtEventos.Multiline = True
         Me.txtEventos.Name = "txtEventos"
         Me.txtEventos.ReadOnly = True
         Me.txtEventos.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtEventos.Size = New System.Drawing.Size(477, 131)
+        Me.txtEventos.Size = New System.Drawing.Size(477, 136)
         Me.txtEventos.TabIndex = 6
         '
         'MenuStrip1
@@ -1030,6 +1002,8 @@ Partial Class frmMain
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.comboGPSSelected)
+        Me.GroupBox6.Controls.Add(Me.linkScanGPSPorts)
         Me.GroupBox6.Controls.Add(Me.txtLngActual)
         Me.GroupBox6.Controls.Add(Me.txtLatActual)
         Me.GroupBox6.Controls.Add(Me.Label11)
@@ -1037,17 +1011,44 @@ Partial Class frmMain
         Me.GroupBox6.Controls.Add(Me.chkAutoLoc)
         Me.GroupBox6.Controls.Add(Me.lblStatusGPS)
         Me.GroupBox6.Controls.Add(Me.Label6)
-        Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Top
-        Me.GroupBox6.Location = New System.Drawing.Point(591, 3)
+        Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox6.Location = New System.Drawing.Point(308, 3)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(220, 151)
+        Me.GroupBox6.Size = New System.Drawing.Size(277, 280)
         Me.GroupBox6.TabIndex = 7
         Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Posición actual"
+        Me.GroupBox6.Text = "GPS"
+        '
+        'comboGPSSelected
+        '
+        Me.comboGPSSelected.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.comboGPSSelected.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.comboGPSSelected.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.comboGPSSelected.FormattingEnabled = True
+        Me.comboGPSSelected.Items.AddRange(New Object() {"Garmin 18X USB", "NMEA (GlobalSat)"})
+        Me.comboGPSSelected.Location = New System.Drawing.Point(63, 28)
+        Me.comboGPSSelected.Name = "comboGPSSelected"
+        Me.comboGPSSelected.Size = New System.Drawing.Size(164, 23)
+        Me.comboGPSSelected.TabIndex = 30
+        '
+        'linkScanGPSPorts
+        '
+        Me.linkScanGPSPorts.AutoSize = True
+        Me.linkScanGPSPorts.Enabled = False
+        Me.linkScanGPSPorts.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.linkScanGPSPorts.Location = New System.Drawing.Point(35, 212)
+        Me.linkScanGPSPorts.Name = "linkScanGPSPorts"
+        Me.linkScanGPSPorts.Size = New System.Drawing.Size(218, 17)
+        Me.linkScanGPSPorts.TabIndex = 29
+        Me.linkScanGPSPorts.TabStop = True
+        Me.linkScanGPSPorts.Text = "Detectar GPS conectado (NMEA)"
         '
         'txtLngActual
         '
-        Me.txtLngActual.Location = New System.Drawing.Point(55, 89)
+        Me.txtLngActual.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtLngActual.Location = New System.Drawing.Point(119, 142)
         Me.txtLngActual.Name = "txtLngActual"
         Me.txtLngActual.ReadOnly = True
         Me.txtLngActual.Size = New System.Drawing.Size(108, 20)
@@ -1057,7 +1058,9 @@ Partial Class frmMain
         '
         'txtLatActual
         '
-        Me.txtLatActual.Location = New System.Drawing.Point(55, 65)
+        Me.txtLatActual.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtLatActual.Location = New System.Drawing.Point(119, 118)
         Me.txtLatActual.Name = "txtLatActual"
         Me.txtLatActual.ReadOnly = True
         Me.txtLatActual.Size = New System.Drawing.Size(108, 20)
@@ -1067,8 +1070,10 @@ Partial Class frmMain
         '
         'Label11
         '
+        Me.Label11.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(3, 92)
+        Me.Label11.Location = New System.Drawing.Point(67, 145)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(48, 13)
         Me.Label11.TabIndex = 25
@@ -1076,8 +1081,10 @@ Partial Class frmMain
         '
         'Label10
         '
+        Me.Label10.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(3, 68)
+        Me.Label10.Location = New System.Drawing.Point(67, 121)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(39, 13)
         Me.Label10.TabIndex = 24
@@ -1085,10 +1092,12 @@ Partial Class frmMain
         '
         'chkAutoLoc
         '
+        Me.chkAutoLoc.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.chkAutoLoc.AutoSize = True
         Me.chkAutoLoc.Checked = True
         Me.chkAutoLoc.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkAutoLoc.Location = New System.Drawing.Point(9, 124)
+        Me.chkAutoLoc.Location = New System.Drawing.Point(73, 177)
         Me.chkAutoLoc.Name = "chkAutoLoc"
         Me.chkAutoLoc.Size = New System.Drawing.Size(139, 17)
         Me.chkAutoLoc.TabIndex = 23
@@ -1097,10 +1106,12 @@ Partial Class frmMain
         '
         'lblStatusGPS
         '
+        Me.lblStatusGPS.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblStatusGPS.BackColor = System.Drawing.Color.Silver
         Me.lblStatusGPS.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.lblStatusGPS.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblStatusGPS.Location = New System.Drawing.Point(6, 36)
+        Me.lblStatusGPS.Location = New System.Drawing.Point(70, 89)
         Me.lblStatusGPS.Name = "lblStatusGPS"
         Me.lblStatusGPS.Size = New System.Drawing.Size(157, 19)
         Me.lblStatusGPS.TabIndex = 22
@@ -1109,7 +1120,9 @@ Partial Class frmMain
         '
         'Label6
         '
-        Me.Label6.Location = New System.Drawing.Point(6, 16)
+        Me.Label6.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label6.Location = New System.Drawing.Point(70, 69)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(157, 17)
         Me.Label6.TabIndex = 21
@@ -1141,20 +1154,18 @@ Partial Class frmMain
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.46779!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.16551!))
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox3, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox2, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox4, 3, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox6, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox5, 3, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtEventos, 3, 2)
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox1, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox5, 3, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtEventos, 3, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox6, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox4, 2, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 25)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 4
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.71428!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.567604!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 47.38956!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.07229!))
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 286.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.41431!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.58568!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(1297, 747)
         Me.TableLayoutPanel1.TabIndex = 2
         '
@@ -1181,16 +1192,13 @@ Partial Class frmMain
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.trkZoom, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
+        Me.groupBoxRecorrido.ResumeLayout(False)
+        Me.groupBoxRecorrido.PerformLayout()
         Me.Panel1.ResumeLayout(False)
-        CType(Me.picBateria, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
@@ -1205,19 +1213,11 @@ Partial Class frmMain
     End Sub
     Friend WithEvents Mapa As GMap.NET.WindowsForms.GMapControl
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cboProvMapa As System.Windows.Forms.ComboBox
     Friend WithEvents cboModoConexion As System.Windows.Forms.ComboBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtLat As System.Windows.Forms.TextBox
-    Friend WithEvents txtLng As System.Windows.Forms.TextBox
-    Friend WithEvents opBuscarCoor As System.Windows.Forms.RadioButton
-    Friend WithEvents opBuscarLugar As System.Windows.Forms.RadioButton
-    Friend WithEvents txtLugar As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents btnIniciarCamp As System.Windows.Forms.Button
     Friend WithEvents trkZoom As System.Windows.Forms.TrackBar
@@ -1277,7 +1277,6 @@ Partial Class frmMain
     Friend WithEvents sond As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblCargado As System.Windows.Forms.Label
     Friend WithEvents AcercaDeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents GroupBox7 As System.Windows.Forms.GroupBox
     Friend WithEvents opDistancia As System.Windows.Forms.RadioButton
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents opIntervalo As System.Windows.Forms.RadioButton
@@ -1298,10 +1297,8 @@ Partial Class frmMain
     Friend WithEvents vecesDB As System.Windows.Forms.ColumnHeader
     Friend WithEvents incert As System.Windows.Forms.ColumnHeader
     Friend WithEvents LinkLabel2 As System.Windows.Forms.LinkLabel
-    Friend WithEvents btnBuscar As System.Windows.Forms.Button
     Friend WithEvents valPuro As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblDistAct As System.Windows.Forms.Label
-    Friend WithEvents picBateria As System.Windows.Forms.PictureBox
     Friend WithEvents chkPausa As System.Windows.Forms.CheckBox
     Friend WithEvents TipoDeResultadoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents chkMaxHold As System.Windows.Forms.ToolStripMenuItem
@@ -1313,4 +1310,13 @@ Partial Class frmMain
     Friend WithEvents ModoDebug As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents linkScanNardaPorts As System.Windows.Forms.LinkLabel
+    Friend WithEvents groupBoxRecorrido As System.Windows.Forms.GroupBox
+    Friend WithEvents barBateria As System.Windows.Forms.ProgressBar
+    Friend WithEvents opK83 As System.Windows.Forms.RadioButton
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents linkScanGPSPorts As System.Windows.Forms.LinkLabel
+    Friend WithEvents comboGPSSelected As System.Windows.Forms.ComboBox
+    Friend WithEvents lblBattery As System.Windows.Forms.Label
 End Class
