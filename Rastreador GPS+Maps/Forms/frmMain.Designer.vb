@@ -69,8 +69,8 @@ Partial Class frmMain
         Me.tTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.comGPS = New System.IO.Ports.SerialPort(Me.components)
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.btnExcel = New System.Windows.Forms.Button()
         Me.btnGEarth = New System.Windows.Forms.Button()
+        Me.btnExcel = New System.Windows.Forms.Button()
         Me.ListaResultados = New System.Windows.Forms.ListView()
         Me.indice = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.valor = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -140,7 +140,6 @@ Partial Class frmMain
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
-        Me.MenuStrip1.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -168,7 +167,7 @@ Partial Class frmMain
         Me.Mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.[Integer]
         Me.Mapa.SelectedAreaFillColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(105, Byte), Integer), CType(CType(225, Byte), Integer))
         Me.Mapa.ShowTileGridLines = False
-        Me.Mapa.Size = New System.Drawing.Size(802, 436)
+        Me.Mapa.Size = New System.Drawing.Size(802, 437)
         Me.Mapa.TabIndex = 0
         Me.Mapa.Zoom = 10.0R
         '
@@ -182,7 +181,7 @@ Partial Class frmMain
         Me.GroupBox1.Location = New System.Drawing.Point(3, 289)
         Me.GroupBox1.Name = "GroupBox1"
         Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox1, 2)
-        Me.GroupBox1.Size = New System.Drawing.Size(808, 455)
+        Me.GroupBox1.Size = New System.Drawing.Size(808, 456)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Mapa (Shift + arrastre con Click derecho para seleccionar área)"
@@ -667,24 +666,10 @@ Partial Class frmMain
         Me.GroupBox5.Controls.Add(Me.ListaResultados)
         Me.GroupBox5.Location = New System.Drawing.Point(817, 289)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(477, 313)
+        Me.GroupBox5.Size = New System.Drawing.Size(477, 314)
         Me.GroupBox5.TabIndex = 5
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Resultados"
-        '
-        'btnExcel
-        '
-        Me.btnExcel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnExcel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnExcel.Image = Global.AutoMapRNI.My.Resources.Resources.microsoft_excel_128
-        Me.btnExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnExcel.Location = New System.Drawing.Point(18, 252)
-        Me.btnExcel.Name = "btnExcel"
-        Me.btnExcel.Size = New System.Drawing.Size(192, 51)
-        Me.btnExcel.TabIndex = 9
-        Me.btnExcel.Text = "Exportar a Excel"
-        Me.btnExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnExcel.UseVisualStyleBackColor = True
         '
         'btnGEarth
         '
@@ -692,13 +677,27 @@ Partial Class frmMain
         Me.btnGEarth.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnGEarth.Image = CType(resources.GetObject("btnGEarth.Image"), System.Drawing.Image)
         Me.btnGEarth.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnGEarth.Location = New System.Drawing.Point(245, 252)
+        Me.btnGEarth.Location = New System.Drawing.Point(245, 236)
         Me.btnGEarth.Name = "btnGEarth"
         Me.btnGEarth.Size = New System.Drawing.Size(207, 51)
         Me.btnGEarth.TabIndex = 5
         Me.btnGEarth.Text = "Exportar a Google Earth"
         Me.btnGEarth.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnGEarth.UseVisualStyleBackColor = True
+        '
+        'btnExcel
+        '
+        Me.btnExcel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnExcel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnExcel.Image = Global.AutoMapRNI.My.Resources.Resources.microsoft_excel_128
+        Me.btnExcel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnExcel.Location = New System.Drawing.Point(32, 236)
+        Me.btnExcel.Name = "btnExcel"
+        Me.btnExcel.Size = New System.Drawing.Size(165, 51)
+        Me.btnExcel.TabIndex = 9
+        Me.btnExcel.Text = "Exportar a Excel"
+        Me.btnExcel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnExcel.UseVisualStyleBackColor = True
         '
         'ListaResultados
         '
@@ -714,7 +713,7 @@ Partial Class frmMain
         Me.ListaResultados.GridLines = True
         Me.ListaResultados.Location = New System.Drawing.Point(3, 16)
         Me.ListaResultados.Name = "ListaResultados"
-        Me.ListaResultados.Size = New System.Drawing.Size(471, 230)
+        Me.ListaResultados.Size = New System.Drawing.Size(471, 214)
         Me.ListaResultados.SmallImageList = Me.ListaImgs
         Me.ListaResultados.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListaResultados.TabIndex = 0
@@ -791,7 +790,7 @@ Partial Class frmMain
         '
         Me.txtEventos.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtEventos.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEventos.Location = New System.Drawing.Point(817, 608)
+        Me.txtEventos.Location = New System.Drawing.Point(817, 609)
         Me.txtEventos.Multiline = True
         Me.txtEventos.Name = "txtEventos"
         Me.txtEventos.ReadOnly = True
@@ -804,7 +803,7 @@ Partial Class frmMain
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ArchivoToolStripMenuItem, Me.OpcionesToolStripMenuItem, Me.AcercaDeToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1297, 25)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1297, 24)
         Me.MenuStrip1.TabIndex = 6
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -1034,6 +1033,8 @@ Partial Class frmMain
         '
         'linkScanGPSPorts
         '
+        Me.linkScanGPSPorts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.linkScanGPSPorts.AutoSize = True
         Me.linkScanGPSPorts.Enabled = False
         Me.linkScanGPSPorts.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1160,13 +1161,13 @@ Partial Class frmMain
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox6, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox4, 2, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 25)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 24)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 286.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.41431!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.58568!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1297, 747)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1297, 748)
         Me.TableLayoutPanel1.TabIndex = 2
         '
         'frmMain
@@ -1201,8 +1202,6 @@ Partial Class frmMain
         Me.Panel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)

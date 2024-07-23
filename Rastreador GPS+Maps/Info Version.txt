@@ -1,4 +1,9 @@
-﻿Versión al 17-07-2024: 2.0.0
+﻿Versión al 17-07-2024: 2.0.1
+	- Eliminación de comentarios y código obsoleto
+	- Eliminación de recursos extra en desuso
+	- Optimización de código
+
+Versión al 17-07-2024: 2.0.0
 	- Cambio de disposición de controles
 	- Eliminación del grupo de controles "Búsqueda"
 	- Incorporación de opciones de instrumento y GPS en pantalla, además de los existentes en el menú superior

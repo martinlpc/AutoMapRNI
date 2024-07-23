@@ -27,7 +27,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.13.7.%2a</ApplicationVersion>
+    <ApplicationVersion>2.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -144,6 +144,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Forms\About.Designer.vb">
       <DependentUpon>About.vb</DependentUpon>
     </Compile>
@@ -262,11 +263,6 @@
     <None Include="Resources\ENACOM_final1.ico" />
     <None Include="Resources\amrnisp.ico" />
     <None Include="Resources\AMRNI.ico" />
-    <None Include="Resources\bat_full.jpg" />
-    <None Include="Resources\bat_75.jpg" />
-    <None Include="Resources\bat_50.jpg" />
-    <None Include="Resources\bat_25.jpg" />
-    <None Include="Resources\bat_10.jpg" />
     <None Include="Resources\ENACOM_final.ico" />
     <None Include="Resources\ENACOM_contexto_final.jpg" />
     <None Include="Resources\ENACOM_sintexto_final.jpg" />

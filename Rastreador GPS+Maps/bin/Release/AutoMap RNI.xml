@@ -23,26 +23,6 @@ AutoMapRNI
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
 </summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_10">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_25">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_50">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_75">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_full">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
 </member><member name="P:AutoMapRNI.My.Resources.Resources.blue">
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
@@ -291,11 +271,6 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
  </summary>
 	<param name="latLon"></param>
 	<returns></returns>
-	<remarks></remarks>
-</member><member name="M:AutoMapRNI.frmMain.t_Narda">
-	<summary>
- Loop infinito paralelo a la ejecución de la app. Si hay un NARDA conectado, lee el nivel que el mismo arroja en el instante que se hace la lectura
- </summary>
 	<remarks></remarks>
 </member><member name="M:AutoMapRNI.frmMain.t_EMRMAX">
 	<summary>

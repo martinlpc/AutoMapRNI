@@ -9,7 +9,7 @@ Imports System.Runtime.InteropServices
 ' Revisar los valores de los atributos del ensamblado
 
 <Assembly: AssemblyTitle("AutoMap RNI")> 
-<Assembly: AssemblyDescription("Mediciones georeferenciadas de nivel de Radiaciones No Ionizantes (RNI) por puntos geográficos - Diseñado y ensamblado por Martín L. Pacheco - Área de Mantenimiento Radioeléctrico")> 
+<Assembly: AssemblyDescription("Mediciones georeferenciadas de nivel de Radiaciones No Ionizantes (RNI) - Desarrollado por Martín L. Pacheco - Laboratorio Buenos Aires")> 
 <Assembly: AssemblyCompany("Ente Nacional de Comunicaciones")> 
 <Assembly: AssemblyProduct("AutoMap RNI")> 
 <Assembly: AssemblyCopyright("Copyright MLP © 2015 - 2024")> 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' mediante el asterisco ('*'), como se muestra a continuación:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("2.0.0")> 
-<Assembly: AssemblyFileVersion("2.0.0")> 
+<Assembly: AssemblyVersion("2.0.1")> 
+<Assembly: AssemblyFileVersion("2.0.1")> 

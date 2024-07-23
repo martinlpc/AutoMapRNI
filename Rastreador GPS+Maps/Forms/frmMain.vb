@@ -96,7 +96,7 @@ Public Class frmMain
         'CheckForIllegalCrossThreadCalls = False
         '---------------------------------------------------------------
         Try
-            Me.Text = "AutoMap RNI - " & String.Format("v{0}", My.Application.Info.Version.ToString)
+            Me.Text = "AutoMap RNI - " & String.Format("v{0}.{1}.{2}", My.Application.Info.Version.Major.ToString, My.Application.Info.Version.Minor.ToString, My.Application.Info.Version.Build.ToString)
             Cursor = Cursors.WaitCursor
             nuevoMensajeEventos("Sistema iniciado")
             Try
@@ -113,12 +113,12 @@ Public Class frmMain
             Mapa.IgnoreMarkerOnMouseWheel = True
 
             'Agrega todos los puertos COM disponibles en el ComboBox NARDA
-            For Each sp As String In My.Computer.Ports.SerialPortNames
-                cboPuertoNarda.Items.Add(sp)
-                cboCOMGlobalSat.Items.Add(sp)
+            For Each port As String In My.Computer.Ports.SerialPortNames
+                cboPuertoNarda.Items.Add(port)
+                cboCOMGlobalSat.Items.Add(port)
             Next
 
-            cboPuertoNarda.SelectedItem = "COM7" 'COM7 USB - COM8 OPTICO
+            cboPuertoNarda.SelectedItem = "COM7" 'defaults: COM7 USB - COM8 OPTICO
             cboProvMapa.Text = "Google Maps"
             cboModoConexion.Text = "Servidor y caché"
             Mapa.MaxZoom = 19
@@ -372,30 +372,6 @@ SeguirCampaña:
                 boolResetMaxEMR = True
                 Application.DoEvents()
 
-                'Select NivelFinal
-                '   Case Is >= 27.5
-                'ColorMarker = GMarkerGoogleType.red
-                'IndiceImg = 0
-                '    Case Is >= 20
-                'ColorMarker = GMarkerGoogleType.orange_dot
-                'IndiceImg = 1
-                '    Case Is >= 14
-                'ColorMarker = GMarkerGoogleType.yellow_dot
-                'IndiceImg = 2
-                '    Case Is >= 8
-                'ColorMarker = GMarkerGoogleType.purple_dot
-                'IndiceImg = 3
-                '    Case Is >= 4
-                ''ColorMarker = GMarkerGoogleType.green_dot
-                'IndiceImg = 4
-                '    Case Is >= 2
-                'ColorMarker = GMarkerGoogleType.lightblue_dot
-                'IndiceImg = 5
-                '    Case Else
-                'ColorMarker = GMarkerGoogleType.blue_dot
-                'IndiceImg = 6
-                'End Select
-
                 For Each threshold In thresholds
                     If NivelFinal >= threshold.Key Then
                         ColorMarker = threshold.Value.Item1
@@ -556,7 +532,6 @@ Fin:
             '-----------------------------------------------------------------------------
             If cboModoConexion.Text <> "Leer desde caché" Then
                 Cursor = Cursors.WaitCursor
-                'txtEventos.Text &= "[" & Now & "] " & "Chequeando si existe conexión a internet..." & vbNewLine
                 nuevoMensajeEventos("Chequeando si existe conexión a internet...")
                 Application.DoEvents()
 
@@ -577,7 +552,6 @@ Fin:
         Catch ex As Exception
             If ex.Message = "Host desconocido" Or ex.Message = "El nombre solicitado es válido pero no se encontraron datos del tipo solicitado" Then
                 Mapa.Manager.Mode = AccessMode.CacheOnly
-                'txtEventos.Text &= "[" & Now & "] " & "No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''" & vbNewLine
                 nuevoMensajeEventos("No hay conexión a internet, estableciendo modo de conexión a ''Leer desde caché''")
                 cboModoConexion.Text = "Leer desde caché"
             End If
@@ -639,44 +613,10 @@ Fin:
         lblZoom.Text = Mapa.Zoom.ToString
     End Sub
 
-    Private Sub BorrarMarker(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Mapa.MouseClick
-        '----------------------------------------------------------------------------------------------------------
-        'A IMPLEMENTAR: CON UN CLICK SOBRE UN MARKER ESTABLECIDO (MANUALMENTE, O NO), SE PODRÁ BORRARLO DEL OVERLAY
-
-        ' El codigo a continuacion no tiene nada que ver con esto
-        '----------------------------------------------------------------------------------------------------------
-
-
-        'Dim PosIni As New Point(e.X, e.Y)
-
-        'If e.Button = Windows.Forms.MouseButtons.Left Then
-        'Dim LatEnGMS As CoordenadasGMS
-        'Dim LngEnGMS As CoordenadasGMS
-        'Dim MousePosLatLng As PointLatLng = Mapa.FromLocalToLatLng(e.X, e.Y)
-        'UltimoPunto = MousePosLatLng
-        '
-        'LatEnGMS = ConvertirAGMS(UltimoPunto.Lat, False)
-        'LngEnGMS = ConvertirAGMS(UltimoPunto.Lng, True)
-
-        '- El overlay se hace en el global y por ahora usamos uno solo para todos los markers
-        '- Proximamente, hay que hacer un overlay PARA CADA TIPO de objeto (marker, ruta, poligono, etc.)
-        'OverlayClick.Markers.Clear()
-        'Mapa.Overlays.Clear()
-        'Dim NuevoMarker As GMapMarker = New GMarkerGoogle(UltimoPunto, GMarkerGoogleType.red)
-        'NuevoMarker.ToolTipText = LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 2) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-        '    LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 2) & Chr(34) & " " & LngEnGMS.Hemisf
-
-        'NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
-        'Mapa.Overlays.Add(OverlayClick)
-        'OverlayClick.Markers.Add(NuevoMarker)
-        'End If
-    End Sub
-
     Private Sub CambioTrkZoom(sender As System.Object, e As System.EventArgs) Handles trkZoom.Scroll
         Mapa.Zoom = trkZoom.Value
         lblZoom.Text = Mapa.Zoom.ToString
     End Sub
-
 
     Private Sub Mapa_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Mapa.MouseWheel
         Try
@@ -947,7 +887,6 @@ Fin:
                         .DiscardInBuffer()
                         nuevoMensajeEventos("Se desconectó correctamente el instrumento.")
                     End If
-                    'picBateria.Visible = False
                     barBateria.Value = 0
                     lblBattery.Text = ""
                     lblInstrumento.Text = ""
@@ -972,7 +911,7 @@ Fin:
         Catch ex As Exception
             If ex.Message.Contains("no existe") Then
                 nuevoMensajeEventos("Error con instrumento - " & ex.Message)
-            ElseIf ex.Message.Contains("Se ha denegado el acceso al puerto 'COM2'.") Then
+            ElseIf ex.Message.Contains("Se ha denegado el acceso al puerto") Then
                 nuevoMensajeEventos("Error con instrumento - " & ex.Message & " (El puerto está siendo utilizado por otro instrumento o dispositivo)")
             ElseIf ex.Message.Contains("no es correcto") Then
                 nuevoMensajeEventos("Error con puerto seleccionado: " & ex.Message)
@@ -990,6 +929,15 @@ Fin:
         Finally
             btnConectar.Enabled = True
         End Try
+    End Sub
+
+    Private Sub actualizarBateria(nivel As Integer)
+        barBateria.Value = nivel
+        lblBattery.Text = nivel.ToString()
+        If nivel <= 10 Then
+            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+            nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & nivel & "%")
+        End If
     End Sub
 
     Private Sub txtEventos_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtEventos.TextChanged
@@ -1029,6 +977,11 @@ Fin:
         Dim InputText As String
         Dim OutputText As String
         Dim TipoResultado As String 'Depende de la extension del archivo cargado/creado en el ultimo recorrido
+        Dim limitesNivel As Integer() = {1, 2, 4, 8, 15, 20, 35, 50, 100}
+        Dim Intensidad(10) As String
+        For n = 1 To 10
+            Intensidad(n) = "#Nivel" & n
+        Next
 
         Try
             If ListaResultados.Items.Count = 0 Then
@@ -1200,44 +1153,15 @@ Fin:
                         .Lon = Replace(Punto.Lon, ",", ".")
                     End With
 
-                    ' Se establece la intensidad (color de icono) del punto segun el nivel que se haya medido ahi
-                    ' Los valores en cuestión se definen en la magnitud de dBuV
-
-                    '---------------------------------------------------------------------------------------------------------
-                    '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                    '>>>>>>>>>>>> DEFINIR ACA LOS VALORES QUE DETERMINAN DONDE HAY ACTIVIDAD O SOLO PISO DE RUIDO <<<<><<<<<<<
-                    '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-                    'VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-                    Select Case Punto.PorcentMEP
-                        Case Is <= 1
-                            i = 1
-                        Case Is <= 2
-                            i = 2
-                        Case Is <= 4
-                            i = 3
-                        Case Is <= 8
-                            i = 4
-                        Case Is <= 15
-                            i = 5
-                        Case Is <= 20
-                            i = 6
-                        Case Is <= 35
-                            i = 7
-                        Case Is <= 50
-                            i = 8
-                        Case Is <= 100
-                            i = 9
-                        Case Else
-                            i = 10
-                    End Select
-                    Dim Intensidad(10) As String
-                    For n = 1 To 10
-                        Intensidad(n) = "#Nivel" & n
+                    ' Se establecen los colores según se definieron al inicio en 'limitesNivel' 
+                    Dim j As Integer = 10 'Valor por defecto
+                    For index = 0 To limitesNivel.Length - 1
+                        If Punto.PorcentMEP <= limitesNivel(index) Then
+                            j = index + 1
+                            Exit For
+                        End If
                     Next
-                    Punto.Color = Intensidad(i)
-                    '---------------------------------------------------------------------------------------------------------
-                    '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                    '---------------------------------------------------------------------------------------------------------
+                    Punto.Color = Intensidad(j)
 
                     'Crear (escribir) el codigo de punto
                     'EL NIVEL EXPRESADO ES EL QUE CONTIENE LA INCERTIDUMBRE
@@ -1615,6 +1539,7 @@ Fin:
             'OverlayClick.Clear()
         End If
     End Sub
+
 
     Private Sub CargarArchivo(sender As System.Object, e As System.EventArgs) Handles CargarArchivoDePuntosToolStripMenuItem.Click
         Dim RutaBackup As String = My.Computer.FileSystem.SpecialDirectories.Desktop & "/backuprni"
@@ -2636,15 +2561,12 @@ ReIntGSAT:
                 '---------------------------------------------------------------------------
                 '---------------------------------------------------------------------------
 
-                'Dim latdec As Double = ConvertirAGDec(LatitudActual)
-                'Dim lngdec As Double = ConvertirAGDec(LongitudActual)
                 latdec = ConvertirAGDec(LatitudActual)
                 lngdec = ConvertirAGDec(LongitudActual)
                 CoorAUbicar.Lat = latdec
                 CoorAUbicar.Lng = lngdec
 
                 OverlayPosActual.Markers.Clear()
-                'Dim MarkerPosActual As GMapMarker = New GMarkerGoogle(CoorAUbicar, GMarkerGoogleType.arrow)
                 MarkerPosActual = New GMarkerGoogle(CoorAUbicar, GMarkerGoogleType.arrow)
                 MarkerPosActual.ToolTipText = "Posición actual" & vbNewLine & vbNewLine & _
                     LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisf & vbNewLine & _
@@ -2665,15 +2587,19 @@ ReIntGSAT:
                 Application.DoEvents()
             End If
         Catch ex As Exception
-            If ex.Message.Contains("Datos no válidos") Then
+            If ex.Message.Contains("no existe") Then
+                If Not lblStatusGPS.Text.Contains("Desconectado") Then
+                    nuevoMensajeEventos("No se puede detectar un GPS conectado (" & ex.Message & ")")
+                    lblStatusGPS.Text = "Desconectado"
+                    lblStatusGPS.BackColor = Color.LightGray
+                End If
+            ElseIf ex.Message.Contains("Datos no válidos") Then
                 Application.DoEvents()
                 Exit Sub
             ElseIf ex.Message.Contains("reintentos") Then
                 comGPS.Close()
             End If
-            'txtEventos.Text &= "[" & Now & "] " & "Excepción ocurrida: " & ex.Message & vbNewLine
             Application.DoEvents()
-            'trace.GetFrame(0).GetFileLineNumber().ToString & vbNewLine  'ex.TargetSite.ToString & vbNewLine
         Finally
 
         End Try
@@ -2719,26 +2645,9 @@ ReStartNarda:
                             Retardo(200)
                             inBuffer = .ReadExisting
                             Application.DoEvents()
-                            'Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
-                            '    Case Is <= 10
-                            'nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                            '    inBuffer & " %")
-                            'picBateria.Image = My.Resources.bat_10
-                            '    Case Is <= 25
-                            'picBateria.Image = My.Resources.bat_25
-                            '    Case Is <= 50
-                            'picBateria.Image = My.Resources.bat_50
-                            '    Case Is <= 75
-                            'picBateria.Image = My.Resources.bat_75
-                            '    Case Else
-                            'picBateria.Image = My.Resources.bat_full
-                            'End Select
-                            'picBateria.Visible = True
 
                             nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
-                            barBateria.Value = nivelBateria
-                            lblBattery.Text = nivelBateria
-                            If nivelBateria <= 10 Then nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & nivelBateria & "%")
+                            actualizarBateria(nivelBateria)
                             ContError = 0
                             Application.DoEvents()
                         ElseIf chkEMR300.Checked Then
@@ -2852,143 +2761,6 @@ ReStartNarda:
             End If
         End Try
 
-    End Sub
-    ''' <summary>
-    ''' Loop infinito paralelo a la ejecución de la app. Si hay un NARDA conectado, lee el nivel que el mismo arroja en el instante que se hace la lectura
-    ''' </summary>
-    ''' <remarks></remarks>
-    Sub t_Narda()
-        Dim VecNarda As String()
-        Dim ContError As Integer
-        Dim inBuffer As String
-        Dim nivelBateria As Integer
-        Dim bufferNivel As Single 'Se guarda localmente la lectura actual y se compara para saber si reemplazar el máximo (con maxhold = on)
-restart:
-        Do
-            If Me.InvokeRequired Then
-                Me.Invoke(New LeerNardaThread(AddressOf t_Narda))
-            Else
-                Cursor = Cursors.Default
-                If Conectado Then
-                    With comNarda
-                        If chkEMR300.Checked Then
-                            If chkPausa.Checked Then
-                                NivelNarda = 0
-                                lblDisplay.Text = "..."
-                                Exit Sub
-                            End If
-                            Try
-                                .WriteLine("M")
-                                Retardo(500)
-                                VecNarda = Split(.ReadExisting, ",")
-                            Catch ex As Exception
-                                Exit Do
-                            End Try
-                            Application.DoEvents()
-                            If chkMaxHold.Checked = True Then
-                                Try
-                                    bufferNivel = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
-                                    If bufferNivel > NivelNarda Then NivelNarda = bufferNivel
-                                Catch
-                                    Exit Do
-                                End Try
-                            Else
-                                Try
-                                    NivelNarda = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
-                                Catch ex As InvalidCastException
-                                    Exit Do
-                                End Try
-                            End If
-                            lblDisplay.Text = NivelNarda & " V/m"
-                            lblTipoRes.Text = "Max hold"
-                            Try
-                                .WriteLine("SYST:BAT?")
-                                Retardo(100)
-                                inBuffer = .ReadExisting
-                            Catch ex As Exception
-                                Exit Do
-                            End Try
-                            Application.DoEvents()
-                            If inBuffer.Contains("LOW") Then
-                                Try
-                                    My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
-                                Catch
-                                    Try
-                                        My.Computer.Audio.Play("C:\Windows\Media\Windows Print complete.wav")
-                                    Catch
-                                    End Try
-                                End Try
-                                nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
-                            End If
-                            If boolResetMaxEMR Then
-                                NivelNarda = 0
-                                bufferNivel = 0
-                                boolResetMaxEMR = False
-                            End If
-                            ContError = 0
-                        ElseIf chkNBM550.Checked Then
-                            If chkPausa.Checked Then
-                                NivelNarda = 0
-                                lblDisplay.Text = "..."
-                                Exit Sub
-                            End If
-                            Try
-                                .WriteLine("MEAS?;")
-                                Retardo(200)
-                                VecNarda = Split(.ReadExisting, ",")
-                            Catch ex As Exception
-                                Exit Do
-                            End Try
-                            Application.DoEvents()
-                            If chkActual.Checked Then
-                                NivelNarda = Format(CSng(VecNarda(1) / 1000), "##0.000")  'LINEA PARA LEER ACTUAL
-                            ElseIf chkMaxHold.Checked Then
-                                NivelNarda = Format(CSng(VecNarda(0) / 1000), "##0.000")   'LINEA PARA LEER MAXHOLD
-                            End If
-                            lblDisplay.Text = NivelNarda & " V/m"
-                            .WriteLine("BATTERY?;")
-                            Retardo(200)
-                            inBuffer = .ReadExisting
-                            Application.DoEvents()
-                            'Select Case CSng(inBuffer.Substring(0, Len(inBuffer) - 2))
-                            '    Case Is <= 10
-                            'Try
-                            ' My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
-                            ' Catch
-                            ' Try
-                            'My.Computer.Audio.Play("C:\Windows\Media\Windows Print complete.wav")
-                            'Catch
-                            'End Try
-                            'End Try
-                            'nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplace o cargue las baterías cuanto antes - Capacidad restante: " & _
-                            '    inBuffer & " %")
-                            'picBateria.Image = My.Resources.bat_10
-                            '    Case Is <= 25
-                            'picBateria.Image = My.Resources.bat_25
-                            '    Case Is <= 50
-                            'picBateria.Image = My.Resources.bat_50
-                            '    Case Is <= 75
-                            'picBateria.Image = My.Resources.bat_75
-                            '    Case Else
-                            'picBateria.Image = My.Resources.bat_full
-                            'End Select
-                            nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
-                            barBateria.Value = nivelBateria
-                            If nivelBateria <= 10 Then
-                                nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & nivelBateria & "%")
-
-                            End If
-                            ContError = 0
-                            Application.DoEvents()
-                        End If
-                    End With
-                Else
-                    NivelNarda = 0
-                End If
-                Application.DoEvents()
-            End If
-        Loop
-        GoTo restart
     End Sub
 
     ''' <summary>
@@ -3115,4 +2887,5 @@ restart:
             GPSSel = 2
         End If
     End Sub
+
 End Class
