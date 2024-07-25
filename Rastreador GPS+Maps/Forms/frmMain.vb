@@ -47,7 +47,7 @@ Public Class frmMain
     'Banderas que determinan que se presionó o que combo cambió
     'BuscoCoor sirve para ver si se busco coordenada o lugar (por letras)
     Public Conectado As Boolean = False 'true = se presionó el botón "CONECTAR" y se conectó correctamente. Tomando lecturas.
-    Public CambioProv, CambioModoConexion, BuscoHome, BuscoCoor, PrimerMuestreo As Boolean
+    Public CambioProv, CambioModoConexion, BuscoHome, BuscoCoor As Boolean
     Public boolSprinter As Boolean = False
     Public ArranqueApp As Boolean = True
     Public StatusGpS As Boolean = False
@@ -78,7 +78,7 @@ Public Class frmMain
 #Region "Subprocedimientos LoadForm y asociados a eventos de ventana"
 
     Sub nuevoMensajeEventos(msg As String)
-        txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine
+        txtEventos.Invoke(Sub() txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine)
     End Sub
 
     Private Sub frmMain_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
@@ -96,7 +96,8 @@ Public Class frmMain
         'CheckForIllegalCrossThreadCalls = False
         '---------------------------------------------------------------
         Try
-            Me.Text = "AutoMap RNI - " & String.Format("v{0}.{1}.{2}", My.Application.Info.Version.Major.ToString, My.Application.Info.Version.Minor.ToString, My.Application.Info.Version.Build.ToString)
+            Me.Text = "AutoMap RNI - " & String.Format("v{0}.{1}.{2}", My.Application.Info.Version.Major.ToString, _
+                                                       My.Application.Info.Version.Minor.ToString, My.Application.Info.Version.Build.ToString)
             Cursor = Cursors.WaitCursor
             nuevoMensajeEventos("Sistema iniciado")
             Try
@@ -107,7 +108,6 @@ Public Class frmMain
                 btnConectar.Enabled = False
             End Try
             CargarPaleta()
-            PrimerMuestreo = True
             cboIntervalo.SelectedItem = "5"
             comboGPSSelected.SelectedIndex = 0
             Mapa.IgnoreMarkerOnMouseWheel = True
@@ -118,7 +118,6 @@ Public Class frmMain
                 cboCOMGlobalSat.Items.Add(port)
             Next
 
-            cboPuertoNarda.SelectedItem = "COM7" 'defaults: COM7 USB - COM8 OPTICO
             cboProvMapa.Text = "Google Maps"
             cboModoConexion.Text = "Servidor y caché"
             Mapa.MaxZoom = 19
@@ -126,9 +125,9 @@ Public Class frmMain
             trkZoom.Minimum = Mapa.MinZoom
 
             ' Valores aleatorios para evitar el bloqueo de las APIs de mapa
-            Dim random1 As Integer = CInt(Math.Floor((100 - 1 + 1) * Rnd())) + 1
-            Dim random2 As Integer = CInt(Math.Floor((99 - 1 + 1) * Rnd())) + 1
-            Dim random3 As Integer = CInt(Math.Floor((90 - 1 + 1) * Rnd())) + 1
+            Dim random1 As Integer = CInt(Math.Floor(100 * Rnd())) + 1
+            Dim random2 As Integer = CInt(Math.Floor(99 * Rnd())) + 1
+            Dim random3 As Integer = CInt(Math.Floor(90 * Rnd())) + 1
 
             MapProviders.GMapProvider.UserAgent = _
                 String.Format("Mozilla/5.0 (Windows NT {1}.0; {2}rv:{0}.0) Gecko/20100101 Firefox/{0}.0",
@@ -887,8 +886,7 @@ Fin:
                         .DiscardInBuffer()
                         nuevoMensajeEventos("Se desconectó correctamente el instrumento.")
                     End If
-                    barBateria.Value = 0
-                    lblBattery.Text = ""
+                    actualizarBateria("OFF")
                     lblInstrumento.Text = ""
                     lblTipoRes.Text = ""
                     PictureBox1.Image = Nothing
@@ -931,13 +929,36 @@ Fin:
         End Try
     End Sub
 
-    Private Sub actualizarBateria(nivel As Integer)
-        barBateria.Value = nivel
-        lblBattery.Text = nivel.ToString()
-        If nivel <= 10 Then
-            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
-            nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & nivel & "%")
+    Private Sub actualizarBateria(nivel As Object)
+        If TypeOf nivel Is Integer Then
+            ' ------ Bateria del NBM550
+            barBateria.Invoke(Sub() barBateria.Value = CInt(nivel))
+            lblBattery.Invoke(Sub() lblBattery.Text = nivel.ToString())
+            If CInt(nivel) <= 10 Then
+                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+                nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & CInt(nivel) & "%")
+            End If
+        ElseIf TypeOf nivel Is String Then
+            ' ------ Procedimiento de desconexión de equipo
+            If nivel.ToString.Contains("OFF") Then
+                barBateria.Invoke(Sub() barBateria.Value = 0)
+                lblBattery.Invoke(Sub() lblBattery.Text = "")
+                Exit Sub
+            End If
+
+            ' ------ Bateria del EMR300
+            If nivel.ToString.Contains("LOW") Then
+                barBateria.Invoke(Sub() barBateria.Value = 10)
+                lblBattery.Invoke(Sub() lblBattery.Text = "LOW")
+                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+                nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
+            Else
+                barBateria.Invoke(Sub() barBateria.Value = 100)
+                lblBattery.Invoke(Sub() lblBattery.Text = "OK")
+            End If
         End If
+
+
     End Sub
 
     Private Sub txtEventos_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtEventos.TextChanged
@@ -949,7 +970,6 @@ Fin:
         If comNarda.IsOpen Then comNarda.Close()
         If cboPuertoNarda.Text <> "" Then
             comNarda.PortName = cboPuertoNarda.Text
-            PrimerMuestreo = False
         End If
     End Sub
 
@@ -2208,7 +2228,6 @@ HacerLoop:      Loop
     Sub Posicionar(esCoordenada As Boolean)
         If esCoordenada Then
             Mapa.Position = CoorAUbicar
-            'Mapa.Position = UltimoPunto
         Else
             Mapa.SetPositionByKeywords(PosicionStr)
         End If
@@ -2326,7 +2345,6 @@ HacerLoop:      Loop
 #Region "Threads - Hilos"
 
     Sub LeerGPS()
-
         Try
             Dim latdec, lngdec As Double
             Dim lat, lng, status As String
@@ -2609,158 +2627,110 @@ ReIntGSAT:
     Sub LeerNarda()
 
         Dim VecNarda As String()
-        Dim ContError As Integer
+        Dim ContError As Integer = 0
         Dim inBuffer As String
-        Dim nivelBateria As Integer
+        Dim nivelBateria As Integer = 0
 
         Try
-ReStartNarda:
-            If Me.InvokeRequired Then
-                Me.Invoke(New LeerNardaThread(AddressOf LeerNarda))
-            Else
-                If Conectado Then
-                    With comNarda
-
-                        If chkNBM550.Checked Then
-                            If chkPausa.Checked Then
-                                ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
-                                .WriteLine("RESET_MAX;")
-                                Retardo(200)
-                                inBuffer = .ReadExisting
-                                Exit Sub
-                            End If
-                            .WriteLine("MEAS?;")
+            While Conectado
+                If Conectado AndAlso comNarda IsNot Nothing Then
+                    If chkNBM550.Checked Then
+                        If chkPausa.Checked Then
+                            ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
+                            comNarda.WriteLine("RESET_MAX;")
                             Retardo(200)
-                            VecNarda = Split(.ReadExisting, ",")
-                            Application.DoEvents()
-                            If chkActual.Checked Then
-                                NivelNarda = Format(CSng(VecNarda(1) / 1000), "##0.000")  'LINEA PARA LEER ACTUAL
-                                lblTipoRes.Text = "Actual"
-                            ElseIf chkMaxHold.Checked Then
-                                NivelNarda = Format(CSng(VecNarda(0) / 1000), "##0.000")   'LINEA PARA LEER MAXHOLD
-                                lblTipoRes.Text = "Max hold"
-                            End If
-                            lblDisplay.Text = NivelNarda & " " & UnidadActual
-                            .WriteLine("BATTERY?;")
-                            Retardo(200)
-                            inBuffer = .ReadExisting
-                            Application.DoEvents()
-
-                            nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
-                            actualizarBateria(nivelBateria)
-                            ContError = 0
-                            Application.DoEvents()
-                        ElseIf chkEMR300.Checked Then
-                            Try
-                                .WriteLine("M")
-                                Retardo(400)
-                                VecNarda = Split(.ReadExisting, ",")
-                            Catch exc As Exception
-                                Exit Sub
-                            End Try
-                            Application.DoEvents()
-                            .DiscardInBuffer()
-
-                            NivelNarda = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
-
-                            If chkMaxHold.Checked Then
-                                lblDisplay.Text = NivMax & " " & UnidadActual 'NivelNarda & " V/m"
-                                lblTipoRes.Text = "Max hold"
-                            ElseIf chkMaxAvg.Checked Then
-                                lblDisplay.Text = NivelNarda & " " & UnidadActual
-                                lblTipoRes.Text = "Max Avg"
-                            End If
-                            Try
-                                .WriteLine("SYST:BAT?")
-                                Retardo(100)
-                                inBuffer = .ReadExisting
-                            Catch
-                            End Try
-                            Application.DoEvents()
-                            If inBuffer.Contains("LOW") Then
-                                Try
-                                    My.Computer.Audio.Play("C:\Windows\Media\Impresión completa de Windows.wav")
-                                Catch
-                                End Try
-                                nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
-                            End If
-
+                            inBuffer = comNarda.ReadExisting
+                            Exit Sub
                         End If
+
+                        comNarda.WriteLine("MEAS?;")
+                        Retardo(200)
+                        VecNarda = Split(comNarda.ReadExisting, ",")
+                        Application.DoEvents()
+
+                        If chkActual.Checked Then
+                            NivelNarda = Format(CSng(VecNarda(1) / 1000), "##0.000")  'LINEA PARA LEER ACTUAL
+                            lblTipoRes.Invoke(Sub() lblTipoRes.Text = "Actual")
+                        ElseIf chkMaxHold.Checked Then
+                            NivelNarda = Format(CSng(VecNarda(0) / 1000), "##0.000")   'LINEA PARA LEER MAXHOLD
+                            lblTipoRes.Invoke(Sub() lblTipoRes.Text = "Max hold")
+                        End If
+
+                        lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
+
+                        comNarda.WriteLine("BATTERY?;")
+                        Retardo(200)
+                        inBuffer = comNarda.ReadExisting
+                        nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
+                        actualizarBateria(nivelBateria)
                         ContError = 0
-                    End With
-                End If
-            End If
 
-        Catch ex As Exception
+                    ElseIf chkEMR300.Checked Then
+                        comNarda.WriteLine("M")
+                        Retardo(400)
+                        VecNarda = Split(comNarda.ReadExisting, ",")
 
-            If ex.Message.Contains("418;") Then
-                tmrNarda.Enabled = False
-                nuevoMensajeEventos("Error con instrumento: No hay sonda conectada al mismo. Desconectando.")
-                MsgBox("No hay sonda conectada al instrumento. Apague el instrumento, conéctela al mismo y reintente conexión remota.", vbExclamation)
-                comNarda.WriteLine("REMOTE OFF;")
-                comNarda.DiscardInBuffer()
-                lblSonda.Text = ""
-                lblInstrumento.Text = ""
-                lblTipoRes.Text = ""
-                btnConectar.Text = "Conectar"
-                btnIniciarCamp.Enabled = False
-                PictureBox1.Image = Nothing
-                Conectado = False
-                Exit Try
-            ElseIf ex.Message.Contains("Uno de los dispositivos conectados al sistema no funciona") Then
-                tmrNarda.Enabled = False
-                nuevoMensajeEventos("Error con instrumento: Posible desconexión del cable.")
-                MsgBox("No puede encontrarse instrumento conectado, el mismo parece haberse desconectado.", vbExclamation)
-                lblSonda.Text = ""
-                lblInstrumento.Text = ""
-                lblTipoRes.Text = ""
-                lblDisplay.Text = ""
-                btnConectar.Text = "Conectar"
-                btnIniciarCamp.Enabled = False
-                PictureBox1.Image = Nothing
-                Conectado = False
-                Exit Try
-            End If
-            Application.DoEvents()
-            ContError += 1
-            If ContError > 3 Then '3 veces es alrededor de 3 segundos (con un intervalo de timer de 1000 ms entre lecturas)
-                If Not ex.Message.Contains("de la matriz") Then
-                    Try
-                        If VecNarda(0).Contains("418;") Then
-                            Application.DoEvents()
-                            tmrNarda.Enabled = False
-                            nuevoMensajeEventos("Error con instrumento: No hay sonda conectada al mismo. Desconectando.")
-                            lblDisplay.Text = "- error -"
-                            ' NivelNarda =-1 indica que ocurrio un error de lectura y que no está disponible el valor actual
-                            NivelNarda = -1
-                            lblTipoRes.Text = ""
-                            PictureBox1.Image = Nothing
-                            Conectado = False
-                            btnConectar.Text = "Conectar"
-                            MsgBox("No hay sonda conectada al instrumento.", vbExclamation)
+                        comNarda.DiscardInBuffer()
+                        NivelNarda = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
+
+                        If chkMaxHold.Checked Then
+                            lblDisplay.Invoke(Sub() lblDisplay.Text = NivMax & " " & UnidadActual) 'NivelNarda & " V/m"
+                            lblTipoRes.Invoke(Sub() lblDisplay.Text = "Max hold")
+                        ElseIf chkMaxAvg.Checked Then
+                            lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
+                            lblTipoRes.Invoke(Sub() lblDisplay.Text = "Max Avg")
                         End If
-                    Catch exc As Exception
-                        MsgBox(exc.Message)
-                    End Try
-                Else
-                    Application.DoEvents()
-                    nuevoMensajeEventos("Error con instrumento: " & ex.Message & " Deteniendo adquisición")
-                    tmrNarda.Enabled = False
-                    lblDisplay.Text = "- error -"
-                    ' NivelNarda =-1 indica que ocurrio un error de lectura y que no está disponible el valor actual
-                    NivelNarda = -1
-                    lblTipoRes.Text = ""
-                    Conectado = False
-                    MsgBox("No hay sonda conectada al instrumento. Apague el instrumento, conéctela al mismo y reintente conexión remota.", vbExclamation)
-                    lblSonda.Text = ""
-                    lblInstrumento.Text = ""
-                    btnConectar.Text = "Conectar"
+
+                        comNarda.WriteLine("SYST:BAT?")
+                        Retardo(100)
+                        inBuffer = comNarda.ReadExisting
+                        actualizarBateria(inBuffer.ToString)
+                    End If
+
+                    ContError = 0
+
                 End If
-            Else
-                GoTo ReStartNarda
+            End While
+        Catch ex As Exception
+            If ex.Message.Contains("418;") OrElse ex.Message.Contains("Uno de los dispositivos conectados al sistema no funciona") Then
+                MostrarMensajeError(ex.Message)
+            End If
+            If ex.Message.Contains("El puerto está cerrado") And Conectado Then
+                MostrarMensajeError("Posible desconexión del cable.")
+            End If
+            ContError += 1
+            If ContError > 3 Then
+                MostrarMensajeError("Se han superado los intentos máximos de lectura")
             End If
         End Try
 
+    End Sub
+
+    Private Sub MostrarMensajeError(mensaje As String)
+        tmrNarda.Enabled = False
+        nuevoMensajeEventos("Error con instrumento: " & mensaje)
+        lblDisplay.Invoke(Sub() lblDisplay.Text = "---")
+        NivelNarda = -1
+        lblTipoRes.Invoke(Sub() lblTipoRes.Text = "")
+        Conectado = False
+        btnConectar.Invoke(Sub() btnConectar.Text = "Conectar")
+        If mensaje.Contains("No hay sonda conectada al mismo") Then
+            comNarda.WriteLine("REMOTE OFF;")
+            comNarda.DiscardInBuffer()
+            LimpiarConexion()
+            MsgBox(mensaje, vbExclamation)
+        ElseIf mensaje.Contains("desconexión") Then
+            actualizarBateria("OFF")
+            LimpiarConexion()
+        End If
+    End Sub
+
+    Sub LimpiarConexion()
+        lblSonda.Invoke(Sub() lblSonda.Text = "")
+        lblInstrumento.Invoke(Sub() lblInstrumento.Text = "")
+        lblIncert.Invoke(Sub() lblIncert.Text = "")
+        PictureBox1.Invoke(Sub() PictureBox1.Image = Nothing)
+        btnIniciarCamp.Invoke(Sub() btnIniciarCamp.Enabled = False)
     End Sub
 
     ''' <summary>
