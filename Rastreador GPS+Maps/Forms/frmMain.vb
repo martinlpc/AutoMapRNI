@@ -672,7 +672,7 @@ Fin:
                         If Not .IsOpen Then .Open()
                         .DiscardInBuffer()
                         .WriteLine("REMOTE ON;")
-                        Retardo(100)
+                        Retardo(200)
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
                             Beep()
@@ -914,7 +914,7 @@ Fin:
             ElseIf ex.Message.Contains("no es correcto") Then
                 nuevoMensajeEventos("Error con puerto seleccionado: " & ex.Message)
             Else
-                nuevoMensajeEventos("EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: " & ex.Message)
+                nuevoMensajeEventos(String.Format("EXCEPCION OCURRIDA DURANTE LA CONEXIÓN: {0}" & vbNewLine & "Ubicación: {1}", ex.Message, ex.StackTrace))
             End If
             Beep()
             tmrNarda.Enabled = False
@@ -1866,6 +1866,9 @@ HacerLoop:      Loop
     End Sub
 
     Private Sub AcercaDeToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles AcercaDeToolStripMenuItem.Click
+        If About.Visible = True Then
+            About.Close()
+        End If
         About.Show(Me)
     End Sub
 
@@ -2300,7 +2303,7 @@ HacerLoop:      Loop
                     End While
             End Select
         Catch ex As Exception
-            MsgBox(ex.Message & vbNewLine & vbNewLine & ex.StackTrace)
+            nuevoMensajeEventos(String.Format("Error en ProcesoLeerNarda: {0}" & vbNewLine & "Stacktrace: {1}", ex.Message, ex.StackTrace))
         End Try
 
     End Sub
@@ -2775,6 +2778,7 @@ ReIntGSAT:
                     If data.Contains("0;") Then
                         ' NBM-550 encontrado
                         comNarda.PortName = port
+                        cboPuertoNarda.Text = port.ToString()
                         nuevoMensajeEventos("Se encontró NARDA NBM-550 en el puerto " & port)
                         nuevoMensajeEventos("Puerto " & port & " asignado al medidor de RNI, presione el botón CONECTAR para iniciar el enlace.")
                         btnConectar.BackColor = Color.YellowGreen
@@ -2796,6 +2800,8 @@ ReIntGSAT:
         Dim data As String
 
         If GPSSel <> 2 Then Exit Sub
+
+        nuevoMensajeEventos("Buscando GPS en puertos COM...")
 
         For Each port In ports
             Try
