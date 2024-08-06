@@ -140,6 +140,7 @@ Partial Class frmMain
         Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
@@ -167,7 +168,7 @@ Partial Class frmMain
         Me.Mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.[Integer]
         Me.Mapa.SelectedAreaFillColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(105, Byte), Integer), CType(CType(225, Byte), Integer))
         Me.Mapa.ShowTileGridLines = False
-        Me.Mapa.Size = New System.Drawing.Size(802, 437)
+        Me.Mapa.Size = New System.Drawing.Size(802, 436)
         Me.Mapa.TabIndex = 0
         Me.Mapa.Zoom = 10.0R
         '
@@ -181,7 +182,7 @@ Partial Class frmMain
         Me.GroupBox1.Location = New System.Drawing.Point(3, 289)
         Me.GroupBox1.Name = "GroupBox1"
         Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox1, 2)
-        Me.GroupBox1.Size = New System.Drawing.Size(808, 456)
+        Me.GroupBox1.Size = New System.Drawing.Size(808, 455)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Mapa (Shift + arrastre con Click derecho para seleccionar área)"
@@ -399,10 +400,10 @@ Partial Class frmMain
         Me.opK83.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.opK83.Location = New System.Drawing.Point(6, 70)
         Me.opK83.Name = "opK83"
-        Me.opK83.Size = New System.Drawing.Size(247, 19)
+        Me.opK83.Size = New System.Drawing.Size(249, 19)
         Me.opK83.TabIndex = 24
         Me.opK83.TabStop = True
-        Me.opK83.Text = "(disabled) Medición puntual (UIT-T K.83)"
+        Me.opK83.Text = "(disabled) Medición puntual (UIT-R K.83)"
         Me.opK83.UseVisualStyleBackColor = True
         '
         'lblCamp
@@ -491,11 +492,11 @@ Partial Class frmMain
         'chkPausa
         '
         Me.chkPausa.Enabled = False
-        Me.chkPausa.Location = New System.Drawing.Point(88, 195)
+        Me.chkPausa.Location = New System.Drawing.Point(70, 195)
         Me.chkPausa.Name = "chkPausa"
-        Me.chkPausa.Size = New System.Drawing.Size(122, 30)
+        Me.chkPausa.Size = New System.Drawing.Size(165, 30)
         Me.chkPausa.TabIndex = 19
-        Me.chkPausa.Text = "Pausar recorrido"
+        Me.chkPausa.Text = "Pausar recorrido (Ctrl + P)"
         Me.chkPausa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.tTip.SetToolTip(Me.chkPausa, "Presione esta casilla para pausar la captura" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "de puntos sin finalizar el recorrid" & _
         "o actual")
@@ -795,7 +796,7 @@ Partial Class frmMain
         Me.txtEventos.Name = "txtEventos"
         Me.txtEventos.ReadOnly = True
         Me.txtEventos.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtEventos.Size = New System.Drawing.Size(477, 136)
+        Me.txtEventos.Size = New System.Drawing.Size(477, 135)
         Me.txtEventos.TabIndex = 6
         '
         'MenuStrip1
@@ -803,7 +804,7 @@ Partial Class frmMain
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ArchivoToolStripMenuItem, Me.OpcionesToolStripMenuItem, Me.AcercaDeToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1297, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1297, 25)
         Me.MenuStrip1.TabIndex = 6
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -1161,13 +1162,13 @@ Partial Class frmMain
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox6, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox4, 2, 0)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 24)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 25)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 2
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 286.0!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 69.41431!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.58568!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1297, 748)
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(1297, 747)
         Me.TableLayoutPanel1.TabIndex = 2
         '
         'frmMain
@@ -1202,6 +1203,8 @@ Partial Class frmMain
         Me.Panel1.ResumeLayout(False)
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)

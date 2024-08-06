@@ -40,3 +40,4 @@ C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\A
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMapRNI.Resources.resources
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMap RNI.vbproj.GenerateResource.Cache
 C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\obj\x86\Release\AutoMap RNI.vbprojResolveAssemblyReference.cache
+C:\Users\User\Desktop\Proyectos\AutoMapRNI\Rastreador GPS+Maps\bin\Release\App.config

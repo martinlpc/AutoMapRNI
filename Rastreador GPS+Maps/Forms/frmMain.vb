@@ -8,6 +8,7 @@ Imports Microsoft.Office
 Imports GPS_Martin
 Imports Microsoft.Office.Interop
 Imports System
+Imports System.Configuration
 Imports System.Threading
 Imports System.Globalization
 Imports System.IO
@@ -59,6 +60,8 @@ Public Class frmMain
     Public GPSSel As Integer = 1 ' 1 = GARMIN ; 2 = NMEA0183
     Public user, pass As String
 
+    Dim encryptionKey As String = ConfigurationSettings.AppSettings("EncryptionKey")
+
     Dim PaletaRNI(10) As Integer '0 el minimo, 9 el maximo
     'El hilo que se va a encargar de leer el NARDA evitando que se trabe el funcionamiento por arrastrar el mapa al mismo tiempo
     ' NECESITA DESHABILITAR EL CHECKILLEGALCROSSTHREAD
@@ -107,7 +110,7 @@ Public Class frmMain
                 btnIniciarCamp.Enabled = False
                 btnConectar.Enabled = False
             End Try
-            CargarPaleta()
+
             cboIntervalo.SelectedItem = "5"
             comboGPSSelected.SelectedIndex = 0
             Mapa.IgnoreMarkerOnMouseWheel = True
@@ -183,7 +186,8 @@ Public Class frmMain
         End Try
     End Sub
 
-    Private Sub Debugging(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown
+    Private Sub KeyCombination(ByVal sender As System.Object, ByVal e As KeyEventArgs) Handles MyBase.KeyDown
+        ' Activación modo debug de GPS
         If e.Control And e.KeyCode = Keys.D Then
             If ModoDebug.Checked = False Then
                 MsgBox("Modo debug activado. Generando GPS virtual e ignorando distancia mínima.")
@@ -193,9 +197,18 @@ Public Class frmMain
                 ModoDebug.Checked = False
             End If
         End If
+
+        ' Activación de ventana de debug de info GPS
         If e.Control And e.KeyCode = Keys.G Then 'And ModoDebug.Checked Then
             frmDebug.Show()
             frmDebug.BringToFront()
+        End If
+
+        ' Establecer o quitar pausa de recorrido
+        If e.Control And e.KeyCode = Keys.P Then
+            If chkPausa.Enabled Then
+                chkPausa.Checked = Not chkPausa.Checked
+            End If
         End If
     End Sub
 
@@ -215,7 +228,7 @@ Public Class frmMain
         Dim outBuffer As String
         Dim factorSonda As Single = SondaSel.Factor
         Dim outCrypt As String
-        Dim Criptografo As Encriptador = New Encriptador("029112")
+        Dim Criptografo As Encriptador = New Encriptador(encryptionKey)
 
         ' Diccionario para crear los markers segun nivel
         Dim thresholds As Dictionary(Of Double, Tuple(Of GMarkerGoogleType, Integer))
@@ -1574,7 +1587,7 @@ Fin:
             RutaFichero = oDialog.FileName
             RutaRaizRes = RutaFichero
             Using SR As StreamReader = New StreamReader(RutaFichero)
-                Dim Crypt As Encriptador = New Encriptador("029112")
+                Dim Crypt As Encriptador = New Encriptador(encryptionKey)
                 Dim InBuffer As String
                 Dim PlainData As String
 
@@ -2083,47 +2096,7 @@ HacerLoop:      Loop
         End Try
         ContSondas500 = i - 1
     End Sub
-    ''' <summary>
-    ''' Carga los colores predeterminados para la paleta de puntos (AUN NO IMPLEMENTADO)
-    ''' </summary>
-    ''' <remarks></remarks>
-    Sub CargarPaleta()
-        'Los niveles para los colores se consideran "MAYOR O IGUAL QUE"
-        'Rojo si nivel >= 27.5
-        'Azul si nivel >= 0 , etc..
-        Paleta(0).Color = "Rojo"
-        Paleta(0).Nivel = 27.5
-
-        Paleta(1).Color = "Naranja"
-        Paleta(1).Nivel = 19
-
-        Paleta(2).Color = "Amarillo"
-        Paleta(2).Nivel = 13
-
-        Paleta(3).Color = "Púrpura"
-        Paleta(3).Nivel = 9
-
-        Paleta(4).Color = "Verde"
-        Paleta(4).Nivel = 6
-
-        Paleta(5).Color = "Celeste"
-        Paleta(5).Nivel = 4
-
-        Paleta(6).Color = "Azul"
-        Paleta(6).Nivel = 0
-
-        PaletaRNI(0) = &HFF73C2FB ' < 1%
-        PaletaRNI(1) = &HFF1E90FF ' <= 2%
-        PaletaRNI(2) = &HFF2A52BE ' <= 4%
-        PaletaRNI(3) = &HFF90EE90 ' <= 8%
-        PaletaRNI(4) = &HFF32CD32 ' <= 15%
-        PaletaRNI(5) = &HFF008000 ' <= 20%
-        PaletaRNI(6) = &HFFFFDF00 ' <= 35%
-        PaletaRNI(7) = &HFFFFA500 ' <= 50%
-        PaletaRNI(8) = &HFFFF4500 ' <= 100%
-        PaletaRNI(9) = &HFFFF0000 ' > 100%
-    End Sub
-
+    
     Function SeleccionarDestino() As Boolean
         Try
             Dim RutaFichero As String
@@ -2701,10 +2674,6 @@ ReIntGSAT:
             If ex.Message.Contains("El puerto está cerrado") And Conectado Then
                 MostrarMensajeError("Posible desconexión del cable.")
             End If
-            ContError += 1
-            If ContError > 3 Then
-                MostrarMensajeError("Se han superado los intentos máximos de lectura")
-            End If
         End Try
 
     End Sub
@@ -2775,7 +2744,7 @@ ReIntGSAT:
                     Retardo(100)
                     Dim data As String = serialPort.ReadExisting()
 
-                    If data.Contains("0;") Then
+                    If data.Equals("0;" & vbCr & "") Then
                         ' NBM-550 encontrado
                         comNarda.PortName = port
                         cboPuertoNarda.Text = port.ToString()

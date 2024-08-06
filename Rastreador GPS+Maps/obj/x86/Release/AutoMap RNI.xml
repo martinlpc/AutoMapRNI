@@ -260,11 +260,6 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
  Carga los números de serie de las sondas de ambos modelos para determinar las incertidumbres y límites de integración de frecuencia
  </summary>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.frmMain.CargarPaleta">
-	<summary>
- Carga los colores predeterminados para la paleta de puntos (AUN NO IMPLEMENTADO)
- </summary>
-	<remarks></remarks>
 </member><member name="M:AutoMapRNI.frmMain.CompletarDesdeString(System.String)">
 	<summary>
  Función que hizo MD para completar las coordenadas del gps GARMIN cuando le faltan dígitos y evitar errores

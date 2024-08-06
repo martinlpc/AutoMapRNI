@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_06A7204495AD4C7095EDBC40DF7DCF30"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -142,7 +136,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,7 +148,7 @@
         "Entry"
         {
         "MsmKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -189,6 +183,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_AC5A1F73C4774A0CAF0358037651CA09"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -207,20 +207,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "MsmKey" = "8:_BCD229E6BEE44051B3E8136710E4B14F"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C9459C81D1917C16066A875B23A9A491"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "MsmKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
+        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -250,13 +250,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C9459C81D1917C16066A875B23A9A491"
+        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -268,7 +262,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
+        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -280,7 +280,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
+        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -328,7 +328,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\InstRNI.msi"
+        "OutputFilename" = "8:Release\\AutoMapRNI.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -795,6 +795,11 @@
             "AssemblyAsmDisplayName" = "8:Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_7564B83898B388932AF8F84D0F3B004F"
+                    {
+                    "Name" = "8:Ionic.Zip.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Ionic.Zip.dll"
             "TargetName" = "8:"
@@ -841,6 +846,11 @@
             "AssemblyAsmDisplayName" = "8:GMap.NET.Core, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_86732ADE0F28D5C1F4A73CF67A09C63E"
+                    {
+                    "Name" = "8:GMap.NET.Core.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:GMap.NET.Core.dll"
             "TargetName" = "8:"
@@ -1000,16 +1010,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BE7317BC82C146A7A9307D060E03FED4"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCD229E6BEE44051B3E8136710E4B14F"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:GMap.NET.WindowsForms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:GMap.NET.WindowsForms.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\Rastreador GPS+Maps\\bin\\Release\\AutoMap RNI.exe.config"
+            "TargetName" = "8:AutoMap RNI.exe.config"
             "Tag" = "8:"
             "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
             "Condition" = "8:"
@@ -1023,18 +1027,23 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C9459C81D1917C16066A875B23A9A491"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BE7317BC82C146A7A9307D060E03FED4"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:GMap.NET.WindowsForms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_BE7317BC82C146A7A9307D060E03FED4"
+                    {
+                    "Name" = "8:GMap.NET.WindowsForms.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
-            "SourcePath" = "8:Microsoft.VisualBasic.PowerPacks.Vs.dll"
+            "SourcePath" = "8:GMap.NET.WindowsForms.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
@@ -1059,6 +1068,11 @@
             "AssemblyAsmDisplayName" = "8:MD.Equipos.GPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_D3874DD70DDCEEE3691E7DD0A6DB669E"
+                    {
+                    "Name" = "8:MD.Equipos.GPS.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:MD.Equipos.GPS.dll"
             "TargetName" = "8:"
@@ -1302,15 +1316,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AutoMap RNI"
-        "ProductCode" = "8:{A747B269-700F-4290-A65F-36500292AD26}"
-        "PackageCode" = "8:{70655D80-8D82-497D-97BC-CFA06B067580}"
+        "ProductCode" = "8:{2AD03DF4-34FB-4D04-A834-D3472B040F02}"
+        "PackageCode" = "8:{A826DEEA-2461-41F5-BF51-9B7C2AFD82D8}"
         "UpgradeCode" = "8:{8A863FCB-4919-40D3-AA71-325EF8C17E77}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.0.2"
+        "ProductVersion" = "8:2.0.3"
         "Manufacturer" = "8:Ente Nacional de Comunicaciones"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1431,7 +1445,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_02900F94D1F3470FBB37CA2F5B719CD1"
+            "Target" = "8:_A91840C68E914F8F98BA7BA851E73408"
             "Folder" = "8:_0BC9FE94282E40A79B8673DBA193C4B5"
             "WorkingFolder" = "8:_BDE6AF307A02429ABA8FD81364285C51"
             "Icon" = "8:_EA69239031444ACD93C77DD9A3F721C6"
@@ -1836,7 +1850,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_02900F94D1F3470FBB37CA2F5B719CD1"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A91840C68E914F8F98BA7BA851E73408"
             {
             "SourcePath" = "8:..\\Rastreador GPS+Maps\\obj\\x86\\Release\\AutoMap RNI.exe"
             "TargetName" = "8:"
