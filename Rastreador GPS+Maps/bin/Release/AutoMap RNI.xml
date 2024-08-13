@@ -224,11 +224,6 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<summary>
   Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
 </summary>
-</member><member name="T:AutoMapRNI.GestionCoor.CoordenadasGMS">
-	<summary>
- Estructura que aloja una componente de coordenadas en grados, minutos y segundos
- </summary>
-	<remarks></remarks>
 </member><member name="M:AutoMapRNI.GestionCoor.ConvertirAGMS(System.Double,System.Boolean)">
 	<summary>
  Convierte una componente de coordenadas geográficas de Grados Decimales a Grados Minutos Segundos Decimales
@@ -237,14 +232,14 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<param name="esLng">Booleano que indica si se trata de una coordenada de longitud o no</param>
 	<returns>Devuelve una componente de coordenada en Grados Minutos Segundos Decimales</returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.GestionCoor.ConvertirAGDec(AutoMapRNI.GestionCoor.CoordenadasGMS)">
+</member><member name="M:AutoMapRNI.GestionCoor.ConvertirAGDec(AutoMapRNI.CoordenadasGMS)">
 	<summary>
  Convierte la componente geográfica de un punto de Grados Minutos Segundos Decimales a Grados Decimales
  </summary>
 	<param name="Posicion">Latitud o Longitud en Grados Minutos Segundos Decimales</param>
 	<returns>Devuelve la componente en Grados Decimales</returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.GestionCoor.CalcularDist(AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS)">
+</member><member name="M:AutoMapRNI.GestionCoor.CalcularDist(AutoMapRNI.CoordenadasGMS,AutoMapRNI.CoordenadasGMS,AutoMapRNI.CoordenadasGMS,AutoMapRNI.CoordenadasGMS)">
 	<summary>
  Calcula la distancia aproximada, en metros, entre dos puntos geográficos.
  Se necesita una estructura GMS.
@@ -267,11 +262,6 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<param name="latLon"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.frmMain.t_EMRMAX">
-	<summary>
- Actualiza el nivel máximo detectado por el EMR300 en un variable que la rutina de recorrido va a tomar como resultado final en un punto
- </summary>
-	<remarks>Usar "boolResetMaxEMR" en la rutina de recorrido para finalizar la lectura actual y resetear el nivel a 0 V/m. Usar "boolKillThrMaxEMR" para terminar el thread</remarks>
 </member>
 </members>
 </doc>

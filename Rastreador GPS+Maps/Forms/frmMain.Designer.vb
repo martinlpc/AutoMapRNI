@@ -94,7 +94,6 @@ Partial Class frmMain
         Me.PrefetchAreaSeleccionadaToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpcionesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.InstrumentoRNIToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.chkEMR300 = New System.Windows.Forms.ToolStripMenuItem()
         Me.chkNBM550 = New System.Windows.Forms.ToolStripMenuItem()
         Me.USBToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ÓpticoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -848,17 +847,10 @@ Partial Class frmMain
         '
         'InstrumentoRNIToolStripMenuItem
         '
-        Me.InstrumentoRNIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.chkEMR300, Me.chkNBM550, Me.ToolStripSeparator1, Me.ToolStripMenuItem1})
+        Me.InstrumentoRNIToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.chkNBM550, Me.ToolStripSeparator1, Me.ToolStripMenuItem1})
         Me.InstrumentoRNIToolStripMenuItem.Name = "InstrumentoRNIToolStripMenuItem"
         Me.InstrumentoRNIToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
         Me.InstrumentoRNIToolStripMenuItem.Text = "Instrumento RNI"
-        '
-        'chkEMR300
-        '
-        Me.chkEMR300.CheckOnClick = True
-        Me.chkEMR300.Name = "chkEMR300"
-        Me.chkEMR300.Size = New System.Drawing.Size(173, 22)
-        Me.chkEMR300.Text = "NARDA EMR300"
         '
         'chkNBM550
         '
@@ -875,13 +867,13 @@ Partial Class frmMain
         Me.USBToolStripMenuItem.Checked = True
         Me.USBToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked
         Me.USBToolStripMenuItem.Name = "USBToolStripMenuItem"
-        Me.USBToolStripMenuItem.Size = New System.Drawing.Size(115, 22)
+        Me.USBToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.USBToolStripMenuItem.Text = "USB"
         '
         'ÓpticoToolStripMenuItem
         '
         Me.ÓpticoToolStripMenuItem.Name = "ÓpticoToolStripMenuItem"
-        Me.ÓpticoToolStripMenuItem.Size = New System.Drawing.Size(115, 22)
+        Me.ÓpticoToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ÓpticoToolStripMenuItem.Text = "Óptico"
         '
         'ToolStripSeparator1
@@ -1143,9 +1135,9 @@ Partial Class frmMain
         Me.Label21.ForeColor = System.Drawing.Color.DimGray
         Me.Label21.Location = New System.Drawing.Point(1072, 9)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(162, 13)
+        Me.Label21.Size = New System.Drawing.Size(173, 13)
         Me.Label21.TabIndex = 11
-        Me.Label21.Text = "Diseñado por Martín L. Pacheco"
+        Me.Label21.Text = "Desarollado por Martín L. Pacheco"
         Me.Label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'TableLayoutPanel1
@@ -1248,7 +1240,6 @@ Partial Class frmMain
     Friend WithEvents lblDisplay As System.Windows.Forms.Label
     Friend WithEvents txtEventos As System.Windows.Forms.TextBox
     Friend WithEvents InstrumentoRNIToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents chkEMR300 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents chkNBM550 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents lblTipoRes As System.Windows.Forms.Label

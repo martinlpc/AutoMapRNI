@@ -1,4 +1,8 @@
-﻿Versión al 17-07-2024: 2.0.1
+﻿Versión al 08-08-2024: 2.0.3
+	- Agregado de atajo CTRL + P para pausar el recorrido
+	- Eliminación de código obsoleto
+
+Versión al 17-07-2024: 2.0.1
 	- Eliminación de comentarios y código obsoleto
 	- Eliminación de recursos extra en desuso
 	- Optimización de código

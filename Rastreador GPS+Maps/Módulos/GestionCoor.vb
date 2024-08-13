@@ -1,14 +1,14 @@
 ﻿Module GestionCoor
-    ''' <summary>
-    ''' Estructura que aloja una componente de coordenadas en grados, minutos y segundos
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure CoordenadasGMS
-        Public Grados As Integer
-        Public Minutos As Integer
-        Public Segundos As Double
-        Public Hemisf As String '-- N/S/E/O-W
-    End Structure
+    '''' <summary>
+    '''' Estructura que aloja una componente de coordenadas en grados, minutos y segundos
+    '''' </summary>
+    '''' <remarks></remarks>
+    'Public Structure CoordenadasGMS
+    'Public Grados As Integer
+    'Public Minutos As Integer
+    'Public Segundos As Double
+    'Public Hemisf As String '-- N/S/E/O-W
+    'End Structure
     ''' <summary>
     ''' Convierte una componente de coordenadas geográficas de Grados Decimales a Grados Minutos Segundos Decimales
     ''' </summary>
@@ -18,7 +18,7 @@
     ''' <remarks></remarks>
     Public Function ConvertirAGMS(Posicion As Double, esLng As Boolean) As CoordenadasGMS
 
-        Dim ret As CoordenadasGMS
+        Dim ret As New CoordenadasGMS
         ' Negativo: Sur
         ' Positivo: Norte
         '----SI ES LONG:
@@ -36,15 +36,15 @@
 
         If esLng Then
             If Signo > 0 Then
-                ret.Hemisf = "E"
+                ret.Hemisferio = "E"
             Else
-                ret.Hemisf = "O"
+                ret.Hemisferio = "O"
             End If
         Else
             If Signo > 0 Then
-                ret.Hemisf = "N"
+                ret.Hemisferio = "N"
             Else
-                ret.Hemisf = "S"
+                ret.Hemisferio = "S"
             End If
         End If
         Return ret
@@ -64,7 +64,7 @@
         Dim ret As Double
         With Posicion
             ret = Math.Abs(.Grados) + .Minutos / 60 + .Segundos / 3600
-            If .Hemisf = "S" Or .Hemisf = "O" Or .Hemisf = "W" Then
+            If .Hemisferio = "S" Or .Hemisferio = "O" Or .Hemisferio = "W" Then
                 ret = 0 - Math.Abs(ret) ' Para hacerlo negativo
             End If
         End With

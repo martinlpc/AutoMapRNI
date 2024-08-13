@@ -15,6 +15,7 @@ Imports System.IO
 Imports System.IO.Ports
 Imports Ionic.Zip
 Imports System.Net
+Imports AutoMapRNI.Utils
 
 Public Class frmMain
 #Region "Variables comunes de programa"
@@ -31,7 +32,8 @@ Public Class frmMain
     Public NivelNarda As Single
     Public UnidadActual As String
     Public NivMax As Single
-    Dim LatitudActual, LongitudActual As CoordenadasGMS 'Lo último que tomó el GPS
+    Dim LatitudActual As New CoordenadasGMS(0, 0, 0, "S") 'Lo último que tomó el GPS
+    Dim LongitudActual As New CoordenadasGMS(0, 0, 0, "O")
     Dim PosicionStr As String
     Dim PosicionCoor As PointLatLng
     Dim CoorAUbicar As PointLatLng
@@ -46,7 +48,6 @@ Public Class frmMain
     Dim OverlayClick As GMapOverlay = New GMapOverlay("OverlayClick")
     Dim ovlyPrefetch As GMapOverlay = New GMapOverlay("ovlyPrefetch")
     'Banderas que determinan que se presionó o que combo cambió
-    'BuscoCoor sirve para ver si se busco coordenada o lugar (por letras)
     Public Conectado As Boolean = False 'true = se presionó el botón "CONECTAR" y se conectó correctamente. Tomando lecturas.
     Public CambioProv, CambioModoConexion, BuscoHome, BuscoCoor As Boolean
     Public boolSprinter As Boolean = False
@@ -63,19 +64,15 @@ Public Class frmMain
     Dim encryptionKey As String = ConfigurationSettings.AppSettings("EncryptionKey")
 
     Dim PaletaRNI(10) As Integer '0 el minimo, 9 el maximo
-    'El hilo que se va a encargar de leer el NARDA evitando que se trabe el funcionamiento por arrastrar el mapa al mismo tiempo
-    ' NECESITA DESHABILITAR EL CHECKILLEGALCROSSTHREAD
-    'Dim LockThis As New Object
+    
 #End Region
 
 #Region "Declaración de Threads (Subprocesos/hilos de ejecución) y delegados"
     Dim ProcesoLeerNarda As New Thread(AddressOf LeerNarda)
-    Dim ProcesoEMRMax As New Thread(AddressOf t_EMRMax)
     Dim ProcesoUbicar As Thread
     Dim ProcesoGPS As New Thread(AddressOf LeerGPS)
     Delegate Sub LeerGPSthread()
     Delegate Sub LeerNardaThread()
-    Delegate Sub MaxEMRThread()
 #End Region
 
 #Region "Subprocedimientos LoadForm y asociados a eventos de ventana"
@@ -149,7 +146,7 @@ Public Class frmMain
             Mapa.Overlays.Add(OverlayBusqueda)
             Mapa.Overlays.Add(ovlyPrefetch)
         Catch ex As Exception
-            nuevoMensajeEventos("Excepción ocurrida en el inicio del sistema: " & ex.Message)
+            nuevoMensajeEventos("Excepción ocurrida en el inicio del sistema: " & ex.Message & ex.StackTrace)
         Finally
             Cursor = Cursors.Arrow
         End Try
@@ -245,8 +242,6 @@ Public Class frmMain
 SeguirCampaña:
         Try
             'Se pone en cero la medicion del EMR para que empiece a tomar desde el arranque del recorido y no antes
-            If chkEMR300.Checked Then boolResetMaxEMR = True
-
             Do While Not boolStopCamp And Conectado
                 If PrimerBucle Then
                     Try
@@ -299,7 +294,8 @@ SeguirCampaña:
                     If Not boolStopCamp Then
                         For i = 5 To 1
                             lblCamp.Text = "Reanudando en " & i & " segundos..."
-                            Retardo(1000)
+                            'Retardo(1000)
+                            Delay(1000)
                             Application.DoEvents()
                         Next
                     End If
@@ -356,11 +352,8 @@ SeguirCampaña:
                 End If
 
                 IndiceRes += 1
-                If chkEMR300.Checked = True Then
-                    If chkMaxHold.Checked Then NivelPuro = NivMax
-                Else
-                    NivelPuro = NivelNarda
-                End If
+                
+                NivelPuro = NivelNarda
 
                 Application.DoEvents()
 
@@ -378,7 +371,8 @@ SeguirCampaña:
 
                 If chkNBM550.Checked Then
                     comNarda.WriteLine("RESET_MMA;") 'RESETEA CUALQUIER TIPO DE VALOR EN EL INSTRUMENTO (MAX, MIN, AVG, MAX_AVG)
-                    Retardo(300)
+                    'Retardo(300)
+                    Delay(300)
                     comNarda.DiscardInBuffer()
                 End If
                 boolResetMaxEMR = True
@@ -409,8 +403,8 @@ SeguirCampaña:
                     "Nivel s/incert.: " & NivelPuro & " " & UnidadActual & vbNewLine & _
                     "Porcentaje de la MEP: " & Math.Round(((NivelFinal ^ 2) / 3770) * 100 / 0.2, 2).ToString & "%" & vbNewLine & _
                     Now & vbNewLine & _
-                    LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & LatitudActual.Segundos & Chr(34) & " " & LatitudActual.Hemisf & vbNewLine & _
-                    LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & LongitudActual.Segundos & Chr(34) & " " & LongitudActual.Hemisf
+                    LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & LatitudActual.Segundos & Chr(34) & " " & LatitudActual.Hemisferio & vbNewLine & _
+                    LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & LongitudActual.Segundos & Chr(34) & " " & LongitudActual.Hemisferio
 
                 OverlayResultados.Markers.Add(Marker)
 
@@ -443,8 +437,8 @@ SeguirCampaña:
                     .SubItems.Add(NivelPuro & " " & UnidadActual)   '3
                     .SubItems.Add(TimeOfDay)            '4
                     .SubItems.Add(Today)                '5
-                    .SubItems.Add(LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & LatitudActual.Segundos & Chr(34) & " " & LatitudActual.Hemisf)       '6
-                    .SubItems.Add(LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & LongitudActual.Segundos & Chr(34) & " " & LongitudActual.Hemisf)   '7
+                    .SubItems.Add(LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & LatitudActual.Segundos & Chr(34) & " " & LatitudActual.Hemisferio)       '6
+                    .SubItems.Add(LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & LongitudActual.Segundos & Chr(34) & " " & LongitudActual.Hemisferio)   '7
                     .SubItems.Add(Instrumento.Marca & " " & Instrumento.Modelo & " - " & Instrumento.NumSerie)  '8
                     .SubItems.Add(SondaSel.Marca & " " & SondaSel.Modelo & " - " & SondaSel.NumSerie)   '9
                     .SubItems.Add(SondaSel.FechaCal) '10
@@ -487,8 +481,8 @@ Fin:
                 lblCamp.BackColor = Color.Silver
                 lblCamp.Text = "Recorrido finalizado, esperando nuevas instrucciones"
                 lblCargado.Text = "Recorrido finalizado, guardado en " & RutaRaizRes
-                nuevoMensajeEventos("Recorrido de medición finalizado con éxito por el usuario. Resultados guardados en """ & RutaRaizRes & """.")
-
+                nuevoMensajeEventos("Recorrido de medición finalizado a partir de un error. Resultados guardados en """ & RutaRaizRes & """.")
+                nuevoMensajeEventos("ERROR: " & ex.Message & ", EN: " & ex.StackTrace)
                 Dim SR As StreamReader = New StreamReader(RutaRaizRes)
                 outCrypt = Criptografo.EncryptData(SR.ReadToEnd)
                 SR.Close()
@@ -576,19 +570,9 @@ Fin:
     Private Sub IrAInicio(sender As System.Object, e As System.EventArgs)
         Cursor = Cursors.WaitCursor
         If LatitudActual.Grados = 0 Then
-            Dim coorlat, coorlon As CoordenadasGMS
-            With coorlat
-                .Grados = 40
-                .Minutos = 14
-                .Segundos = 0
-                .Hemisf = "S"
-            End With
-            With coorlon
-                .Grados = 63
-                .Minutos = 16
-                .Segundos = 42
-                .Hemisf = "O"
-            End With
+            Dim coorlat As New CoordenadasGMS(40, 14, 0, "S")
+            Dim coorlon As New CoordenadasGMS(63, 16, 42, "O")
+            
             CoorAUbicar = New PointLatLng(ConvertirAGDec(coorlat), ConvertirAGDec(coorlon))
             Posicionar(True)
             Mapa.Zoom = 4
@@ -609,8 +593,8 @@ Fin:
 
             OverlayResultados.Markers.Clear()
             Mapa.Overlays.Clear()
-            Marker.ToolTipText = LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 2) & Chr(34) & " " & LatitudActual.Hemisf & vbNewLine & _
-                LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 2) & Chr(34) & " " & LongitudActual.Hemisf
+            Marker.ToolTipText = LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 2) & Chr(34) & " " & LatitudActual.Hemisferio & vbNewLine & _
+                LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 2) & Chr(34) & " " & LongitudActual.Hemisferio
 
             Marker.ToolTipMode = MarkerTooltipMode.Always
             Mapa.Overlays.Add(OverlayResultados)
@@ -638,15 +622,7 @@ Fin:
         End Try
     End Sub
 
-    Private Sub NARDAEMR300ToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles chkEMR300.Click
-        chkNBM550.Checked = False
-        chkEMR300.Checked = True
-        lblSondaDetect.Text = "Sonda seleccionada:"
-        frmSondaEMR.Show(Me)
-    End Sub
-
     Private Sub chkNBM550_Click(sender As System.Object, e As System.EventArgs) Handles chkNBM550.Click
-        chkEMR300.Checked = False
         chkNBM550.Checked = True
         chkMaxAvg.Enabled = True
         lblSondaDetect.Text = "Sonda detectada:"
@@ -655,7 +631,7 @@ Fin:
     Private Sub ConectarNarda(sender As System.Object, e As System.EventArgs) Handles btnConectar.Click
         Try
             Dim Rta As String
-            If Not chkNBM550.Checked And Not chkEMR300.Checked Then
+            If Not chkNBM550.Checked Then
                 MsgBox("Seleccione en el menú ''Opciones -> Instrumento RNI'' el modelo del equipo que desea utilizar", MsgBoxStyle.Exclamation, "Seleccione un equipo antes de continuar")
                 Exit Sub
             End If
@@ -685,7 +661,8 @@ Fin:
                         If Not .IsOpen Then .Open()
                         .DiscardInBuffer()
                         .WriteLine("REMOTE ON;")
-                        Retardo(200)
+                        'Retardo(200)
+                        Delay(500)
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
                             Beep()
@@ -701,7 +678,8 @@ Fin:
                         End If
                         PictureBox1.Image = AutoMapRNI.My.Resources.nbm550
                         .WriteLine("DEVICE_INFO?;")
-                        Retardo(200)
+                        'Retardo(200)
+                        Delay(300)
                         Rta = .ReadExisting
                         Dim Vec1() As String = Rta.Split(separadores, StringSplitOptions.None)
                         lblInstrumento.Text = Vec1(0).Trim(trimmers) & " - S/N: " & Vec1(2).Trim(trimmers)
@@ -712,7 +690,8 @@ Fin:
                         End With
                         Rta = vbNullChar
                         .WriteLine("PROBE_INFO?;")
-                        Retardo(200)
+                        'Retardo(200)
+                        Delay(300)
                         Rta = .ReadExisting
                         Dim Vec2() As String = Rta.Split(separadores, StringSplitOptions.None)
                         lblSonda.Text = Vec2(0).Trim(trimmers) & " - S/N: " & Vec2(2).Trim(trimmers)
@@ -759,110 +738,39 @@ Fin:
                                 UnidadActual = "A/m"
                                 .WriteLine("RESULT_UNIT A/m;")
                         End Select
-                        Retardo(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
                         If chkMaxHold.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX;")
-                            Retardo(100)
+                            'Retardo(100)
+                            Delay(100)
                             .DiscardInBuffer()
                             .WriteLine("RESET_MAX;") 'RESETEA EL VALOR MAXIMO DEL DISPLAY
                             lblTipoRes.Text = "Max Hold"
                         ElseIf chkMaxAvg.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX_AVG;")
-                            Retardo(100)
+                            'Retardo(100)
+                            Delay(100)
                             .DiscardInBuffer()
                             .WriteLine("RESET_MAXAVG;")
-                            Retardo(100)
+                            'Retardo(100)
+                            Delay(100)
                             lblTipoRes.Text = "Max Avg"
                             .DiscardInBuffer()
                             .WriteLine("AVG_TIME 3;") 'SETEO DE TIEMPO DE PROMEDIADO en segundos
                         End If
-                        Retardo(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
                         .WriteLine("MEAS_VIEW NORMAL;")
-                        Retardo(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
                         .WriteLine("AUTO_ZERO OFF;") 'APAGA EL AUTOCERO 
-                        Retardo(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
-
-
-                    ElseIf chkEMR300.Checked Then
-                        '----------------------------------------
-                        'CONFIGURACION DEL PUERTO COM PARA EMR300
-                        '----------------------------------------
-                        .BaudRate = 4800
-                        .DataBits = 8
-                        .Parity = Ports.Parity.None
-                        .StopBits = Ports.StopBits.One
-                        .Handshake = Ports.Handshake.XOnXOff
-                        '----------------------------------------
-                        '----------------------------------------
-                        If Not .IsOpen Then .Open()
-                        .DiscardInBuffer()
-                        .WriteLine("*IDN?")
-                        Retardo(500)
-                        Rta = .ReadExisting
-                        If Not Rta.Contains("EMR-300") Then
-                            Beep()
-                            nuevoMensajeEventos("El instrumento no responde o no se encuentra conectado")
-                            btnIniciarCamp.Enabled = False
-                            Exit Sub
-                        Else
-                            nuevoMensajeEventos("EMR-300 conectado.")
-                        End If
-                        Dim Vec1() As String = Rta.Split(separadores, StringSplitOptions.None)
-                        lblInstrumento.Text = Vec1(1).Trim(trimmers) & " - S/N: " & Vec1(2).Trim(trimmers)
-                        With Instrumento
-                            .Marca = "NARDA"
-                            .Modelo = Vec1(1).Trim(trimmers)
-                            .NumSerie = Vec1(2).Trim(trimmers)
-                        End With
-
-                        PictureBox1.Image = AutoMapRNI.My.Resources.emr300
-                        .WriteLine("CU E_Field") 'Setear V/m
-                        Retardo(100)
-                        Rta = .ReadExisting()
-
-                        If chkMaxHold.Checked = True Then
-                            lblTipoRes.Text = "Max Hold"
-                        ElseIf chkActual.Checked = True Then
-                            lblTipoRes.Text = "Actual"
-                        End If
-                        .WriteLine("FAST:MODE ON") 'Modo de respuesta rápida (en intervalos de 400 ms) y desactiva avg y max
-                        Retardo(100)
-                        Rta = .ReadExisting()
-
-                        .WriteLine("CAX EFF") 'Setear INTEGRAR EJES
-                        Retardo(100)
-                        .DiscardInBuffer()
-                        Try
-                            Select Case ProcesoEMRMax.ThreadState
-                                Case ThreadState.Stopped
-                                    ProcesoEMRMax = Nothing
-                                    ProcesoEMRMax = New Thread(AddressOf t_EMRMAX)
-                                    Application.DoEvents()
-                                    ProcesoEMRMax.Start()
-                                Case ThreadState.Aborted
-                                    ProcesoEMRMax = Nothing
-                                    ProcesoEMRMax = New Thread(AddressOf t_EMRMAX)
-                                    Application.DoEvents()
-                                    ProcesoEMRMax.Start()
-                                Case ThreadState.Unstarted
-                                    ProcesoEMRMax.Start()
-                                Case ThreadState.AbortRequested
-                                    While ProcesoGPS.IsAlive
-                                        Application.DoEvents()
-                                    End While
-                                Case ThreadState.WaitSleepJoin
-                                    ProcesoEMRMax.Abort()
-                                    While ProcesoEMRMax.IsAlive
-                                        Application.DoEvents()
-                                    End While
-                            End Select
-                        Catch ThrEx As ThreadStartException
-                            MsgBox(ThrEx.Message)
-                        End Try
                     End If
                     'Se pone en true la bandera de conectado para que cuando se vuelva a presionar este boton
                     'se "desconecte" el equipo
@@ -873,7 +781,6 @@ Fin:
                     btnIniciarCamp.Enabled = True
                     InstrumentoRNIToolStripMenuItem.Enabled = False
                     chkNBM550.Enabled = False
-                    chkEMR300.Enabled = False
                 Else
                     tmrNarda.Enabled = False
                     If chkNBM550.Checked Then
@@ -888,16 +795,6 @@ Fin:
                             .NumSerie = ""
                         End With
                         lblSonda.Text = ""
-                    Else
-                        'NO DEBERIA SER NECESARIO SUSPENDER T_EMRMAX, YA QUE AL TERMINAR EL LOOP EL THREAD MUERE (usando boolKillThrMaxEMR)
-                        boolKillThrMaxEMR = True
-                        .WriteLine("AZ ON")
-                        Retardo(100)
-                        .DiscardInBuffer()
-                        .WriteLine("FAST:MODE OFF")
-                        Retardo(100)
-                        .DiscardInBuffer()
-                        nuevoMensajeEventos("Se desconectó correctamente el instrumento.")
                     End If
                     actualizarBateria("OFF")
                     lblInstrumento.Text = ""
@@ -915,7 +812,6 @@ Fin:
                     btnConectar.BackColor = SystemColors.Control
                     If .IsOpen Then .Close()
                     chkNBM550.Enabled = True
-                    chkEMR300.Enabled = True
                 End If
                 InstrumentoRNIToolStripMenuItem.Enabled = True
             End With
@@ -945,12 +841,18 @@ Fin:
     Private Sub actualizarBateria(nivel As Object)
         If TypeOf nivel Is Integer Then
             ' ------ Bateria del NBM550
-            barBateria.Invoke(Sub() barBateria.Value = CInt(nivel))
-            lblBattery.Invoke(Sub() lblBattery.Text = nivel.ToString())
-            If CInt(nivel) <= 10 Then
-                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
-                nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & CInt(nivel) & "%")
-            End If
+            Try
+                barBateria.Invoke(Sub() barBateria.Value = CInt(nivel))
+                lblBattery.Invoke(Sub() lblBattery.Text = nivel.ToString())
+                If CInt(nivel) <= 10 Then
+                    My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+                    nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & CInt(nivel) & "%")
+                End If
+            Catch ex As Exception
+                If CInt(nivel) > barBateria.Maximum Then
+                    nuevoMensajeEventos("Ocurrió un error leyendo batería del medidor.")
+                End If
+            End Try
         ElseIf TypeOf nivel Is String Then
             ' ------ Procedimiento de desconexión de equipo
             If nivel.ToString.Contains("OFF") Then
@@ -958,20 +860,7 @@ Fin:
                 lblBattery.Invoke(Sub() lblBattery.Text = "")
                 Exit Sub
             End If
-
-            ' ------ Bateria del EMR300
-            If nivel.ToString.Contains("LOW") Then
-                barBateria.Invoke(Sub() barBateria.Value = 10)
-                lblBattery.Invoke(Sub() lblBattery.Text = "LOW")
-                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
-                nuevoMensajeEventos("EL INSTRUMENTO REPORTA BATERÍA BAJA! Reemplazar o cargar baterías.")
-            Else
-                barBateria.Invoke(Sub() barBateria.Value = 100)
-                lblBattery.Invoke(Sub() lblBattery.Text = "OK")
-            End If
         End If
-
-
     End Sub
 
     Private Sub txtEventos_TextChanged(sender As System.Object, e As System.EventArgs) Handles txtEventos.TextChanged
@@ -1562,8 +1451,8 @@ Fin:
             OverlayClick.Markers.Clear()
             'Mapa.Overlays.Clear()
             Dim NuevoMarker As GMapMarker = New GMarkerGoogle(UltimoPunto, GMarkerGoogleType.red)
-            NuevoMarker.ToolTipText = LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 2) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-                LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 2) & Chr(34) & " " & LngEnGMS.Hemisf
+            NuevoMarker.ToolTipText = LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 2) & Chr(34) & " " & LatEnGMS.Hemisferio & vbNewLine & _
+                LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 2) & Chr(34) & " " & LngEnGMS.Hemisferio
 
             NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
             'Mapa.Overlays.Add(OverlayClick)
@@ -1730,8 +1619,8 @@ Fin:
                     "Nivel s/incert.: " & Punto.NivelPuro & " " & UnidadActual & vbNewLine & _
                     "Porcentaje de la MEP: " & Math.Round(((Punto.Nivel ^ 2) / 3770) * 100 / 0.2, 2).ToString & "%" & vbNewLine & _
                     Punto.Fecha & " - " & Punto.Hora & vbNewLine & _
-                    LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-                    LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisf
+                    LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 3) & Chr(34) & " " & LatEnGMS.Hemisferio & vbNewLine & _
+                    LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 3) & Chr(34) & " " & LngEnGMS.Hemisferio
 
                     NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
                     OverlayCarga.Markers.Add(NuevoMarker)
@@ -1744,8 +1633,8 @@ Fin:
                         .SubItems.Add(Punto.NivelPuro & " " & UnidadActual)                 'sin incert
                         .SubItems.Add(Punto.Hora)
                         .SubItems.Add(Punto.Fecha)
-                        .SubItems.Add(LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & LatEnGMS.Segundos & Chr(34) & " " & LatEnGMS.Hemisf)
-                        .SubItems.Add(LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & LngEnGMS.Segundos & Chr(34) & " " & LngEnGMS.Hemisf)
+                        .SubItems.Add(LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & LatEnGMS.Segundos & Chr(34) & " " & LatEnGMS.Hemisferio)
+                        .SubItems.Add(LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & LngEnGMS.Segundos & Chr(34) & " " & LngEnGMS.Hemisferio)
                         .SubItems.Add(EquipoNom & " - " & EquipoNumSerie)
                         .SubItems.Add(SondaNom & " - " & SondaNumSerie)
                         .SubItems.Add(SondaFechaCal)
@@ -1798,14 +1687,14 @@ HacerLoop:      Loop
                 latgms.Grados = vec(0).Trim(trimmers)
                 latgms.Minutos = vec(1).Trim(trimmers)
                 latgms.Segundos = vec(2).Trim(trimmers)
-                latgms.Hemisf = vec(3)
+                latgms.Hemisferio = vec(3)
                 .Lat = ConvertirAGDec(latgms)
                 Dim vecc() As String = Split(e.Item.SubItems.Item(6).Text, " ")
                 Dim longms As CoordenadasGMS
                 longms.Grados = vecc(0).Trim(trimmers)
                 longms.Minutos = vecc(1).Trim(trimmers)
                 longms.Segundos = vecc(2).Trim(trimmers)
-                longms.Hemisf = vecc(3)
+                longms.Hemisferio = vecc(3)
                 .Lon = ConvertirAGDec(longms)
             End With
 
@@ -1844,8 +1733,8 @@ HacerLoop:      Loop
                     "Nivel s/incert.: " & Punto.NivelPuro & " " & UnidadActual & vbNewLine & _
                     "Porcentaje de la MEP mas estricta: " & Math.Round(((Punto.Nivel ^ 2) / 3770) * 100 / 0.2, 2).ToString & "%" & vbNewLine & _
                     Punto.Fecha & " - " & Punto.Hora & vbNewLine & _
-                    LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 2) & Chr(34) & " " & LatEnGMS.Hemisf & vbNewLine & _
-                    LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 2) & Chr(34) & " " & LngEnGMS.Hemisf
+                    LatEnGMS.Grados & "° " & LatEnGMS.Minutos & "' " & Math.Round(LatEnGMS.Segundos, 2) & Chr(34) & " " & LatEnGMS.Hemisferio & vbNewLine & _
+                    LngEnGMS.Grados & "° " & LngEnGMS.Minutos & "' " & Math.Round(LngEnGMS.Segundos, 2) & Chr(34) & " " & LngEnGMS.Hemisferio
 
             NuevoMarker.ToolTipMode = MarkerTooltipMode.OnMouseOver
             OverlayCarga.Markers.Add(NuevoMarker)
@@ -2226,7 +2115,7 @@ HacerLoop:      Loop
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function CompletarDesdeString(latLon As String) As CoordenadasGMS
-        Dim resultado As New CoordenadasGMS()
+        Dim resultado As New CoordenadasGMS
 
         If (String.IsNullOrWhiteSpace(latLon)) Or latLon = Nothing Then
             Return resultado
@@ -2239,7 +2128,7 @@ HacerLoop:      Loop
         resultado.Minutos = Math.Abs(CInt(vector(0)))
         vector = vector(1).Split(New Char() {""""})
         resultado.Segundos = Math.Round(Math.Abs(CDbl(vector(0))), 3)
-        resultado.Hemisf = vector(1).Trim()
+        resultado.Hemisferio = vector(1).Trim()
 
         Return resultado
     End Function
@@ -2338,13 +2227,13 @@ HacerLoop:      Loop
                         .Grados = 34
                         .Minutos = 45
                         .Segundos = 2
-                        .Hemisf = "S"
+                        .Hemisferio = "S"
                     End With
                     With LongitudActual
                         .Grados = 58
                         .Minutos = 29
                         .Segundos = 56
-                        .Hemisf = "O"
+                        .Hemisferio = "O"
                     End With
 
                     OverlayPosActual.Markers.Clear()
@@ -2357,8 +2246,8 @@ HacerLoop:      Loop
 
                     MarkerPosActual = New GMarkerGoogle(CoorAUbicar, GMarkerGoogleType.arrow)
                     MarkerPosActual.ToolTipText = "Posición actual" & vbNewLine & vbNewLine & _
-                        LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisf & vbNewLine & _
-                        LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 1) & Chr(34) & " " & LongitudActual.Hemisf
+                        LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisferio & vbNewLine & _
+                        LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 1) & Chr(34) & " " & LongitudActual.Hemisferio
                     MarkerPosActual.ToolTipMode = MarkerTooltipMode.OnMouseOver
 
                     OverlayPosActual.Markers.Add(MarkerPosActual)
@@ -2367,10 +2256,10 @@ HacerLoop:      Loop
                         Posicionar(BuscoCoor)
                     End If
                     With LatitudActual
-                        txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf
+                        txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
                     End With
                     With LongitudActual
-                        txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf
+                        txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
                     End With
                     Application.DoEvents()
                     If Not StatusGpS Then
@@ -2563,8 +2452,8 @@ ReIntGSAT:
                 OverlayPosActual.Markers.Clear()
                 MarkerPosActual = New GMarkerGoogle(CoorAUbicar, GMarkerGoogleType.arrow)
                 MarkerPosActual.ToolTipText = "Posición actual" & vbNewLine & vbNewLine & _
-                    LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisf & vbNewLine & _
-                    LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 1) & Chr(34) & " " & LongitudActual.Hemisf
+                    LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisferio & vbNewLine & _
+                    LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 1) & Chr(34) & " " & LongitudActual.Hemisferio
                 MarkerPosActual.ToolTipMode = MarkerTooltipMode.OnMouseOver
 
                 OverlayPosActual.Markers.Add(MarkerPosActual)
@@ -2573,10 +2462,10 @@ ReIntGSAT:
                     Posicionar(BuscoCoor)
                 End If
                 With LatitudActual
-                    txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf
+                    txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
                 End With
                 With LongitudActual
-                    txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf
+                    txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
                 End With
                 Application.DoEvents()
             End If
@@ -2592,6 +2481,8 @@ ReIntGSAT:
                 Exit Sub
             ElseIf ex.Message.Contains("reintentos") Then
                 comGPS.Close()
+            ElseIf ex.Message.Contains("Referencia a objeto no establecida como instancia de un objeto.") Then
+                nuevoMensajeEventos("Error en lectura del GPS: " & ex.Message & ex.StackTrace)
             End If
             Application.DoEvents()
         Finally
@@ -2614,13 +2505,15 @@ ReIntGSAT:
                         If chkPausa.Checked Then
                             ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
                             comNarda.WriteLine("RESET_MAX;")
-                            Retardo(200)
+                            'Retardo(200)
+                            Delay(300)
                             inBuffer = comNarda.ReadExisting
                             Exit Sub
                         End If
 
                         comNarda.WriteLine("MEAS?;")
-                        Retardo(200)
+                        'Retardo(200)
+                        Delay(300)
                         VecNarda = Split(comNarda.ReadExisting, ",")
                         Application.DoEvents()
 
@@ -2635,32 +2528,12 @@ ReIntGSAT:
                         lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
 
                         comNarda.WriteLine("BATTERY?;")
-                        Retardo(200)
+                        'Retardo(200)
+                        Delay(300)
                         inBuffer = comNarda.ReadExisting
                         nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
                         actualizarBateria(nivelBateria)
                         ContError = 0
-
-                    ElseIf chkEMR300.Checked Then
-                        comNarda.WriteLine("M")
-                        Retardo(400)
-                        VecNarda = Split(comNarda.ReadExisting, ",")
-
-                        comNarda.DiscardInBuffer()
-                        NivelNarda = Format(CSng(VecNarda(0).Replace(".", ",")), "##0.000")
-
-                        If chkMaxHold.Checked Then
-                            lblDisplay.Invoke(Sub() lblDisplay.Text = NivMax & " " & UnidadActual) 'NivelNarda & " V/m"
-                            lblTipoRes.Invoke(Sub() lblDisplay.Text = "Max hold")
-                        ElseIf chkMaxAvg.Checked Then
-                            lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
-                            lblTipoRes.Invoke(Sub() lblDisplay.Text = "Max Avg")
-                        End If
-
-                        comNarda.WriteLine("SYST:BAT?")
-                        Retardo(100)
-                        inBuffer = comNarda.ReadExisting
-                        actualizarBateria(inBuffer.ToString)
                     End If
 
                     ContError = 0
@@ -2705,21 +2578,6 @@ ReIntGSAT:
         btnIniciarCamp.Invoke(Sub() btnIniciarCamp.Enabled = False)
     End Sub
 
-    ''' <summary>
-    ''' Actualiza el nivel máximo detectado por el EMR300 en un variable que la rutina de recorrido va a tomar como resultado final en un punto
-    ''' </summary>
-    ''' <remarks>Usar "boolResetMaxEMR" en la rutina de recorrido para finalizar la lectura actual y resetear el nivel a 0 V/m. Usar "boolKillThrMaxEMR" para terminar el thread</remarks>
-    Sub t_EMRMAX()
-        Do
-            NivMax = 0
-            boolResetMaxEMR = False
-            Do While Not boolResetMaxEMR
-                If NivelNarda > NivMax Then NivMax = NivelNarda
-                Application.DoEvents()
-            Loop
-        Loop
-    End Sub
-
 #End Region
 
 
@@ -2741,7 +2599,8 @@ ReIntGSAT:
 
                     serialPort.DiscardInBuffer()
                     serialPort.WriteLine("REMOTE ON;")
-                    Retardo(100)
+                    'Retardo(100)
+                    Delay(200)
                     Dim data As String = serialPort.ReadExisting()
 
                     If data.Equals("0;" & vbCr & "") Then
@@ -2788,7 +2647,8 @@ ReIntGSAT:
                         Continue For
                     End Try
 
-                    Retardo(300)
+                    'Retardo(300)
+                    Delay(300)
 
                     If Not gpsDetected Then
                         Try
