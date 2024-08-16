@@ -145,9 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Models\CoordenadasGMS.vb" />
+    <Compile Include="Core\Models\NBM550Probe.vb" />
     <Compile Include="Core\Models\PuntoMedicion.vb" />
-    <Compile Include="Core\Services\gps.vb" />
-    <Compile Include="Core\Services\nbm550.vb" />
+    <Compile Include="Core\Services\GPSReader.vb" />
+    <Compile Include="Core\Services\NBM550Reader.vb" />
     <Compile Include="Core\Utilities\Utils.vb" />
     <Compile Include="Forms\About.Designer.vb">
       <DependentUpon>About.vb</DependentUpon>

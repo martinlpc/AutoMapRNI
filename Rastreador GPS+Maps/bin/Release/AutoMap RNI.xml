@@ -6,7 +6,20 @@ AutoMapRNI
 </name>
 </assembly>
 <members>
-<member name="P:AutoMapRNI.My.Resources.Resources.ResourceManager">
+<member name="M:AutoMapRNI.NBM550Reader.connectToDevice(System.String)">
+	<summary>
+ Establish a connection with the NBM550 on the specified COM port
+ </summary>
+	<param name="portName"></param>
+	<returns>"0" if error, string containing its serial number if successful</returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.NBM550Reader.disconnectDevice">
+	<summary>
+ Sends a remote off sentence and closes the COM port
+ </summary>
+	<returns>Boolean</returns>
+	<remarks></remarks>
+</member><member name="P:AutoMapRNI.My.Resources.Resources.ResourceManager">
 	<summary>
   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
 </summary>
@@ -261,6 +274,33 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
  </summary>
 	<param name="latLon"></param>
 	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.GPSReader.getPositionFromGarmin">
+	<summary>
+ Get Garmin 18x USB status and position
+ </summary>
+	<returns>{"Status","Lat","Lon"} or "Error"</returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.GPSReader.getGPRMCParsedData(System.String)">
+	<summary>
+ Parsea la sentencia GPRMC de un GPS para extraer sus datos en un dict(str, str)
+ </summary>
+	<param name="sentence"></param>
+	<returns>Dict(str, str)</returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.GPSReader.formatGPSStreamToGMS(System.String)">
+	<summary>
+ Función que hizo MD para completar las coordenadas del gps GARMIN cuando le faltan dígitos y evitar errores
+ </summary>
+	<param name="latLon"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.GPSReader.checkMD5(System.String)">
+	<summary>
+ Chequea la redundancia de datos del streaming del GPS
+ </summary>
+	<param name="nmeaSentence">Cadena de datos que envía el GPS a analizar</param>
+	<returns>Boolean</returns>
 	<remarks></remarks>
 </member>
 </members>

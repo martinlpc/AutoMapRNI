@@ -16,6 +16,9 @@ Imports System.IO.Ports
 Imports Ionic.Zip
 Imports System.Net
 Imports AutoMapRNI.Utils
+Imports AutoMapRNI.NBM550Reader
+Imports AutoMapRNI.GPSReader
+Imports AutoMapRNI.NBM550Probe
 
 Public Class frmMain
 #Region "Variables comunes de programa"
@@ -64,7 +67,11 @@ Public Class frmMain
     Dim encryptionKey As String = ConfigurationSettings.AppSettings("EncryptionKey")
 
     Dim PaletaRNI(10) As Integer '0 el minimo, 9 el maximo
-    
+
+    ' Instancias de los controladores que van a leer los dispositivos
+    Dim gpsReader As GPSReader
+    Dim nbmReader As NBM550Reader
+
 #End Region
 
 #Region "Declaración de Threads (Subprocesos/hilos de ejecución) y delegados"
