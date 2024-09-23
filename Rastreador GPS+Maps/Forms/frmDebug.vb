@@ -8,4 +8,8 @@
     Private Sub RadioButton1_CheckedChanged(sender As System.Object, e As System.EventArgs)
 
     End Sub
+
+    Private Sub debug_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles debug.CheckedChanged
+
+    End Sub
 End Class

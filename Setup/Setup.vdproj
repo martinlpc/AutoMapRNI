@@ -256,19 +256,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A91840C68E914F8F98BA7BA851E73408"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
+        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -280,7 +268,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
+        "OwnerKey" = "8:_7564B83898B388932AF8F84D0F3B004F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -795,11 +789,6 @@
             "AssemblyAsmDisplayName" = "8:Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7564B83898B388932AF8F84D0F3B004F"
-                    {
-                    "Name" = "8:Ionic.Zip.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Ionic.Zip.dll"
             "TargetName" = "8:"
@@ -846,11 +835,6 @@
             "AssemblyAsmDisplayName" = "8:GMap.NET.Core, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_86732ADE0F28D5C1F4A73CF67A09C63E"
-                    {
-                    "Name" = "8:GMap.NET.Core.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:GMap.NET.Core.dll"
             "TargetName" = "8:"
@@ -1037,11 +1021,6 @@
             "AssemblyAsmDisplayName" = "8:GMap.NET.WindowsForms, Version=1.7.0.0, Culture=neutral, PublicKeyToken=b85b9027b614afef, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_BE7317BC82C146A7A9307D060E03FED4"
-                    {
-                    "Name" = "8:GMap.NET.WindowsForms.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:GMap.NET.WindowsForms.dll"
             "TargetName" = "8:"
@@ -1068,11 +1047,6 @@
             "AssemblyAsmDisplayName" = "8:MD.Equipos.GPS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D3874DD70DDCEEE3691E7DD0A6DB669E"
-                    {
-                    "Name" = "8:MD.Equipos.GPS.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MD.Equipos.GPS.dll"
             "TargetName" = "8:"
@@ -1316,15 +1290,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AutoMap RNI"
-        "ProductCode" = "8:{2AD03DF4-34FB-4D04-A834-D3472B040F02}"
-        "PackageCode" = "8:{A826DEEA-2461-41F5-BF51-9B7C2AFD82D8}"
+        "ProductCode" = "8:{5A9A342F-DA74-4947-A865-7A83DFC1C22E}"
+        "PackageCode" = "8:{4311F67A-1081-4437-8AF8-880E466CDCB5}"
         "UpgradeCode" = "8:{8A863FCB-4919-40D3-AA71-325EF8C17E77}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.0.3"
+        "ProductVersion" = "8:2.0.4"
         "Manufacturer" = "8:Ente Nacional de Comunicaciones"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
