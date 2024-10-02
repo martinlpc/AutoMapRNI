@@ -1,56 +1,58 @@
 ﻿Imports System.IO.Ports
 Imports System.IO
+Imports System.Globalization
 
 Public Class NMEA0183Reader
     Private _puertoSerie As SerialPort
     Private _bufferNMEA As String = String.Empty
 
-    ' Constructor para inicializar el puerto COM
-    Public Sub New(ByVal nombrePuerto As String, ByVal baudRate As Integer)
+    Private _lat As Double
+    Private _lon As Double
+    Private _hemisLat As String
+    Private _hemisLon As String
+    Private _isGPSSync As Boolean = False
+
+   Public Sub New(ByVal nombrePuerto As String, ByVal baudRate As Integer)
         _puertoSerie = New SerialPort(nombrePuerto, baudRate, Parity.None, 8, StopBits.One)
         AddHandler _puertoSerie.DataReceived, AddressOf DataReceivedHandler
     End Sub
 
     Public Sub New()
-
     End Sub
 
-    ' Método para abrir el puerto serie
-    Public Sub AbrirPuerto()
+    Public Function AbrirPuerto() As Boolean
         Try
             If Not _puertoSerie.IsOpen Then
                 _puertoSerie.Open()
-                Console.WriteLine("Puerto abierto correctamente.")
+                Return True
+            Else
+                Return False
             End If
-        Catch ex As UnauthorizedAccessException
-            Console.WriteLine("Error: Acceso no autorizado al puerto COM.")
-        Catch ex As IOException
-            Console.WriteLine("Error: Fallo en la conexión al puerto COM.")
+        
         Catch ex As Exception
-            Console.WriteLine("Error inesperado al abrir el puerto: " & ex.Message)
+            Return False
         End Try
-    End Sub
+    End Function
 
-    ' Método para cerrar el puerto serie
-    Public Sub CerrarPuerto()
+    Public Function CerrarPuerto() As Boolean
         Try
             If _puertoSerie.IsOpen Then
                 _puertoSerie.Close()
-                Console.WriteLine("Puerto cerrado correctamente.")
+                Return True
             End If
         Catch ex As IOException
-            Console.WriteLine("Error al cerrar el puerto COM.")
+            'frmMain.nuevoMensajeEventos("Error al cerrar el puerto COM.")
         Catch ex As Exception
-            Console.WriteLine("Error inesperado al cerrar el puerto: " & ex.Message)
+            'frmMain.nuevoMensajeEventos("Error inesperado al cerrar el puerto: " & ex.Message)
         End Try
-    End Sub
+        Return False
+    End Function
 
-    ' Método para verificar si el dispositivo está conectado
     Public Function DispositivoConectado() As Boolean
         Try
             Return _puertoSerie.IsOpen
         Catch ex As Exception
-            Console.WriteLine("Error al verificar si el dispositivo está conectado: " & ex.Message)
+            'frmMain.nuevoMensajeEventos("Error al verificar si el dispositivo está conectado: " & ex.Message)
             Return False
         End Try
     End Function
@@ -64,11 +66,11 @@ Public Class NMEA0183Reader
                 _bufferNMEA = String.Empty ' Limpiar buffer después de procesar
             End If
         Catch ex As TimeoutException
-            Console.WriteLine("Error: Tiempo de espera agotado en la lectura del puerto.")
+            'frmMain.nuevoMensajeEventos("Error: Tiempo de espera agotado en la lectura del puerto.")
         Catch ex As IOException
-            Console.WriteLine("Error de E/S al leer los datos del puerto.")
+            'frmMain.nuevoMensajeEventos("Error de E/S al leer los datos del puerto.")
         Catch ex As Exception
-            Console.WriteLine("Error inesperado al recibir datos: " & ex.Message)
+            'frmMain.nuevoMensajeEventos("Error inesperado al recibir datos: " & ex.Message)
         End Try
     End Sub
 
@@ -78,37 +80,61 @@ Public Class NMEA0183Reader
             Dim lineas As String() = buffer.Split(vbCrLf.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
             For Each linea In lineas
                 If linea.StartsWith("$GPRMC") Then
+                    ' Primero se revisa que el checksum XOR de la sentencia sea correcto
+                    If Not VerificarChecksum(linea) Then Continue For
+
                     Dim datos As String() = linea.Split(","c)
                     If datos(2) = "V" Then
-                        Console.WriteLine("GPS sin posición establecida")
+                        _isGPSSync = False
+                        ResetCoordenadas()
                     ElseIf datos(2) = "A" Then ' Datos válidos
-                        Dim latitud As Double = ConvertirCoordenada(datos(3), datos(4))
-                        Dim longitud As Double = ConvertirCoordenada(datos(5), datos(6))
-                        Console.WriteLine("Latitud: " & latitud & ", Longitud: " & longitud)
-                    Else
-                        Console.WriteLine("Error: Datos GPS no válidos.")
+                        _lat = ConvertirCoordenada(datos(3), datos(4))
+                        _hemisLat = datos(4)
+                        _lon = ConvertirCoordenada(datos(5), datos(6))
+                        _hemisLon = datos(6)
+                        _isGPSSync = True
                     End If
                 End If
             Next
         Catch ex As FormatException
-            Console.WriteLine("Error en el formato de los datos NMEA.")
+            'frmMain.nuevoMensajeEventos("Error en el formato de los datos NMEA.")
         Catch ex As Exception
-            Console.WriteLine("Error inesperado al procesar los datos NMEA: " & ex.Message)
+            'frmMain.nuevoMensajeEventos("Error inesperado al procesar los datos NMEA: " & ex.Message)
         End Try
     End Sub
 
-    ' Método para obtener coordenadas de la sentencia GPRMC
-    Public Function ObtenerCoordenadas(formato As String) As String
-        ' Aquí retornaríamos las coordenadas procesadas en el formato deseado
-        ' Esta función se llenaría con la lógica para retornar las coordenadas según el formato (GG MM SS.SS o decimal)
-        Return "Coordenadas en formato: " & formato
+    Private Function VerificarChecksum(ByVal linea As String) As Boolean
+        Try
+            Dim checksumCalculado As Integer = 0
+            Dim segmentos() As String = linea.Split("*"c)
+            Dim sentencia As String = segmentos(0).Substring(1)
+            Dim checksumRecibido As String = segmentos(1).Trim()
+
+            For Each character As Char In sentencia
+                checksumCalculado = checksumCalculado Xor Convert.ToByte(character)
+            Next
+
+            Return checksumCalculado.ToString("X2") = checksumRecibido.ToUpper()
+        Catch ex As Exception
+            Return False
+        End Try
     End Function
 
     ' Método para convertir coordenadas de NMEA a decimal o GG MM SS.SS
     Private Function ConvertirCoordenada(coordenada As String, hemisferio As String) As Double
         Try
-            Dim grados As Integer = Integer.Parse(coordenada.Substring(0, 2))
-            Dim minutos As Double = Double.Parse(coordenada.Substring(2)) / 60
+            Dim grados As Integer
+            Dim minutos As Double
+
+            If coordenada.Length = 9 Then
+                grados = Integer.Parse(coordenada.Substring(0, 2))
+                minutos = Double.Parse(coordenada.Substring(2), CultureInfo.InvariantCulture) / 60
+            ElseIf coordenada.Length = 10 Then
+                grados = Integer.Parse(coordenada.Substring(0, 3))
+                minutos = Double.Parse(coordenada.Substring(3), CultureInfo.InvariantCulture) / 60
+            Else
+                Throw New ArgumentException("La coordenada NMEA tiene un formato inválido.")
+            End If
 
             Dim resultado As Double = grados + minutos
             If hemisferio = "S" Or hemisferio = "W" Then
@@ -117,9 +143,38 @@ Public Class NMEA0183Reader
 
             Return resultado
         Catch ex As Exception
-            Console.WriteLine("Error al convertir las coordenadas: " & ex.Message)
+            'Console.WriteLine("Error al convertir las coordenadas: " & ex.Message)
             Return 0.0
         End Try
+    End Function
+
+    ' Método para restablecer las coordenadas a valores predeterminados
+    Private Sub ResetCoordenadas()
+        _lat = 0.0
+        _lon = 0.0
+        _hemisLat = ""
+        _hemisLon = ""
+    End Sub
+
+    ' Métodos para obtener las coordenadas actuales
+    Public Function ObtenerLatitud() As Double
+        Return If(_isGPSSync, _lat, 0.0)
+    End Function
+
+    Public Function ObtenerLongitud() As Double
+        Return If(_isGPSSync, _lon, 0.0)
+    End Function
+
+    Public Function ObtenerHemisferioLatitud() As String
+        Return If(_isGPSSync, _hemisLat, "")
+    End Function
+
+    Public Function ObtenerHemisferioLongitud() As String
+        Return If(_isGPSSync, _hemisLon, "")
+    End Function
+
+    Public Function ObtenerGPSStatus() As Boolean
+        Return _isGPSSync
     End Function
 End Class
 

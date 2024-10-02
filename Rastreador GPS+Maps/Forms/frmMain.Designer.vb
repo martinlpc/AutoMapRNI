@@ -1026,7 +1026,7 @@ Partial Class frmMain
         Me.comboGPSSelected.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.comboGPSSelected.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.comboGPSSelected.FormattingEnabled = True
-        Me.comboGPSSelected.Items.AddRange(New Object() {"Garmin 18X USB", "NMEA (GlobalSat)"})
+        Me.comboGPSSelected.Items.AddRange(New Object() {"Garmin 18X USB", "NMEA0183 (Globalsat)"})
         Me.comboGPSSelected.Location = New System.Drawing.Point(63, 28)
         Me.comboGPSSelected.Name = "comboGPSSelected"
         Me.comboGPSSelected.Size = New System.Drawing.Size(164, 23)

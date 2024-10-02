@@ -63,7 +63,7 @@ Public Class frmMain
     Public GPSSel As Integer = 1 ' 1 = GARMIN ; 2 = NMEA0183
     Public user, pass As String
 
-    Public NMEAReader As New NMEA0183Reader()
+    Public NMEAGPSReader As NMEA0183Reader
 
     Dim encryptionKey As String = ConfigurationSettings.AppSettings("EncryptionKey")
 
@@ -85,8 +85,9 @@ Public Class frmMain
 
 #Region "Subprocedimientos LoadForm y asociados a eventos de ventana"
 
-    Sub nuevoMensajeEventos(msg As String)
-        txtEventos.Invoke(Sub() txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine)
+    Public Sub nuevoMensajeEventos(msg As String)
+        'txtEventos.Invoke(Sub() txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine)
+        txtEventos.Invoke(Sub() txtEventos.AppendText(String.Format("[{0}] {1}{2}", Now, msg, vbNewLine)))
     End Sub
 
     Private Sub frmMain_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
@@ -2636,6 +2637,36 @@ ReIntGSAT:
                         StatusGpS = True
                     End If
                 End If
+            ElseIf GPSSel = 3 Then
+                With NMEAGPSReader
+
+                    If .ObtenerGPSStatus Then
+                        latdec = .ObtenerLatitud
+                        lngdec = .ObtenerLongitud
+                        LatitudActual = ConvertirAGMS(latdec, False)
+                        LongitudActual = ConvertirAGMS(lngdec, True)
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Posicionado")
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.GreenYellow)
+                        If Not StatusGpS Then
+                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
+                            nuevoMensajeEventos("GPS posicionado.")
+                            StatusGpS = True
+                        End If
+                    Else
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Buscando posición")
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.Orange)
+                        If StatusGpS Then
+                            OverlayPosActual.Markers.Clear()
+                            Beep()
+                            nuevoMensajeEventos("GPS sin posición.")
+                            txtLatActual.Invoke(Sub() txtLatActual.Text = "--")
+                            txtLngActual.Invoke(Sub() txtLngActual.Text = "--")
+                            StatusGpS = False
+                        End If
+                        Exit Sub
+                    End If
+
+                End With
             End If
 
             '---------------------------------------------------------------------------
@@ -2868,69 +2899,122 @@ ReIntGSAT:
         Dim gpsDetected As Boolean = False
         Dim data As String
 
-        If GPSSel <> 2 Then Exit Sub
+        If GPSSel = 1 Then Exit Sub
 
         nuevoMensajeEventos("Buscando GPS en puertos COM...")
 
-        For Each port In ports
-            Try
-                Using serialPort As New SerialPort(port)
-                    serialPort.BaudRate = 4800
-                    serialPort.DataBits = 8
-                    serialPort.Parity = Parity.None
-                    serialPort.StopBits = StopBits.One
-                    serialPort.Handshake = Handshake.None
+        If GPSSel = 2 Then
+            For Each port In ports
+                Try
+                    Using serialPort As New SerialPort(port)
+                        serialPort.BaudRate = 4800
+                        serialPort.DataBits = 8
+                        serialPort.Parity = Parity.None
+                        serialPort.StopBits = StopBits.One
+                        serialPort.Handshake = Handshake.None
 
-                    Try
-                        serialPort.Open()
-                    Catch ex As UnauthorizedAccessException
-                        nuevoMensajeEventos("El puerto " & port & " está ocupado, continuando detección...")
-                        Continue For
-                    End Try
-
-                    Retardo(300)
-
-                    If Not gpsDetected Then
                         Try
-                            data = serialPort.ReadExisting()
-                            If data.Contains("$GP") Then
-                                ' NMEA encontrado
-                                comGPS.PortName = port
+                            serialPort.Open()
+                        Catch ex As UnauthorizedAccessException
+                            nuevoMensajeEventos("El puerto " & port & " está ocupado, continuando detección...")
+                            Continue For
+                        End Try
+
+                        Retardo(300)
+
+                        If Not gpsDetected Then
+                            Try
+                                data = serialPort.ReadExisting()
+                                If data.Contains("$GP") Then
+                                    ' NMEA encontrado
+                                    comGPS.PortName = port
+                                    nuevoMensajeEventos("Se encontró GPS NMEA en el puerto " & port)
+                                    nuevoMensajeEventos("Puerto " & port & " asignado al GPS NMEA. Recibiendo información de posición.")
+                                    gpsDetected = True
+                                    cboCOMGlobalSat.Text = port
+                                    cboCOMGlobalSat.PerformClick() ' Acá se establecen timeouts y otros parámetros
+
+                                    comGPS.PortName = cboCOMGlobalSat.Text
+                                    Exit For
+                                End If
+                            Catch ex As TimeoutException
+                                ' Hay equipo conectado pero no responde, puede ser el medidor RNI
+                                nuevoMensajeEventos("[TimeoutException] No se recibieron datos del dispositivo en el puerto " & port & ".")
+                            End Try
+                        End If
+
+                    End Using
+                Catch ex As Exception
+                    nuevoMensajeEventos("Error relevando puerto " & port & ": " & ex.Message)
+                End Try
+            Next
+
+        ElseIf GPSSel = 3 Then
+            For Each port In ports
+                Try
+                    NMEAGPSReader = New NMEA0183Reader(port, 4800)
+
+                    With NMEAGPSReader
+                        If Not .DispositivoConectado() Then
+                            If Not .AbrirPuerto() Then
+                                nuevoMensajeEventos("[Detección GPS] Error intentando abrir puerto " & port & ".")
+                                Continue For
+                            Else
                                 nuevoMensajeEventos("Se encontró GPS NMEA en el puerto " & port)
-                                nuevoMensajeEventos("Puerto " & port & " asignado al GPS NMEA. Recibiendo información de posición.")
+                                nuevoMensajeEventos("Puerto " & port & " asignado al NMEA Reader. Recibiendo información de posición.")
                                 gpsDetected = True
                                 cboCOMGlobalSat.Text = port
-                                cboCOMGlobalSat.PerformClick() ' Acá se establecen timeouts y otros parámetros
-
-                                comGPS.PortName = cboCOMGlobalSat.Text
+                                comGPS.PortName = port
                                 Exit For
                             End If
-                        Catch ex As TimeoutException
-                            ' Hay equipo conectado pero no responde, puede ser el medidor RNI
-                            nuevoMensajeEventos("[TimeoutException] No se recibieron datos del dispositivo en el puerto " & port & ".")
-                        End Try
-                    End If
+                        End If
+                    End With
 
-                End Using
-            Catch ex As Exception
-                nuevoMensajeEventos("Error relevando puerto " & port & ": " & ex.Message)
-            End Try
-        Next
+                Catch ex As Exception
+                    nuevoMensajeEventos("[Exception] Error leyendo GPS en puerto " & port & ".")
+                End Try
+            Next
+
+        End If
 
     End Sub
 
     Private Sub comboGPSSelected_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles comboGPSSelected.SelectedIndexChanged
-        If comboGPSSelected.Text.Contains("Garmin") Then
-            linkScanGPSPorts.Enabled = False
-            Label6.Text = "Estado del GPS [18X USB]"
-            GPSSel = 1
-        End If
+        Select Case comboGPSSelected.SelectedIndex
+            Case Is = 0
+                linkScanGPSPorts.Enabled = False
+                Label6.Text = "Estado del GPS [18X USB]"
+                If comGPS.IsOpen() Then comGPS.Close()
+                GPSSel = 1
+                nuevoMensajeEventos("Selección de GPS: Garmin 18X USB")
+            Case Is = 1
+                linkScanGPSPorts.Enabled = True
+                Label6.Text = "Estado del GPS [NMEA Reader]"
+                GPSSel = 3
+                nuevoMensajeEventos("Selección de GPS: Genérico NMEA0183 (Ej: GlobalSat BU-353S4)")
+        End Select
 
-        If comboGPSSelected.Text.Contains("NMEA") Then
-            linkScanGPSPorts.Enabled = True
-            Label6.Text = "Estado del GPS [NMEA]"
-            GPSSel = 2
-        End If
+        'If comboGPSSelected.Text.Contains("Garmin") Then
+        ' linkScanGPSPorts.Enabled = False
+        ' Label6.Text = "Estado del GPS [18X USB]"
+        ' If comGPS.IsOpen() Then comGPS.Close()
+        ' GPSSel = 1
+        ' End If
+        '
+        'If comboGPSSelected.Text.Contains("Global") Then
+        ' If NMEAGPSReader.DispositivoConectado() Then
+        ' NMEAGPSReader.CerrarPuerto()
+        ' End If
+        ' linkScanGPSPorts.Enabled = True
+        ' Label6.Text = "Estado del GPS [NMEA]"
+        ' GPSSel = 2
+        ' End If
+        '
+        'If comboGPSSelected.Text.Contains("NMEAReader") Then
+        'linkScanGPSPorts.Enabled = True
+        'Label6.Text = "Estado del GPS [NMEA Reader]"
+        'GPSSel = 3
+        'End If
     End Sub
 
 End Class

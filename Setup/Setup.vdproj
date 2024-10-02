@@ -256,13 +256,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
+        "OwnerKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -274,7 +268,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D3874DD70DDCEEE3691E7DD0A6DB669E"
+        "OwnerKey" = "8:_BE7317BC82C146A7A9307D060E03FED4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_86732ADE0F28D5C1F4A73CF67A09C63E"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1290,15 +1290,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:AutoMap RNI"
-        "ProductCode" = "8:{5A9A342F-DA74-4947-A865-7A83DFC1C22E}"
-        "PackageCode" = "8:{4311F67A-1081-4437-8AF8-880E466CDCB5}"
+        "ProductCode" = "8:{920B4A77-8D18-4E77-839B-E44A2B4BA862}"
+        "PackageCode" = "8:{A1CFC232-57D2-4F14-A988-64EE52755C2D}"
         "UpgradeCode" = "8:{8A863FCB-4919-40D3-AA71-325EF8C17E77}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.0.4"
+        "ProductVersion" = "8:2.0.5"
         "Manufacturer" = "8:Ente Nacional de Comunicaciones"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
