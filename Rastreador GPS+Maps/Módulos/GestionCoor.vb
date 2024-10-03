@@ -36,15 +36,15 @@
 
         If esLng Then
             If Signo > 0 Then
-                ret.Hemisf = "E"
+                ret.Hemisferio = "E"
             Else
-                ret.Hemisf = "O"
+                ret.Hemisferio = "O"
             End If
         Else
             If Signo > 0 Then
-                ret.Hemisf = "N"
+                ret.Hemisferio = "N"
             Else
-                ret.Hemisf = "S"
+                ret.Hemisferio = "S"
             End If
         End If
         Return ret
@@ -64,7 +64,7 @@
         Dim ret As Double
         With Posicion
             ret = Math.Abs(.Grados) + .Minutos / 60 + .Segundos / 3600
-            If .Hemisf = "S" Or .Hemisf = "O" Or .Hemisf = "W" Then
+            If .Hemisferio = "S" Or .Hemisferio = "O" Or .Hemisferio = "W" Then
                 ret = 0 - Math.Abs(ret) ' Para hacerlo negativo
             End If
         End With

@@ -1,4 +1,4 @@
-﻿
+
 Public Class frmDebug
 
     Dim NMEAReader As NMEA0183Reader
