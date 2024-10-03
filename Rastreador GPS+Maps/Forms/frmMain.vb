@@ -22,6 +22,9 @@ Imports AutoMapRNI.NBM550Probe
 
 Public Class frmMain
 #Region "Variables comunes de programa"
+    Const MEP_VOLTS As Single = 27.5
+    Const MEP_50PERCENT As Single = 19.44
+
     Dim ModoConexion As String ' Usar servidor, cache o ambos
     Dim ProvMapa As GMapProvider ' El tipo de mapa que se quiere visualizar
     Public RutaRaizRes As String
@@ -35,6 +38,8 @@ Public Class frmMain
     Public NivelNarda As Single
     Public UnidadActual As String
     Public NivMax As Single
+    Dim LatitudActual As New CoordenadasGMS(0, 0, 0, "S") 'Lo último que tomó el GPS
+    Dim LongitudActual As New CoordenadasGMS(0, 0, 0, "O")
     Dim LatitudActual As New CoordenadasGMS(0, 0, 0, "S") 'Lo último que tomó el GPS
     Dim LongitudActual As New CoordenadasGMS(0, 0, 0, "O")
     Dim PosicionStr As String
@@ -64,13 +69,12 @@ Public Class frmMain
     Public GPSSel As Integer = 1 ' 1 = GARMIN ; 2 = NMEA0183
     Public user, pass As String
 
+    Public NMEAGPSReader As NMEA0183Reader
+
     Dim encryptionKey As String = ConfigurationSettings.AppSettings("EncryptionKey")
 
     Dim PaletaRNI(10) As Integer '0 el minimo, 9 el maximo
 
-    ' Instancias de los controladores que van a leer los dispositivos
-    Dim gpsReader As GPSReader
-    Dim nbmReader As NBM550Reader
 
 #End Region
 
@@ -84,8 +88,9 @@ Public Class frmMain
 
 #Region "Subprocedimientos LoadForm y asociados a eventos de ventana"
 
-    Sub nuevoMensajeEventos(msg As String)
-        txtEventos.Invoke(Sub() txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine)
+    Public Sub nuevoMensajeEventos(msg As String)
+        'txtEventos.Invoke(Sub() txtEventos.Text &= "[" & Now & "] " & msg & vbNewLine)
+        txtEventos.Invoke(Sub() txtEventos.AppendText(String.Format("[{0}] {1}{2}", Now, msg, vbNewLine)))
     End Sub
 
     Private Sub frmMain_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
@@ -154,6 +159,7 @@ Public Class frmMain
             Mapa.Overlays.Add(ovlyPrefetch)
         Catch ex As Exception
             nuevoMensajeEventos("Excepción ocurrida en el inicio del sistema: " & ex.Message & ex.StackTrace)
+            nuevoMensajeEventos("Excepción ocurrida en el inicio del sistema: " & ex.Message & ex.StackTrace)
         Finally
             Cursor = Cursors.Arrow
         End Try
@@ -221,6 +227,7 @@ Public Class frmMain
         Dim UltimaLat, UltimaLng As CoordenadasGMS
         Dim ActLatGDEC, ActLngGDEC As Double
         Dim IndiceRes As Integer = 0
+        Dim IndiceAnterior As Integer
         Dim nReg As ListViewItem
         Dim DistUltPunto As Single
         Dim PrimerBucle As Boolean = True
@@ -303,6 +310,8 @@ SeguirCampaña:
                             lblCamp.Text = "Reanudando en " & i & " segundos..."
                             'Retardo(1000)
                             Delay(1000)
+                            'Retardo(1000)
+                            Delay(1000)
                             Application.DoEvents()
                         Next
                     End If
@@ -358,7 +367,10 @@ SeguirCampaña:
                     PrimerBucle = False
                 End If
 
+                IndiceAnterior = IndiceRes
                 IndiceRes += 1
+                
+                NivelPuro = NivelNarda
                 
                 NivelPuro = NivelNarda
 
@@ -380,6 +392,8 @@ SeguirCampaña:
                     comNarda.WriteLine("RESET_MMA;") 'RESETEA CUALQUIER TIPO DE VALOR EN EL INSTRUMENTO (MAX, MIN, AVG, MAX_AVG)
                     'Retardo(300)
                     Delay(300)
+                    'Retardo(300)
+                    Delay(300)
                     comNarda.DiscardInBuffer()
                 End If
                 boolResetMaxEMR = True
@@ -393,7 +407,7 @@ SeguirCampaña:
                     End If
                 Next
 
-                If NivelFinal > 14 Then
+                If NivelFinal > MEP_50PERCENT Then
                     My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
                     nuevoMensajeEventos("El punto " & IndiceRes & " (" & NivelFinal & " V/m). requiere ser evaluado bajo Res. CNC 3690/04")
                 End If
@@ -418,6 +432,15 @@ SeguirCampaña:
                 'Para calcular la distancia hacia el ultimo marker
                 UltimaLat = LatitudActual
                 UltimaLng = LongitudActual
+
+
+                '---- DETECCION DE ERROR EN INDICE RES -----------------------------
+
+                If IndiceAnterior + 1 <> IndiceRes Then Stop
+
+
+
+
 
                 With outReg
                     .Indice = Format(IndiceRes, "0000")
@@ -482,12 +505,17 @@ Fin:
             End If
 
         Catch ex As Exception
+
+            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
+
             Try
                 SW.Close()
                 boolStopCamp = False
                 lblCamp.BackColor = Color.Silver
                 lblCamp.Text = "Recorrido finalizado, esperando nuevas instrucciones"
                 lblCargado.Text = "Recorrido finalizado, guardado en " & RutaRaizRes
+                nuevoMensajeEventos("Recorrido de medición finalizado a partir de un error. Resultados guardados en """ & RutaRaizRes & """.")
+                nuevoMensajeEventos("ERROR: " & ex.Message & ", EN: " & ex.StackTrace)
                 nuevoMensajeEventos("Recorrido de medición finalizado a partir de un error. Resultados guardados en """ & RutaRaizRes & """.")
                 nuevoMensajeEventos("ERROR: " & ex.Message & ", EN: " & ex.StackTrace)
                 Dim SR As StreamReader = New StreamReader(RutaRaizRes)
@@ -580,6 +608,9 @@ Fin:
             Dim coorlat As New CoordenadasGMS(40, 14, 0, "S")
             Dim coorlon As New CoordenadasGMS(63, 16, 42, "O")
             
+            Dim coorlat As New CoordenadasGMS(40, 14, 0, "S")
+            Dim coorlon As New CoordenadasGMS(63, 16, 42, "O")
+            
             CoorAUbicar = New PointLatLng(ConvertirAGDec(coorlat), ConvertirAGDec(coorlon))
             Posicionar(True)
             Mapa.Zoom = 4
@@ -639,6 +670,7 @@ Fin:
         Try
             Dim Rta As String
             If Not chkNBM550.Checked Then
+            If Not chkNBM550.Checked Then
                 MsgBox("Seleccione en el menú ''Opciones -> Instrumento RNI'' el modelo del equipo que desea utilizar", MsgBoxStyle.Exclamation, "Seleccione un equipo antes de continuar")
                 Exit Sub
             End If
@@ -670,6 +702,8 @@ Fin:
                         .WriteLine("REMOTE ON;")
                         'Retardo(200)
                         Delay(500)
+                        'Retardo(200)
+                        Delay(500)
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
                             Beep()
@@ -687,6 +721,8 @@ Fin:
                         .WriteLine("DEVICE_INFO?;")
                         'Retardo(200)
                         Delay(300)
+                        'Retardo(200)
+                        Delay(300)
                         Rta = .ReadExisting
                         Dim Vec1() As String = Rta.Split(separadores, StringSplitOptions.None)
                         lblInstrumento.Text = Vec1(0).Trim(trimmers) & " - S/N: " & Vec1(2).Trim(trimmers)
@@ -697,6 +733,8 @@ Fin:
                         End With
                         Rta = vbNullChar
                         .WriteLine("PROBE_INFO?;")
+                        'Retardo(200)
+                        Delay(300)
                         'Retardo(200)
                         Delay(300)
                         Rta = .ReadExisting
@@ -747,9 +785,13 @@ Fin:
                         End Select
                         'Retardo(100)
                         Delay(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
                         If chkMaxHold.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX;")
+                            'Retardo(100)
+                            Delay(100)
                             'Retardo(100)
                             Delay(100)
                             .DiscardInBuffer()
@@ -759,8 +801,12 @@ Fin:
                             .WriteLine("RESULT_TYPE MAX_AVG;")
                             'Retardo(100)
                             Delay(100)
+                            'Retardo(100)
+                            Delay(100)
                             .DiscardInBuffer()
                             .WriteLine("RESET_MAXAVG;")
+                            'Retardo(100)
+                            Delay(100)
                             'Retardo(100)
                             Delay(100)
                             lblTipoRes.Text = "Max Avg"
@@ -769,12 +815,18 @@ Fin:
                         End If
                         'Retardo(100)
                         Delay(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
                         .WriteLine("MEAS_VIEW NORMAL;")
                         'Retardo(100)
                         Delay(100)
+                        'Retardo(100)
+                        Delay(100)
                         .DiscardInBuffer()
                         .WriteLine("AUTO_ZERO OFF;") 'APAGA EL AUTOCERO 
+                        'Retardo(100)
+                        Delay(100)
                         'Retardo(100)
                         Delay(100)
                         .DiscardInBuffer()
@@ -847,19 +899,14 @@ Fin:
 
     Private Sub actualizarBateria(nivel As Object)
         If TypeOf nivel Is Integer Then
-            ' ------ Bateria del NBM550
-            Try
-                barBateria.Invoke(Sub() barBateria.Value = CInt(nivel))
-                lblBattery.Invoke(Sub() lblBattery.Text = nivel.ToString())
-                If CInt(nivel) <= 10 Then
-                    My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
-                    nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & CInt(nivel) & "%")
-                End If
-            Catch ex As Exception
-                If CInt(nivel) > barBateria.Maximum Then
-                    nuevoMensajeEventos("Ocurrió un error leyendo batería del medidor.")
-                End If
-            End Try
+            If CInt(nivel) > barBateria.Maximum Or CInt(nivel) < barBateria.Minimum Then Exit Sub
+
+            barBateria.Invoke(Sub() barBateria.Value = CInt(nivel))
+            lblBattery.Invoke(Sub() lblBattery.Text = nivel.ToString())
+            If CInt(nivel) <= 10 Then
+                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+                nuevoMensajeEventos("La batería del instrumento por agotarse! Capacidad restante: " & CInt(nivel) & "%")
+            End If
         ElseIf TypeOf nivel Is String Then
             ' ------ Procedimiento de desconexión de equipo
             If nivel.ToString.Contains("OFF") Then
@@ -867,6 +914,7 @@ Fin:
                 lblBattery.Invoke(Sub() lblBattery.Text = "")
                 Exit Sub
             End If
+        End If
         End If
     End Sub
 
@@ -1206,7 +1254,7 @@ Fin:
                         End If
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
                         ''ACA SE DETECTA SI SE SUPERA EL VALOR LIMITE PARA VERIFICAR POR 3690 EN AL MENOS 1 CASO''
-                        If CSng(auxstrNivel(0)) >= 14 Then
+                        If CSng(auxstrNivel(0)) >= MEP_50PERCENT Then
                             contNivAltos += 1
                         End If
                         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -1649,7 +1697,8 @@ Fin:
                         .SubItems.Add(SondaFactor.ToString)
                     End With
                     ListaResultados.Items.Add(nReg)
-                    ListaResultados.Items(Punto.Indice - 1).ImageIndex = IndiceImg
+                    'ListaResultados.Items(Punto.Indice - 1).ImageIndex = IndiceImg
+                    ListaResultados.Items(ListaResultados.Items.Count - 1).ImageIndex = IndiceImg
                     'Tilda el checkbox del item para que se muestre en mapa
                     ListaResultados.Items(Punto.Indice - 1).Checked = True
                     nReg.EnsureVisible()
@@ -2099,9 +2148,9 @@ HacerLoop:      Loop
 
     Sub Posicionar(esCoordenada As Boolean)
         If esCoordenada Then
-            Mapa.Position = CoorAUbicar
+            Mapa.Invoke(Sub() Mapa.Position = CoorAUbicar)
         Else
-            Mapa.SetPositionByKeywords(PosicionStr)
+            Mapa.Invoke(Sub() Mapa.SetPositionByKeywords(PosicionStr))
         End If
         BuscoCoor = False
         BuscoHome = False
@@ -2122,6 +2171,7 @@ HacerLoop:      Loop
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function CompletarDesdeString(latLon As String) As CoordenadasGMS
+        Dim resultado As New CoordenadasGMS
         Dim resultado As New CoordenadasGMS
 
         If (String.IsNullOrWhiteSpace(latLon)) Or latLon = Nothing Then
@@ -2216,32 +2266,71 @@ HacerLoop:      Loop
 
 #Region "Threads - Hilos"
 
+    ' Clase auxiliar para manejar coordenadas
+    'Class CoordenadasDebug
+    'Public GradosLat As Double
+    'Public MinutosLat As Double
+    'Public SegundosLat As Double
+    'Public HemisfLat As String
+    'Public GradosLng As Double
+    'Public MinutosLng As Double
+    'Public SegundosLng As Double
+    'Public HemisfLng As String
+    'End Class
+
+    Private puntosRecorridoDebug As List(Of Tuple(Of CoordenadasGMS, CoordenadasGMS))
+    Private puntoActualIndex As Integer = 0
+
     Sub LeerGPS()
         Try
             Dim latdec, lngdec As Double
             Dim lat, lng, status As String
             Dim MarkerPosActual As GMapMarker
-            If Me.InvokeRequired Then
-                Application.DoEvents()
-                Me.Invoke(New LeerGPSthread(AddressOf LeerGPS))
-            Else
-                ' ------------------------------------------------------------------------------------------------------------
-                If ModoDebug.Checked Then
-                    ' SE GENERA UNA POSICIÓN FIJA EN EL CCTEBA PARA SIMULAR POSICION ESTABLECIDA, SOLAMENTE PARA PRUEBAS
-                    lblStatusGPS.Text = "DEBUGGING"
-                    lblStatusGPS.BackColor = Color.BlueViolet
-                    With LatitudActual
-                        .Grados = 34
-                        .Minutos = 45
-                        .Segundos = 2
-                        .Hemisferio = "S"
-                    End With
-                    With LongitudActual
-                        .Grados = 58
-                        .Minutos = 29
-                        .Segundos = 56
-                        .Hemisferio = "O"
-                    End With
+
+            
+            ' ------------------------------------------------------------------------------------------------------------
+            If ModoDebug.Checked Then
+
+                lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "DEBUGGING")
+                lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.BlueViolet)
+                If puntosRecorridoDebug Is Nothing OrElse puntosRecorridoDebug.Count = 0 Then
+                    Dim inicioLat As New CoordenadasGMS With {
+                        .Grados = 33, .Minutos = 59, .Segundos = 2, .Hemisf = "S"
+                    }
+                    Dim inicioLon As New CoordenadasGMS With {
+                        .Grados = 59, .Minutos = 59, .Segundos = 30, .Hemisf = "O"
+                    }
+
+                    Dim finLat As New CoordenadasGMS With {
+                        .Grados = 34, .Minutos = 3, .Segundos = 30, .Hemisf = "S"
+                    }
+
+                    Dim finLon As New CoordenadasGMS With {
+                        .Grados = 60, .Minutos = 0, .Segundos = 10, .Hemisf = "O"
+                    }
+
+                    Dim numPuntos As Integer = 30
+                    puntosRecorridoDebug = New List(Of Tuple(Of CoordenadasGMS, CoordenadasGMS))
+
+                    For i As Integer = 0 To numPuntos
+                        Dim interpolacion As Double = i / numPuntos
+                        Dim latActual As Double = inicioLat.Grados + (finLat.Grados - inicioLat.Grados) * interpolacion
+                        Dim lngActual As Double = inicioLon.Grados + (finLon.Grados - inicioLon.Grados) * interpolacion
+
+                        Dim puntoLat As CoordenadasGMS = ConvertirAGMS(latActual, False)
+                        Dim puntoLon As CoordenadasGMS = ConvertirAGMS(lngActual, True)
+
+
+                        Dim tuplaPunto As New Tuple(Of CoordenadasGMS, CoordenadasGMS)(puntoLat, puntoLon)
+                        puntosRecorridoDebug.Add(tuplaPunto)
+                    Next
+                End If
+
+                ' Obtener el punto actual del recorrido
+                If puntoActualIndex < puntosRecorridoDebug.Count Then
+                    LatitudActual = puntosRecorridoDebug.Item(puntoActualIndex).Item1
+                    LongitudActual = puntosRecorridoDebug.Item(puntoActualIndex).Item2
+
 
                     OverlayPosActual.Markers.Clear()
 
@@ -2258,236 +2347,183 @@ HacerLoop:      Loop
                     MarkerPosActual.ToolTipMode = MarkerTooltipMode.OnMouseOver
 
                     OverlayPosActual.Markers.Add(MarkerPosActual)
-                    If chkAutoLoc.Checked = True Then
-                        BuscoCoor = True
-                        Posicionar(BuscoCoor)
-                    End If
-                    With LatitudActual
-                        txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
-                    End With
-                    With LongitudActual
-                        txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
-                    End With
-                    Application.DoEvents()
-                    If Not StatusGpS Then
-                        My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                        nuevoMensajeEventos("<GPS POSICIONADO EN MODO DEBUG>")
-                        StatusGpS = True
-                        Application.DoEvents()
-                    End If
-                    Exit Sub
-                End If
-                ' ------------------------------------------------------------------------------------------------------------
 
-                If GPSSel = 1 Then '1 = USB Garmin
-                    status = EquipoGpsNmea.InfoGPSConectado
-                    lat = EquipoGpsNmea.LatitudStr
-                    lng = EquipoGpsNmea.LongitudStr
-                    If frmDebug.debug.Checked = True Then frmDebug.TextBox1.Text &= ">>GARMIN Status: " & status & " - LAT:" & lat & " - LNG:" & lng & vbNewLine
-                    If status = Nothing Or status = "Demo" Then
-                        lat = "--"
-                        lng = "--"
-                        lblStatusGPS.Text = "Desconectado"
-                        lblStatusGPS.BackColor = Color.LightGray
-                        If StatusGpS Then
-                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Hand)
-                            Beep()
-                            OverlayPosActual.Markers.Clear()
-                            StatusGpS = False
-                            nuevoMensajeEventos("GPS desconectado.")
-                        End If
-                        txtLatActual.Text = "--"
-                        txtLngActual.Text = "--"
-                        Application.DoEvents()
-                        Exit Sub
-                    Else
-                        If lat = Nothing Or lat = "?" Then
-                            lblStatusGPS.Text = "Buscando posición"
-                            lblStatusGPS.BackColor = Color.Orange
-                            If StatusGpS Then
-                                OverlayPosActual.Markers.Clear()
-                                Beep()
-                                nuevoMensajeEventos("GPS sin posición.")
-                                txtLatActual.Text = "--"
-                                txtLngActual.Text = "--"
-                                StatusGpS = False
-                            End If
-                            Application.DoEvents()
-                            Exit Sub
-                        Else
-                            lblStatusGPS.Text = "Posicionado"
-                            lblStatusGPS.BackColor = Color.GreenYellow
-                            If Not StatusGpS Then
-                                My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                                nuevoMensajeEventos("GPS posicionado.")
-                                StatusGpS = True
-                                Application.DoEvents()
-                            End If
-                        End If
-                    End If
-                    '---------------------------------------------------------------------------
-                    '---------------------------------------------------------------------------
-                    'ACA SE GUARDA LA POSICION GEOGRAFICA ACTUAL
-                    'EN LATITUDACTUAL Y LONGITUDACTUAL
-                    LatitudActual = CompletarDesdeString(lat)
-                    LongitudActual = CompletarDesdeString(lng)
-                    '---------------------------------------------------------------------------
-                    '---------------------------------------------------------------------------
+                    puntoActualIndex += 1
 
-                ElseIf GPSSel = 2 Then '2 = NMEA GlobalSat BU-353S4
-                    Dim reintHechos As Integer
-                    If Not comGPS.IsOpen Then
-                        comGPS.Open()
-                    End If
-
-                    Dim inBufferGPS As String
-ReIntGSAT:
-                    If reintHechos > 5 Then
-                        Throw New ApplicationException("Demasiados reintentos de conexión del GPS.")
-                    End If
-                    inBufferGPS &= comGPS.ReadExisting
-                    If frmDebug.debug.Checked = True Then frmDebug.TextBox1.Text &= ">>GlobalSAT inbuffer: " & inBufferGPS & vbNewLine
-                    If inBufferGPS = "" Then
-                        lblStatusGPS.Text = "Desconectado"
-                        lblStatusGPS.BackColor = Color.LightGray
-                        If StatusGpS Then
-                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Hand)
-                            Beep()
-                            OverlayPosActual.Markers.Clear()
-                            StatusGpS = False
-                            nuevoMensajeEventos("GPS desconectado.")
-                        End If
-                        txtLatActual.Text = "--"
-                        txtLngActual.Text = "--"
-                        Exit Sub
-                    End If
-                    'Se busca la ultima aparicion de la sentencia $GPRMC y se corta a partir de ahi para obtener informacion de posicion
-                    'EJ: 
-                    '(0)$GPRMC,         Sentencia RMC
-                    '(1)123519,         Hora UTC
-                    '(2)A,              A=Activo - V= Void/inactivo/sin fix
-                    '(3)(4)4807.038,N,  Lat (GGMM,MMM), Norte
-                    '(5)(6)01131.000,E, Lon (GGGMM,MMM), Este
-                    '(5)022.4,          Velocidad en nudos
-                    '(6)084.4,          Acimut de avance?
-                    '(7)230394,         Fecha
-                    '(8)003.1,W,        Variacion magnetica
-                    '(9)*6A             CheckSum
-                    '--------------------------------------------------------------------------
-
-                    'En vez de definir un largo predeterminado de string, se buscan los limites para usar la cantidad
-                    'de caracteres exactos
-                    Dim posRMC As Integer = inBufferGPS.LastIndexOf("$GPRMC")
-                    If posRMC = -1 Then
-                        reintHechos = +1
-                        GoTo ReIntGSAT
-                    End If
-                    inBufferGPS = inBufferGPS.Substring(posRMC)
-                    Dim finRMC As Integer = inBufferGPS.IndexOf(vbCrLf)
-                    If finRMC = -1 Then
-                        reintHechos = +1
-                        GoTo ReIntGSAT
-                    End If
-                    inBufferGPS = inBufferGPS.Substring(0, finRMC)
-                    Dim arrayGPS As String() = Split(inBufferGPS, ",")
-                    '--------------------------------------------------------------------------------------
-                    'CHECKSUM MD5 PARA COMPROBAR SI HUBO ERROR DE TRANSMISIÓN
-                    'SI SE DETECTA ERROR, SE DESCARTA LA LECTURA Y ESPERA A UNA NUEVA LLEGADA DE DATOS NMEA
-                    Dim strAChequear As String = inBufferGPS.Substring(1, Len(inBufferGPS) - 4)
-                    Dim md5 As String = CalcMD5(strAChequear)
-                    If md5 <> arrayGPS(12).Substring(2, 2) Then Exit Sub
-                    '--------------------------------------------------------------------------------------
-                    status = arrayGPS(2)
-                    If status = "V" Then
-                        lblStatusGPS.Text = "Buscando posición"
-                        lblStatusGPS.BackColor = Color.Orange
-                        If StatusGpS Then
-                            OverlayPosActual.Markers.Clear()
-                            Beep()
-                            nuevoMensajeEventos("GPS sin posición.")
-                            txtLatActual.Text = "--"
-                            txtLngActual.Text = "--"
-                            StatusGpS = False
-                        End If
-                        Exit Sub
-                    ElseIf status = "A" Then
-                        Dim gra, dec As String
-                        gra = arrayGPS(3).Substring(0, 2)
-                        dec = arrayGPS(3).Substring(2, Len(arrayGPS(3)) - 2).Replace(".", ",")
-                        dec = CSng(dec) / 60
-                        If arrayGPS(4).Contains("S") Then
-                            lat = "-" & gra & "," & dec.Substring(2, Len(dec) - 2).ToString
-                        Else
-                            lat = gra & "," & dec.Substring(2, Len(dec) - 2).ToString
-                        End If
-
-                        gra = arrayGPS(5).Substring(0, 3)
-                        dec = arrayGPS(5).Substring(3, Len(arrayGPS(5)) - 3).Replace(".", ",")
-                        dec = CSng(dec) / 60
-                        If arrayGPS(6).Contains("W") Then
-                            lng = "-" & gra & "," & dec.Substring(2, Len(dec) - 2).ToString
-                        Else
-                            lng = gra & "," & dec.Substring(2, Len(dec) - 2).ToString
-                        End If
-
-                        LatitudActual = ConvertirAGMS(CDbl(lat), False)
-                        LongitudActual = ConvertirAGMS(CDbl(lng), True)
-                        lblStatusGPS.Text = "Posicionado"
-                        lblStatusGPS.BackColor = Color.GreenYellow
-                        If Not StatusGpS Then
-                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
-                            nuevoMensajeEventos("GPS posicionado.")
-                            StatusGpS = True
-                        End If
+                    If puntoActualIndex >= puntosRecorridoDebug.Count Then
+                        puntoActualIndex = 0
                     End If
                 End If
 
-                '---------------------------------------------------------------------------
-                '---------------------------------------------------------------------------
-                'ACA SE GUARDA LA POSICION GEOGRAFICA ACTUAL
-                'EN LATITUDACTUAL Y LONGITUDACTUAL
-                'LatitudActual = CompletarDesdeString(lat)
-                'LongitudActual = CompletarDesdeString(lng)
-                '---------------------------------------------------------------------------
-                '---------------------------------------------------------------------------
 
-                latdec = ConvertirAGDec(LatitudActual)
-                lngdec = ConvertirAGDec(LongitudActual)
-                CoorAUbicar.Lat = latdec
-                CoorAUbicar.Lng = lngdec
-
-                OverlayPosActual.Markers.Clear()
-                MarkerPosActual = New GMarkerGoogle(CoorAUbicar, GMarkerGoogleType.arrow)
-                MarkerPosActual.ToolTipText = "Posición actual" & vbNewLine & vbNewLine & _
-                    LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisferio & vbNewLine & _
-                    LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 1) & Chr(34) & " " & LongitudActual.Hemisferio
-                MarkerPosActual.ToolTipMode = MarkerTooltipMode.OnMouseOver
-
-                OverlayPosActual.Markers.Add(MarkerPosActual)
                 If chkAutoLoc.Checked = True Then
                     BuscoCoor = True
                     Posicionar(BuscoCoor)
                 End If
                 With LatitudActual
-                    txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
+                    txtLatActual.Invoke(Sub() txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf)
                 End With
                 With LongitudActual
-                    txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisferio
+                    txtLngActual.Invoke(Sub() txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf)
                 End With
                 Application.DoEvents()
+                If Not StatusGpS Then
+                    My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
+                    nuevoMensajeEventos("<GPS POSICIONADO EN MODO DEBUG>")
+                    StatusGpS = True
+                    Application.DoEvents()
+                End If
+
+                Retardo(1000)
+
+                Exit Sub
             End If
+
+            ' ------------------------------------------------------------------------------------------------------------
+
+            If GPSSel = 1 Then '1 = USB Garmin
+                status = EquipoGpsNmea.InfoGPSConectado
+                lat = EquipoGpsNmea.LatitudStr
+                lng = EquipoGpsNmea.LongitudStr
+                If frmDebug.debug.Checked = True Then frmDebug.TextBox1.Invoke(Sub() frmDebug.TextBox1.Text &= ">>GARMIN Status: " & status & " - LAT:" & lat & " - LNG:" & lng & vbNewLine)
+                If status = Nothing Or status = "Demo" Then
+                    lat = "--"
+                    lng = "--"
+                    lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Desconectado")
+                    lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.LightGray)
+                    If StatusGpS Then
+                        My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Hand)
+                        Beep()
+                        OverlayPosActual.Markers.Clear()
+                        StatusGpS = False
+                        nuevoMensajeEventos("GPS desconectado.")
+                    End If
+                    txtLatActual.Invoke(Sub() txtLatActual.Text = "--")
+                    txtLngActual.Invoke(Sub() txtLngActual.Text = "--")
+                    Application.DoEvents()
+                    Exit Sub
+                Else
+                    If lat = Nothing Or lat = "?" Then
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Buscando posición")
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.Orange)
+                        If StatusGpS Then
+                            OverlayPosActual.Markers.Clear()
+                            Beep()
+                            nuevoMensajeEventos("GPS sin posición.")
+                            txtLatActual.Invoke(Sub() txtLatActual.Text = "--")
+                            txtLngActual.Invoke(Sub() txtLngActual.Text = "--")
+                            StatusGpS = False
+                        End If
+                        Application.DoEvents()
+                        Exit Sub
+                    Else
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Posicionado")
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.GreenYellow)
+
+                        If Not StatusGpS Then
+                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
+                            nuevoMensajeEventos("GPS posicionado.")
+                            StatusGpS = True
+                            Application.DoEvents()
+                        End If
+                    End If
+                End If
+                '---------------------------------------------------------------------------
+                '---------------------------------------------------------------------------
+                'ACA SE GUARDA LA POSICION GEOGRAFICA ACTUAL
+                'EN LATITUDACTUAL Y LONGITUDACTUAL
+                LatitudActual = CompletarDesdeString(lat)
+                LongitudActual = CompletarDesdeString(lng)
+                '---------------------------------------------------------------------------
+                '---------------------------------------------------------------------------
+            ElseIf GPSSel = 3 Then
+                If NMEAGPSReader Is Nothing Then Exit Sub
+
+                With NMEAGPSReader
+
+                    If .ObtenerGPSStatus Then
+                        latdec = .ObtenerLatitud
+                        lngdec = .ObtenerLongitud
+                        LatitudActual = ConvertirAGMS(latdec, False)
+                        LongitudActual = ConvertirAGMS(lngdec, True)
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Posicionado")
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.GreenYellow)
+                        If Not StatusGpS Then
+                            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
+                            nuevoMensajeEventos("GPS posicionado.")
+                            StatusGpS = True
+                        End If
+                    Else
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Buscando posición")
+                        lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.Orange)
+                        If StatusGpS Then
+                            OverlayPosActual.Markers.Clear()
+                            Beep()
+                            nuevoMensajeEventos("GPS sin posición.")
+                            txtLatActual.Invoke(Sub() txtLatActual.Text = "--")
+                            txtLngActual.Invoke(Sub() txtLngActual.Text = "--")
+                            StatusGpS = False
+                        End If
+                        Exit Sub
+                    End If
+
+                End With
+            End If
+
+            '---------------------------------------------------------------------------
+            '---------------------------------------------------------------------------
+            'ACA SE GUARDA LA POSICION GEOGRAFICA ACTUAL
+            'EN LATITUDACTUAL Y LONGITUDACTUAL
+            'LatitudActual = CompletarDesdeString(lat)
+            'LongitudActual = CompletarDesdeString(lng)
+            '---------------------------------------------------------------------------
+            '---------------------------------------------------------------------------
+
+            latdec = ConvertirAGDec(LatitudActual)
+            lngdec = ConvertirAGDec(LongitudActual)
+            CoorAUbicar.Lat = latdec
+            CoorAUbicar.Lng = lngdec
+
+            OverlayPosActual.Markers.Clear()
+            MarkerPosActual = New GMarkerGoogle(CoorAUbicar, GMarkerGoogleType.arrow)
+            MarkerPosActual.ToolTipText = "Posición actual" & vbNewLine & vbNewLine & _
+                LatitudActual.Grados & "° " & LatitudActual.Minutos & "' " & Math.Round(LatitudActual.Segundos, 1) & Chr(34) & " " & LatitudActual.Hemisf & vbNewLine & _
+                LongitudActual.Grados & "° " & LongitudActual.Minutos & "' " & Math.Round(LongitudActual.Segundos, 1) & Chr(34) & " " & LongitudActual.Hemisf
+            MarkerPosActual.ToolTipMode = MarkerTooltipMode.OnMouseOver
+
+            OverlayPosActual.Markers.Add(MarkerPosActual)
+
+            With LatitudActual
+                txtLatActual.Invoke(Sub() txtLatActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf)
+            End With
+            With LongitudActual
+                txtLngActual.Invoke(Sub() txtLngActual.Text = .Grados & "° " & .Minutos & "' " & .Segundos & Chr(34) & " " & .Hemisf)
+            End With
+
+            If chkAutoLoc.Checked = True Then
+                BuscoCoor = True
+                Posicionar(BuscoCoor)
+            End If
+
+            Application.DoEvents()
+
         Catch ex As Exception
+
+            My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
+
             If ex.Message.Contains("no existe") Then
                 If Not lblStatusGPS.Text.Contains("Desconectado") Then
                     nuevoMensajeEventos("No se puede detectar un GPS conectado (" & ex.Message & ")")
-                    lblStatusGPS.Text = "Desconectado"
-                    lblStatusGPS.BackColor = Color.LightGray
+                    lblStatusGPS.Invoke(Sub() lblStatusGPS.Text = "Desconectado")
+                    lblStatusGPS.Invoke(Sub() lblStatusGPS.BackColor = Color.LightGray)
                 End If
             ElseIf ex.Message.Contains("Datos no válidos") Then
                 Application.DoEvents()
                 Exit Sub
             ElseIf ex.Message.Contains("reintentos") Then
                 comGPS.Close()
+            ElseIf ex.Message.Contains("Referencia a objeto no establecida como instancia de un objeto.") Then
+                nuevoMensajeEventos("Error en lectura del GPS: " & ex.Message & ex.StackTrace)
             ElseIf ex.Message.Contains("Referencia a objeto no establecida como instancia de un objeto.") Then
                 nuevoMensajeEventos("Error en lectura del GPS: " & ex.Message & ex.StackTrace)
             End If
@@ -2497,6 +2533,8 @@ ReIntGSAT:
         End Try
 
     End Sub
+
+
 
     Sub LeerNarda()
 
@@ -2514,11 +2552,15 @@ ReIntGSAT:
                             comNarda.WriteLine("RESET_MAX;")
                             'Retardo(200)
                             Delay(300)
+                            'Retardo(200)
+                            Delay(300)
                             inBuffer = comNarda.ReadExisting
                             Exit Sub
                         End If
 
                         comNarda.WriteLine("MEAS?;")
+                        'Retardo(200)
+                        Delay(300)
                         'Retardo(200)
                         Delay(300)
                         VecNarda = Split(comNarda.ReadExisting, ",")
@@ -2535,6 +2577,8 @@ ReIntGSAT:
                         lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
 
                         comNarda.WriteLine("BATTERY?;")
+                        'Retardo(200)
+                        Delay(300)
                         'Retardo(200)
                         Delay(300)
                         inBuffer = comNarda.ReadExisting
@@ -2608,6 +2652,8 @@ ReIntGSAT:
                     serialPort.WriteLine("REMOTE ON;")
                     'Retardo(100)
                     Delay(200)
+                    'Retardo(100)
+                    Delay(200)
                     Dim data As String = serialPort.ReadExisting()
 
                     If data.Equals("0;" & vbCr & "") Then
@@ -2632,72 +2678,56 @@ ReIntGSAT:
     Private Sub linkScanGPSPorts_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles linkScanGPSPorts.LinkClicked
         Dim ports As String() = SerialPort.GetPortNames()
         Dim gpsDetected As Boolean = False
-        Dim data As String
 
-        If GPSSel <> 2 Then Exit Sub
+        If GPSSel = 1 Then Exit Sub
 
         nuevoMensajeEventos("Buscando GPS en puertos COM...")
 
-        For Each port In ports
-            Try
-                Using serialPort As New SerialPort(port)
-                    serialPort.BaudRate = 4800
-                    serialPort.DataBits = 8
-                    serialPort.Parity = Parity.None
-                    serialPort.StopBits = StopBits.One
-                    serialPort.Handshake = Handshake.None
+        If GPSSel = 3 Then
+            For Each port In ports
+                Try
+                    NMEAGPSReader = New NMEA0183Reader(port, 4800)
 
-                    Try
-                        serialPort.Open()
-                    Catch ex As UnauthorizedAccessException
-                        nuevoMensajeEventos("El puerto " & port & " está ocupado, continuando detección...")
-                        Continue For
-                    End Try
-
-                    'Retardo(300)
-                    Delay(300)
-
-                    If Not gpsDetected Then
-                        Try
-                            data = serialPort.ReadExisting()
-                            If data.Contains("$GP") Then
-                                ' NMEA encontrado
-                                comGPS.PortName = port
+                    With NMEAGPSReader
+                        If Not .DispositivoConectado() Then
+                            If Not .AbrirPuerto() Then
+                                nuevoMensajeEventos("[Detección GPS] Error intentando abrir puerto " & port & ".")
+                                Continue For
+                            Else
                                 nuevoMensajeEventos("Se encontró GPS NMEA en el puerto " & port)
-                                nuevoMensajeEventos("Puerto " & port & " asignado al GPS NMEA. Recibiendo información de posición.")
+                                nuevoMensajeEventos("Puerto " & port & " asignado al NMEA Reader. Recibiendo información de posición.")
                                 gpsDetected = True
                                 cboCOMGlobalSat.Text = port
-                                cboCOMGlobalSat.PerformClick() ' Acá se establecen timeouts y otros parámetros
-
-                                comGPS.PortName = cboCOMGlobalSat.Text
+                                comGPS.PortName = port
                                 Exit For
                             End If
-                        Catch ex As TimeoutException
-                            ' Hay equipo conectado pero no responde, puede ser el medidor RNI
-                            nuevoMensajeEventos("[TimeoutException] No se recibieron datos del dispositivo en el puerto " & port & ".")
-                        End Try
-                    End If
+                        End If
+                    End With
 
-                End Using
-            Catch ex As Exception
-                nuevoMensajeEventos("Error relevando puerto " & port & ": " & ex.Message)
-            End Try
-        Next
+                Catch ex As Exception
+                    nuevoMensajeEventos("[Exception] Error leyendo GPS en puerto " & port & ".")
+                End Try
+            Next
+
+        End If
 
     End Sub
 
     Private Sub comboGPSSelected_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles comboGPSSelected.SelectedIndexChanged
-        If comboGPSSelected.Text.Contains("Garmin") Then
-            linkScanGPSPorts.Enabled = False
-            Label6.Text = "Estado del GPS [18X USB]"
-            GPSSel = 1
-        End If
+        Select Case comboGPSSelected.SelectedIndex
+            Case Is = 0
+                linkScanGPSPorts.Enabled = False
+                Label6.Text = "Estado del GPS [18X USB]"
+                If comGPS.IsOpen() Then comGPS.Close()
+                GPSSel = 1
+                nuevoMensajeEventos("Selección de GPS: Garmin 18X USB")
+            Case Is = 1
+                linkScanGPSPorts.Enabled = True
+                Label6.Text = "Estado del GPS [NMEA Reader]"
+                GPSSel = 3
+                nuevoMensajeEventos("Selección de GPS: Genérico NMEA0183 (Ej: GlobalSat BU-353S4)")
+        End Select
 
-        If comboGPSSelected.Text.Contains("NMEA") Then
-            linkScanGPSPorts.Enabled = True
-            Label6.Text = "Estado del GPS [NMEA]"
-            GPSSel = 2
-        End If
     End Sub
 
 End Class

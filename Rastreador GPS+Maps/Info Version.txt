@@ -1,6 +1,26 @@
-﻿Versión al 08-08-2024: 2.0.3
-	- Agregado de atajo CTRL + P para pausar el recorrido
-	- Eliminación de código obsoleto
+02-10-2024: v2.0.5
+	-	Se implementó la clase NMEA0183Reader que se comporta exclusivamente como interfaz de conexión de los GPS que
+		funcionen bajo este protocolo (GlobalSat) usando un virtual COM Port, aumentando la velocidad de respuesta
+		y la eficiencia del manejo de datos, así también eliminando el bug de cero minutos que corrompía un recorrido en su último punto y
+		detenía la misión. 
+
+
+23-09-2024:
+- v2.0.4
+	- Se cambió el código de extracción de coordenadas desde un device NMEA, haciéndolo mas simple
+
+
+29-08-2024: 
+- v2.0.3
+Nueva rama para solucionar errores en el recorrido, cuando se pasa por un límite de grados de longitud (minuto 59 a minuto 0)
+generando un error en el numero de indice de ese punto y haciendo que crashee tanto el recorrido como la lectura del archivo.
+Estimo que el error proviene con la utilizacion del GlobalSat, no lo puedo reproducir localmente con un simulador de GPS, por lo 
+que seria necesario ir hasta los alrededores de la ER La Plata para intentar replicarlo.
+
+Se modificó el valor limite para alarmar que se supero el 50% de la MEP para que sea respecto a los mW/Cm2 y no a V/m, con const
+globales. Esto afecta tanto el recorrido como la creacion de reportes excel.
+
+Al generar excels se esta disparando un error de overflow en un array/matriz.
 
 Versión al 17-07-2024: 2.0.1
 	- Eliminación de comentarios y código obsoleto

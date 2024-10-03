@@ -229,7 +229,7 @@ Public Class GPSReader
         resultado.Minutos = Math.Abs(CInt(vector(0)))
         vector = vector(1).Split(New Char() {""""})
         resultado.Segundos = Math.Round(Math.Abs(CDbl(vector(0))), 3)
-        resultado.Hemisferio = vector(1).Trim()
+        resultado.Hemisf = vector(1).Trim()
 
         Return resultado
     End Function

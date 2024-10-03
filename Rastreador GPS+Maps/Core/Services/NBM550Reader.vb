@@ -135,9 +135,7 @@ Public Class NBM550Reader
 
             Return batteryLevel
         Catch ex As Exception
-            If ex.Message.Contains("reading device battery") Then
                 Return "-999"
-            End If
         End Try
         
     End Function
@@ -150,9 +148,7 @@ Public Class NBM550Reader
                 Throw New Exception("Error resetting max hold")
             End If
         Catch ex As Exception
-            If ex.Message.Contains("resetting") Then
                 Return "-999"
-            End If
         End Try
     End Function
 
