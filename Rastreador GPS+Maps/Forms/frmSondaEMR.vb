@@ -59,7 +59,6 @@
             .Factor = 0
         End With
         frmMain.chkNBM550.Checked = True
-        frmMain.chkEMR300.Checked = False
         Me.Hide()
     End Sub
 End Class

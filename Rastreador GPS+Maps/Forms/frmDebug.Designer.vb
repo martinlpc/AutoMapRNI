@@ -28,6 +28,14 @@ Partial Class frmDebug
         Me.linkGetNMEAData = New System.Windows.Forms.LinkLabel()
         Me.txtNMEAPort = New System.Windows.Forms.TextBox()
         Me.linkConnectNMEA = New System.Windows.Forms.LinkLabel()
+=======
+        Me.btnTestNMEA = New System.Windows.Forms.Button()
+        Me.cboCOMGps = New System.Windows.Forms.ComboBox()
+        Me.btnTestGarmin = New System.Windows.Forms.Button()
+        Me.btnConectarNBM = New System.Windows.Forms.Button()
+        Me.btnLeerDatos = New System.Windows.Forms.Button()
+        Me.cboCOMNBM = New System.Windows.Forms.ComboBox()
+>>>>>>> master
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -40,6 +48,13 @@ Partial Class frmDebug
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.TextBox1.Size = New System.Drawing.Size(472, 313)
+=======
+        Me.TextBox1.Location = New System.Drawing.Point(12, 114)
+        Me.TextBox1.Multiline = True
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox1.Size = New System.Drawing.Size(530, 394)
+>>>>>>> master
         Me.TextBox1.TabIndex = 0
         '
         'GroupBox1
@@ -89,6 +104,59 @@ Partial Class frmDebug
         Me.linkConnectNMEA.TabIndex = 6
         Me.linkConnectNMEA.TabStop = True
         Me.linkConnectNMEA.Text = "Conectar"
+=======
+        'btnTestNMEA
+        '
+        Me.btnTestNMEA.Location = New System.Drawing.Point(122, 85)
+        Me.btnTestNMEA.Name = "btnTestNMEA"
+        Me.btnTestNMEA.Size = New System.Drawing.Size(104, 23)
+        Me.btnTestNMEA.TabIndex = 4
+        Me.btnTestNMEA.Text = "test nmea"
+        Me.btnTestNMEA.UseVisualStyleBackColor = True
+        '
+        'cboCOMGps
+        '
+        Me.cboCOMGps.FormattingEnabled = True
+        Me.cboCOMGps.Location = New System.Drawing.Point(12, 87)
+        Me.cboCOMGps.Name = "cboCOMGps"
+        Me.cboCOMGps.Size = New System.Drawing.Size(104, 21)
+        Me.cboCOMGps.TabIndex = 5
+        '
+        'btnTestGarmin
+        '
+        Me.btnTestGarmin.Location = New System.Drawing.Point(12, 58)
+        Me.btnTestGarmin.Name = "btnTestGarmin"
+        Me.btnTestGarmin.Size = New System.Drawing.Size(75, 23)
+        Me.btnTestGarmin.TabIndex = 6
+        Me.btnTestGarmin.Text = "test garmin"
+        Me.btnTestGarmin.UseVisualStyleBackColor = True
+        '
+        'btnConectarNBM
+        '
+        Me.btnConectarNBM.Location = New System.Drawing.Point(375, 41)
+        Me.btnConectarNBM.Name = "btnConectarNBM"
+        Me.btnConectarNBM.Size = New System.Drawing.Size(101, 23)
+        Me.btnConectarNBM.TabIndex = 7
+        Me.btnConectarNBM.Text = "conectar nbm"
+        Me.btnConectarNBM.UseVisualStyleBackColor = True
+        '
+        'btnLeerDatos
+        '
+        Me.btnLeerDatos.Location = New System.Drawing.Point(375, 70)
+        Me.btnLeerDatos.Name = "btnLeerDatos"
+        Me.btnLeerDatos.Size = New System.Drawing.Size(101, 23)
+        Me.btnLeerDatos.TabIndex = 8
+        Me.btnLeerDatos.Text = "obtener datos"
+        Me.btnLeerDatos.UseVisualStyleBackColor = True
+        '
+        'cboCOMNBM
+        '
+        Me.cboCOMNBM.FormattingEnabled = True
+        Me.cboCOMNBM.Location = New System.Drawing.Point(372, 12)
+        Me.cboCOMNBM.Name = "cboCOMNBM"
+        Me.cboCOMNBM.Size = New System.Drawing.Size(104, 21)
+        Me.cboCOMNBM.TabIndex = 9
+>>>>>>> master
         '
         'frmDebug
         '
@@ -98,6 +166,15 @@ Partial Class frmDebug
         Me.Controls.Add(Me.linkConnectNMEA)
         Me.Controls.Add(Me.txtNMEAPort)
         Me.Controls.Add(Me.linkGetNMEAData)
+=======
+        Me.ClientSize = New System.Drawing.Size(554, 520)
+        Me.Controls.Add(Me.cboCOMNBM)
+        Me.Controls.Add(Me.btnLeerDatos)
+        Me.Controls.Add(Me.btnConectarNBM)
+        Me.Controls.Add(Me.btnTestGarmin)
+        Me.Controls.Add(Me.cboCOMGps)
+        Me.Controls.Add(Me.btnTestNMEA)
+>>>>>>> master
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.TextBox1)
         Me.Name = "frmDebug"
@@ -115,4 +192,12 @@ Partial Class frmDebug
     Friend WithEvents linkGetNMEAData As System.Windows.Forms.LinkLabel
     Friend WithEvents txtNMEAPort As System.Windows.Forms.TextBox
     Friend WithEvents linkConnectNMEA As System.Windows.Forms.LinkLabel
+=======
+    Friend WithEvents btnTestNMEA As System.Windows.Forms.Button
+    Friend WithEvents cboCOMGps As System.Windows.Forms.ComboBox
+    Friend WithEvents btnTestGarmin As System.Windows.Forms.Button
+    Friend WithEvents btnConectarNBM As System.Windows.Forms.Button
+    Friend WithEvents btnLeerDatos As System.Windows.Forms.Button
+    Friend WithEvents cboCOMNBM As System.Windows.Forms.ComboBox
+>>>>>>> master
 End Class

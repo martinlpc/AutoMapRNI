@@ -13,6 +13,7 @@
 *.resources
 
 # Ignorar archivos de depuración y compilación
+*.msi
 *.exe
 *.dll
 *.pdb
