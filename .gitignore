@@ -5,6 +5,7 @@
 *.sln.docstates
 
 # Ignorar directorios bin y obj que contienen archivos compilados
+Rastreador GPS+Maps/bin/
 [Bb]in/
 [Oo]bj/
 
