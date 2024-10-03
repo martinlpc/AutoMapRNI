@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿02-10-2024: v2.0.5
 	-	Se implementó la clase NMEA0183Reader que se comporta exclusivamente como interfaz de conexión de los GPS que
 		funcionen bajo este protocolo (GlobalSat) usando un virtual COM Port, aumentando la velocidad de respuesta

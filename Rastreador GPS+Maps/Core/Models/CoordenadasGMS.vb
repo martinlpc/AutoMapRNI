@@ -2,7 +2,7 @@
     Public Property Grados As Integer
     Public Property Minutos As Integer
     Public Property Segundos As Double
-    Public Property Hemisferio As String
+    Public Property Hemisf As String
 
     Public Sub New()
     End Sub
@@ -11,6 +11,6 @@
         Me.Grados = grados
         Me.Minutos = minutos
         Me.Segundos = segundos
-        Me.Hemisferio = hemisferio
+        Me.Hemisf = hemisferio
     End Sub
 End Class
