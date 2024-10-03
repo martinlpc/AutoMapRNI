@@ -6,6 +6,7 @@
 
 # Ignorar directorios bin y obj que contienen archivos compilados
 Rastreador GPS+Maps/bin/
+Rastreador GPS+Maps/obj/
 [Bb]in/
 [Oo]bj/
 
