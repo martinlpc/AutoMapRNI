@@ -1,0 +1,43 @@
+# Ignorar archivos de usuario específicos de Visual Studio
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignorar directorios bin y obj que contienen archivos compilados
+Rastreador GPS+Maps/bin/
+Rastreador GPS+Maps/obj/
+[Bb]in/
+[Oo]bj/
+
+# Ignorar archivos de caché y recursos intermedios
+*.Cache
+*.resources
+
+# Ignorar archivos de depuración y compilación
+*.msi
+*.exe
+*.dll
+*.pdb
+*.vshost.exe
+*.vshost.exe.manifest
+
+# Ignorar archivos temporales
+*_i.c
+*_p.c
+*.ilk
+*.log
+*.vspscc
+*.vssscc
+*.cache
+
+# Ignorar archivos generados automáticamente por compiladores
+*.xml
+*.gen
+*.bak
+*.tmp
+
+# Ignorar archivos de compilación específicos para versiones de x86 y x64
+x86/
+x64/
+AutoMap RNI.suo
