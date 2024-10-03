@@ -38,3 +38,4 @@
 # Ignorar archivos de compilación específicos para versiones de x86 y x64
 x86/
 x64/
+AutoMap RNI.suo
