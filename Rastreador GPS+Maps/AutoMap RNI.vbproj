@@ -121,6 +121,7 @@
     </Reference>
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -150,7 +151,7 @@
     <Compile Include="Core\Services\GPSReader.vb" />
     <Compile Include="Core\Services\NBM550Reader.vb" />
     <Compile Include="Core\Utilities\Utils.vb" />
-    <Compile Include="devices\NMEA0183Reader.vb" />
+    <Compile Include="Core\Services\NMEA0183Reader.vb" />
     <Compile Include="Forms\About.Designer.vb">
       <DependentUpon>About.vb</DependentUpon>
     </Compile>
@@ -189,7 +190,6 @@
     </Compile>
     <Compile Include="Módulos\Encriptador.vb" />
     <Compile Include="Módulos\GestionCoor.vb" />
-    <Compile Include="Core\Models\Estructuras.vb" />
     <Compile Include="Core\Models\Estructuras.vb" />
     <Compile Include="My Project\Application1.Designer.vb">
       <AutoGen>True</AutoGen>

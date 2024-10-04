@@ -6,7 +6,20 @@ AutoMapRNI
 </name>
 </assembly>
 <members>
-<member name="P:AutoMapRNI.My.Resources.Resources.ResourceManager">
+<member name="M:AutoMapRNI.NBM550Reader.connectToDevice(System.String)">
+	<summary>
+ Establish a connection with the NBM550 on the specified COM port
+ </summary>
+	<param name="portName"></param>
+	<returns>"0" if error, string containing its serial number if successful</returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.NBM550Reader.disconnectDevice">
+	<summary>
+ Sends a remote off sentence and closes the COM port
+ </summary>
+	<returns>Boolean</returns>
+	<remarks></remarks>
+</member><member name="P:AutoMapRNI.My.Resources.Resources.ResourceManager">
 	<summary>
   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
 </summary>
@@ -23,26 +36,6 @@ AutoMapRNI
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
 </summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_10">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_25">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_50">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_75">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.bat_full">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
 </member><member name="P:AutoMapRNI.My.Resources.Resources.blue">
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
@@ -55,17 +48,17 @@ AutoMapRNI
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
 </summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_contexto_final">
+</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_contexto_final1">
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
-</summary>
-</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_final">
-	<summary>
-  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
 </summary>
 </member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_sintexto_final">
 	<summary>
   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+</summary>
+</member><member name="P:AutoMapRNI.My.Resources.Resources.ENACOM_sintexto_final1">
+	<summary>
+  Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
 </summary>
 </member><member name="P:AutoMapRNI.My.Resources.Resources.Escala1">
 	<summary>
@@ -244,11 +237,6 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<summary>
   Clase de recurso fuertemente tipado, para buscar cadenas traducidas, etc.
 </summary>
-</member><member name="T:AutoMapRNI.GestionCoor.CoordenadasGMS">
-	<summary>
- Estructura que aloja una componente de coordenadas en grados, minutos y segundos
- </summary>
-	<remarks></remarks>
 </member><member name="M:AutoMapRNI.GestionCoor.ConvertirAGMS(System.Double,System.Boolean)">
 	<summary>
  Convierte una componente de coordenadas geográficas de Grados Decimales a Grados Minutos Segundos Decimales
@@ -257,14 +245,14 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<param name="esLng">Booleano que indica si se trata de una coordenada de longitud o no</param>
 	<returns>Devuelve una componente de coordenada en Grados Minutos Segundos Decimales</returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.GestionCoor.ConvertirAGDec(AutoMapRNI.GestionCoor.CoordenadasGMS)">
+</member><member name="M:AutoMapRNI.GestionCoor.ConvertirAGDec(AutoMapRNI.CoordenadasGMS)">
 	<summary>
  Convierte la componente geográfica de un punto de Grados Minutos Segundos Decimales a Grados Decimales
  </summary>
 	<param name="Posicion">Latitud o Longitud en Grados Minutos Segundos Decimales</param>
 	<returns>Devuelve la componente en Grados Decimales</returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.GestionCoor.CalcularDist(AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS)">
+</member><member name="M:AutoMapRNI.GestionCoor.CalcularDist(AutoMapRNI.CoordenadasGMS,AutoMapRNI.CoordenadasGMS,AutoMapRNI.CoordenadasGMS,AutoMapRNI.CoordenadasGMS)">
 	<summary>
  Calcula la distancia aproximada, en metros, entre dos puntos geográficos.
  Se necesita una estructura GMS.
@@ -280,11 +268,6 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
  Carga los números de serie de las sondas de ambos modelos para determinar las incertidumbres y límites de integración de frecuencia
  </summary>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.frmMain.CargarPaleta">
-	<summary>
- Carga los colores predeterminados para la paleta de puntos (AUN NO IMPLEMENTADO)
- </summary>
-	<remarks></remarks>
 </member><member name="M:AutoMapRNI.frmMain.CompletarDesdeString(System.String)">
 	<summary>
  Función que hizo MD para completar las coordenadas del gps GARMIN cuando le faltan dígitos y evitar errores
@@ -292,16 +275,33 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<param name="latLon"></param>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.frmMain.t_Narda">
+</member><member name="M:AutoMapRNI.GPSReader.getPositionFromGarmin">
 	<summary>
- Loop infinito paralelo a la ejecución de la app. Si hay un NARDA conectado, lee el nivel que el mismo arroja en el instante que se hace la lectura
+ Get Garmin 18x USB status and position
  </summary>
+	<returns>{"Status","Lat","Lon"} or "Error"</returns>
 	<remarks></remarks>
-</member><member name="M:AutoMapRNI.frmMain.t_EMRMAX">
+</member><member name="M:AutoMapRNI.GPSReader.getGPRMCParsedData(System.String)">
 	<summary>
- Actualiza el nivel máximo detectado por el EMR300 en un variable que la rutina de recorrido va a tomar como resultado final en un punto
+ Parsea la sentencia GPRMC de un GPS para extraer sus datos en un dict(str, str)
  </summary>
-	<remarks>Usar "boolResetMaxEMR" en la rutina de recorrido para finalizar la lectura actual y resetear el nivel a 0 V/m. Usar "boolKillThrMaxEMR" para terminar el thread</remarks>
+	<param name="sentence"></param>
+	<returns>Dict(str, str)</returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.GPSReader.formatGPSStreamToGMS(System.String)">
+	<summary>
+ Función que hizo MD para completar las coordenadas del gps GARMIN cuando le faltan dígitos y evitar errores
+ </summary>
+	<param name="latLon"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:AutoMapRNI.GPSReader.checkMD5(System.String)">
+	<summary>
+ Chequea la redundancia de datos del streaming del GPS
+ </summary>
+	<param name="nmeaSentence">Cadena de datos que envía el GPS a analizar</param>
+	<returns>Boolean</returns>
+	<remarks></remarks>
 </member>
 </members>
 </doc>
