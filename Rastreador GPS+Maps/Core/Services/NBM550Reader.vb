@@ -1,20 +1,22 @@
 ﻿Imports System.IO.Ports
+Imports System.IO
 Imports AutoMapRNI.NBM550Probe
 
 Public Class NBM550Reader
-    Private serialPort As SerialPort
+    Private _serialPort As SerialPort
     Public attachedProbe As New NBM550Probe()
     Public isConnected As Boolean = False
-    Public serialNumber As String
+    Private _serialNumber As String
     Const baudRate As Integer = 460800
     Const dataBits As Integer = 8
-    Const parity As Integer = 0
-    Const stopBits As Integer = 1
-    Const handshake As Integer = 0
     Private splitters() As String = {",", ";"}
     Private trimmers() As Char = {vbCr, Chr(34), "'", "°", " """}
 
     Public Sub New()
+    End Sub
+
+    Public Sub New(ByVal portName As String)
+        _serialPort = New SerialPort(portName, baudRate, Parity.None, dataBits, StopBits.One)
     End Sub
 
     ''' <summary>
@@ -24,32 +26,25 @@ Public Class NBM550Reader
     ''' <returns>"0" if error, string containing its serial number if successful</returns>
     ''' <remarks></remarks>
     Public Function connectToDevice(portName As String) As String
-        ' Fixed known settings
-        serialPort = New SerialPort(portName, baudRate, parity, dataBits, stopBits)
-        serialPort.Handshake = handshake
-
         Try
-            If Not handleDeviceConnection() Then
-                Return "-999"
+            If Not _serialPort.IsOpen Then
+                _serialPort.Open()
             End If
 
-            If Not readAttachedProbe() Then
-                Return "-999"
+            If handleDeviceConnection() Then
+                Return _serialNumber
             End If
 
-            isConnected = True
-            Return serialNumber
+            Return 0
         Catch ex As Exception
-            serialPort.Close()
-            Return "-999"
+            Return 0
         End Try
 
     End Function
 
     Private Function handleDeviceConnection() As Boolean
         Try
-            serialPort.Open()
-            serialPort.DiscardInBuffer()
+            _serialPort.DiscardInBuffer()
             
             Dim resp As String = sendCommand("REMOTE ON;", 100)
 
@@ -60,7 +55,7 @@ Public Class NBM550Reader
             resp = sendCommand("DEVICE_INFO?;", 300)
 
             Dim respArray() As String = resp.Split(splitters, StringSplitOptions.None)
-            serialNumber = respArray(2).Trim(trimmers)
+            _serialNumber = respArray(2).Trim(trimmers)
 
             Return True
         Catch ex As Exception
@@ -154,9 +149,9 @@ Public Class NBM550Reader
 
     Private Function sendCommand(sentence As String, timeInterval As Integer) As String
         Try
-            serialPort.WriteLine(sentence)
-            Delay(timeInterval)
-            Return serialPort.ReadExisting()
+            _serialPort.WriteLine(sentence)
+            wait(timeInterval)
+            Return _serialPort.ReadExisting()
         Catch ex As Exception
             Return "-999"
         End Try
@@ -164,16 +159,16 @@ Public Class NBM550Reader
 
     Private Sub handleMaxSettings()
         sendCommand("RESULT_TYPE MAX;", 100)
-        serialPort.DiscardInBuffer()
+        _serialPort.DiscardInBuffer()
 
         sendCommand("RESET_MAX;", 100)
-        serialPort.DiscardInBuffer()
+        _serialPort.DiscardInBuffer()
 
         sendCommand("MEAS_VIEW NORMAL;", 100)
-        serialPort.DiscardInBuffer()
+        _serialPort.DiscardInBuffer()
 
         sendCommand("AUTO_ZERO OFF;", 100)
-        serialPort.DiscardInBuffer()
+        _serialPort.DiscardInBuffer()
     End Sub
 
     ''' <summary>
@@ -196,13 +191,20 @@ Public Class NBM550Reader
     End Function
 
     Public Sub close()
-        If serialPort IsNot Nothing Then
-            If serialPort.IsOpen() Then
-                serialPort.Close()
+        If _serialPort IsNot Nothing Then
+            If _serialPort.IsOpen() Then
+                _serialPort.Close()
             End If
-            serialPort.Dispose()
-            serialPort = Nothing
+            _serialPort.Dispose()
+            _serialPort = Nothing
             isConnected = False
         End If
+    End Sub
+
+    Private Sub wait(milliseconds As Integer)
+        Dim targetTime As DateTime = DateTime.Now.AddMilliseconds(milliseconds)
+        While DateTime.Now < targetTime
+            Application.DoEvents()
+        End While
     End Sub
 End Class

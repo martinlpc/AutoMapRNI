@@ -37,18 +37,15 @@ Partial Class frmDebug
         Me.TextBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TextBox1.Location = New System.Drawing.Point(12, 114)
-        Me.TextBox1.Location = New System.Drawing.Point(12, 114)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox1.Size = New System.Drawing.Size(530, 394)
         Me.TextBox1.Size = New System.Drawing.Size(530, 394)
         Me.TextBox1.TabIndex = 0
         '
         'GroupBox1
         '
         Me.GroupBox1.Controls.Add(Me.debug)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 12)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(218, 36)
@@ -87,7 +84,7 @@ Partial Class frmDebug
         'linkGetNMEAData
         '
         Me.linkGetNMEAData.AutoSize = True
-        Me.linkGetNMEAData.Location = New System.Drawing.Point(263, 51)
+        Me.linkGetNMEAData.Location = New System.Drawing.Point(116, 77)
         Me.linkGetNMEAData.Name = "linkGetNMEAData"
         Me.linkGetNMEAData.Size = New System.Drawing.Size(97, 13)
         Me.linkGetNMEAData.TabIndex = 4
@@ -96,7 +93,7 @@ Partial Class frmDebug
         '
         'txtNMEAPort
         '
-        Me.txtNMEAPort.Location = New System.Drawing.Point(305, 23)
+        Me.txtNMEAPort.Location = New System.Drawing.Point(38, 70)
         Me.txtNMEAPort.Name = "txtNMEAPort"
         Me.txtNMEAPort.Size = New System.Drawing.Size(66, 20)
         Me.txtNMEAPort.TabIndex = 5

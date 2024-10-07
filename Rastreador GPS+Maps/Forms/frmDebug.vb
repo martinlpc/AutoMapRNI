@@ -2,6 +2,7 @@
 Public Class frmDebug
 
     Dim NMEAReader As NMEA0183Reader
+    Dim NBMReader As NBM550Reader
 
     Private Sub TextBox1_TextChanged(sender As System.Object, e As System.EventArgs) Handles TextBox1.TextChanged
         TextBox1.Select(TextBox1.Text.Length, 0)
@@ -44,4 +45,7 @@ Public Class frmDebug
         End With
     End Sub
 
+    Private Sub btnConectarNBM_Click(sender As System.Object, e As System.EventArgs) Handles btnConectarNBM.Click
+
+    End Sub
 End Class

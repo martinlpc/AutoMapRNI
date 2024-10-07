@@ -16,8 +16,8 @@ Imports System.IO.Ports
 Imports Ionic.Zip
 Imports System.Net
 Imports AutoMapRNI.Utils
-Imports AutoMapRNI.NBM550Reader
 Imports AutoMapRNI.GPSReader
+Imports AutoMapRNI.NBM550Reader
 Imports AutoMapRNI.NBM550Probe
 
 Public Class frmMain
@@ -68,6 +68,7 @@ Public Class frmMain
     Public user, pass As String
 
     Public NMEAGPSReader As NMEA0183Reader
+    Public NBMReader As NBM550Reader
 
     Dim encryptionKey As String = ConfigurationManager.AppSettings("EncryptionKey")
     Dim PaletaRNI(10) As Integer '0 el minimo, 9 el maximo
@@ -693,10 +694,9 @@ Fin:
                         If Not .IsOpen Then .Open()
                         .DiscardInBuffer()
                         .WriteLine("REMOTE ON;")
-                        'Retardo(200)
+                        
                         Delay(500)
-                        'Retardo(200)
-                        Delay(500)
+
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
                             Beep()
@@ -712,10 +712,9 @@ Fin:
                         End If
                         PictureBox1.Image = AutoMapRNI.My.Resources.nbm550
                         .WriteLine("DEVICE_INFO?;")
-                        'Retardo(200)
+
                         Delay(300)
-                        'Retardo(200)
-                        Delay(300)
+
                         Rta = .ReadExisting
                         Dim Vec1() As String = Rta.Split(separadores, StringSplitOptions.None)
                         lblInstrumento.Text = Vec1(0).Trim(trimmers) & " - S/N: " & Vec1(2).Trim(trimmers)
@@ -726,10 +725,9 @@ Fin:
                         End With
                         Rta = vbNullChar
                         .WriteLine("PROBE_INFO?;")
-                        'Retardo(200)
+
                         Delay(300)
-                        'Retardo(200)
-                        Delay(300)
+
                         Rta = .ReadExisting
                         Dim Vec2() As String = Rta.Split(separadores, StringSplitOptions.None)
                         lblSonda.Text = Vec2(0).Trim(trimmers) & " - S/N: " & Vec2(2).Trim(trimmers)
@@ -776,52 +774,45 @@ Fin:
                                 UnidadActual = "A/m"
                                 .WriteLine("RESULT_UNIT A/m;")
                         End Select
-                        'Retardo(100)
+                        
                         Delay(100)
-                        'Retardo(100)
-                        Delay(100)
+
                         .DiscardInBuffer()
                         If chkMaxHold.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX;")
-                            'Retardo(100)
+                            
                             Delay(100)
-                            'Retardo(100)
-                            Delay(100)
+
                             .DiscardInBuffer()
                             .WriteLine("RESET_MAX;") 'RESETEA EL VALOR MAXIMO DEL DISPLAY
                             lblTipoRes.Text = "Max Hold"
                         ElseIf chkMaxAvg.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX_AVG;")
-                            'Retardo(100)
+                            
                             Delay(100)
-                            'Retardo(100)
-                            Delay(100)
+
                             .DiscardInBuffer()
                             .WriteLine("RESET_MAXAVG;")
-                            'Retardo(100)
+                            
                             Delay(100)
-                            'Retardo(100)
-                            Delay(100)
+
                             lblTipoRes.Text = "Max Avg"
                             .DiscardInBuffer()
                             .WriteLine("AVG_TIME 3;") 'SETEO DE TIEMPO DE PROMEDIADO en segundos
                         End If
-                        'Retardo(100)
+
                         Delay(100)
-                        'Retardo(100)
-                        Delay(100)
+
                         .DiscardInBuffer()
                         .WriteLine("MEAS_VIEW NORMAL;")
-                        'Retardo(100)
+                        
                         Delay(100)
-                        'Retardo(100)
-                        Delay(100)
+
                         .DiscardInBuffer()
                         .WriteLine("AUTO_ZERO OFF;") 'APAGA EL AUTOCERO 
-                        'Retardo(100)
+                        
                         Delay(100)
-                        'Retardo(100)
-                        Delay(100)
+
                         .DiscardInBuffer()
                     End If
                     'Se pone en true la bandera de conectado para que cuando se vuelva a presionar este boton
@@ -2521,19 +2512,17 @@ HacerLoop:      Loop
                         If chkPausa.Checked Then
                             ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
                             comNarda.WriteLine("RESET_MAX;")
-                            'Retardo(200)
+                            
                             Delay(300)
-                            'Retardo(200)
-                            Delay(300)
+
                             inBuffer = comNarda.ReadExisting
                             Exit Sub
                         End If
 
                         comNarda.WriteLine("MEAS?;")
-                        'Retardo(200)
+
                         Delay(300)
-                        'Retardo(200)
-                        Delay(300)
+
                         VecNarda = Split(comNarda.ReadExisting, ",")
                         Application.DoEvents()
 
@@ -2548,10 +2537,9 @@ HacerLoop:      Loop
                         lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
 
                         comNarda.WriteLine("BATTERY?;")
-                        'Retardo(200)
+                        
                         Delay(300)
-                        'Retardo(200)
-                        Delay(300)
+
                         inBuffer = comNarda.ReadExisting
                         nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
                         actualizarBateria(nivelBateria)
@@ -2621,10 +2609,9 @@ HacerLoop:      Loop
 
                     serialPort.DiscardInBuffer()
                     serialPort.WriteLine("REMOTE ON;")
-                    'Retardo(100)
+
                     Delay(200)
-                    'Retardo(100)
-                    Delay(200)
+
                     Dim data As String = serialPort.ReadExisting()
 
                     If data.Equals("0;" & vbCr & "") Then
@@ -2635,6 +2622,8 @@ HacerLoop:      Loop
                         nuevoMensajeEventos("Puerto " & port & " asignado al medidor de RNI, presione el botón CONECTAR para iniciar el enlace.")
                         btnConectar.BackColor = Color.YellowGreen
                         nardaDetected = True
+
+
                         Exit For
                     End If
 
