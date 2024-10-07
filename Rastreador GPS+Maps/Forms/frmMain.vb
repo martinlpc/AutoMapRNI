@@ -1214,8 +1214,8 @@ Fin:
                     Dim auxstrSonda, auxstrNivel As String()
                     Dim miArray(ItemsTot, 11) As String
 
-                    auxstrSonda = Split(ListaResultados.Items(1).SubItems.Item(8).Text, " ")
-                    Dim auxstrMed As String() = Split(ListaResultados.Items(1).SubItems.Item(7).Text, " ")
+                    auxstrSonda = Split(ListaResultados.Items(0).SubItems.Item(8).Text, " ")
+                    Dim auxstrMed As String() = Split(ListaResultados.Items(0).SubItems.Item(7).Text, " ")
                     For Each item As ListViewItem In ListaResultados.Items
                         miArray(item.Index, 0) = CSng(item.Text).ToString 'INDICE
                         miArray(item.Index, 1) = item.SubItems.Item(4).Text 'FECHA
@@ -1301,8 +1301,8 @@ Fin:
                     Dim auxstrSonda, auxstrNivel As String()
                     Dim miArray(ItemsTot, 5) As String
 
-                    auxstrSonda = Split(ListaResultados.Items(1).SubItems.Item(8).Text, " ")
-                    Dim auxstrMed As String() = Split(ListaResultados.Items(1).SubItems.Item(7).Text, " ")
+                    auxstrSonda = Split(ListaResultados.Items(0).SubItems.Item(8).Text, " ")
+                    Dim auxstrMed As String() = Split(ListaResultados.Items(0).SubItems.Item(7).Text, " ")
                     For Each item As ListViewItem In ListaResultados.Items
                         miArray(item.Index, 0) = CSng(item.Text).ToString 'INDICE
                         miArray(item.Index, 1) = item.SubItems.Item(4).Text 'FECHA
@@ -2618,6 +2618,19 @@ HacerLoop:      Loop
                         ' NBM-550 encontrado
                         comNarda.PortName = port
                         cboPuertoNarda.Text = port.ToString()
+                        'nuevoMensajeEventos("Se encontró NARDA NBM-550 en el puerto " & port)
+                        'nuevoMensajeEventos("Puerto " & port & " asignado al medidor de RNI, presione el botón CONECTAR para iniciar el enlace.")
+                        'btnConectar.BackColor = Color.YellowGreen
+                        'nardaDetected = True
+
+                        ''------------------
+                        '  refactoring desde aca
+
+                        NBMReader = New NBM550Reader(port)
+
+
+                        '  fin refactor
+                        '' -------------------
                         nuevoMensajeEventos("Se encontró NARDA NBM-550 en el puerto " & port)
                         nuevoMensajeEventos("Puerto " & port & " asignado al medidor de RNI, presione el botón CONECTAR para iniciar el enlace.")
                         btnConectar.BackColor = Color.YellowGreen
