@@ -2,7 +2,7 @@
 Public Class frmDebug
 
     Dim NMEAReader As NMEA0183Reader
-    Dim NBMReader As NBM550Reader
+    Dim NBMDevice As NBM550Reader
 
     Private Sub TextBox1_TextChanged(sender As System.Object, e As System.EventArgs) Handles TextBox1.TextChanged
         TextBox1.Select(TextBox1.Text.Length, 0)

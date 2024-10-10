@@ -68,7 +68,7 @@ Public Class frmMain
     Public user, pass As String
 
     Public NMEAGPSReader As NMEA0183Reader
-    Public NBMReader As NBM550Reader
+    Public NBMDevice As NBM550Reader
 
     Dim encryptionKey As String = ConfigurationManager.AppSettings("EncryptionKey")
     Dim PaletaRNI(10) As Integer '0 el minimo, 9 el maximo
@@ -251,7 +251,6 @@ Public Class frmMain
             {0.0, Tuple.Create(GMarkerGoogleType.blue_dot, 6)}
         }
 
-SeguirCampaña:
         Try
             'Se pone en cero la medicion del EMR para que empiece a tomar desde el arranque del recorido y no antes
             Do While Not boolStopCamp And Conectado
@@ -306,11 +305,7 @@ SeguirCampaña:
                     If Not boolStopCamp Then
                         For i = 5 To 1
                             lblCamp.Text = "Reanudando en " & i & " segundos..."
-                            'Retardo(1000)
                             Delay(1000)
-                            'Retardo(1000)
-                            Delay(1000)
-                            Application.DoEvents()
                         Next
                     End If
                 End If
@@ -369,16 +364,13 @@ SeguirCampaña:
                 IndiceRes += 1
                 
                 NivelPuro = NivelNarda
-                
-                NivelPuro = NivelNarda
 
                 Application.DoEvents()
 
                 '----------------------------------------------------------------------------------------------'
                 '-- PROBANDO DESCARTE DE PUNTOS QUE TENGAN EN SUS GRADOS DE LATITUD O LONGITUD EL VALOR CERO --'
-                If LatitudActual.Grados.Equals(0) Or LongitudActual.Grados.Equals(0) Then
-                    GoTo SeguirCampaña ' Si los grados estan en cero, vuelve al inicio. Como las banderas estan en orden, deberia volver a medir sin problemas
-                End If
+                If LatitudActual.Grados.Equals(0) Or LongitudActual.Grados.Equals(0) Then Continue Do
+                ' Si los grados estan en cero, vuelve al inicio. Como las banderas estan en orden, deberia volver a medir sin problemas
                 '----------------------------------------------------------------------------------------------'
 
                 ActLatGDEC = ConvertirAGDec(LatitudActual)
@@ -386,15 +378,10 @@ SeguirCampaña:
                 'Se guarda en una variable local CON INCERTIDUMBRE INCLUIDA para que sea lo mas preciso posible en cuanto a posicion y tiempo
                 NivelFinal = FormatNumber(NivelPuro * factorSonda, 3)
 
-                If chkNBM550.Checked Then
-                    comNarda.WriteLine("RESET_MMA;") 'RESETEA CUALQUIER TIPO DE VALOR EN EL INSTRUMENTO (MAX, MIN, AVG, MAX_AVG)
-                    'Retardo(300)
-                    Delay(300)
-                    'Retardo(300)
-                    Delay(300)
-                    comNarda.DiscardInBuffer()
-                End If
-                boolResetMaxEMR = True
+
+                'RESETEA CUALQUIER TIPO DE VALOR EN EL INSTRUMENTO (MAX, MIN, AVG, MAX_AVG)
+                If NBMDevice.resetMaxHold() = "-999" Then Throw New Exception("Error reseteando máximo durante el recorrido")
+
                 Application.DoEvents()
 
                 For Each threshold In thresholds
@@ -430,15 +417,6 @@ SeguirCampaña:
                 'Para calcular la distancia hacia el ultimo marker
                 UltimaLat = LatitudActual
                 UltimaLng = LongitudActual
-
-
-                '---- DETECCION DE ERROR EN INDICE RES -----------------------------
-
-                If IndiceAnterior + 1 <> IndiceRes Then Stop
-
-
-
-
 
                 With outReg
                     .Indice = Format(IndiceRes, "0000")
@@ -661,7 +639,134 @@ Fin:
         lblSondaDetect.Text = "Sonda detectada:"
     End Sub
 
-    Private Sub ConectarNarda(sender As System.Object, e As System.EventArgs) Handles btnConectar.Click
+    Private Sub connectNarda(sender As System.Object, e As System.EventArgs) Handles btnConectar.Click
+        If Not chkNBM550.Checked Then
+            MsgBox("Seleccione en el menú ''Opciones -> Instrumento RNI'' el modelo del equipo que desea utilizar", MsgBoxStyle.Exclamation, "Seleccione un equipo antes de continuar")
+            Exit Sub
+        End If
+
+        btnConectar.Enabled = False
+        chkMaxAvg.Enabled = False
+        chkMaxHold.Enabled = False
+
+        If Not Conectado Then
+            Try
+                frmSondaNBM.ShowDialog(Me)
+                Dim res = NBMDevice.connectToDevice(comNarda.PortName)
+
+                If res = "-999" Then
+                    HandleNardaNotFound()
+                    Exit Sub
+                End If
+
+                nuevoMensajeEventos("NBM-550 conectado. Activando el modo REMOTO.")
+                PictureBox1.Image = AutoMapRNI.My.Resources.nbm550
+                Instrumento.NumSerie = res
+                Instrumento.Marca = "NARDA"
+                Instrumento.Modelo = "NBM-550"
+
+                lblInstrumento.Text = String.Format("{0} - S/N: {1}", Instrumento.Modelo, Instrumento.NumSerie)
+
+                SondaSel.Marca = "NARDA"
+                SondaSel.Modelo = NBMDevice.attachedProbe.model
+                SondaSel.NumSerie = NBMDevice.attachedProbe.serialNumber
+                SondaSel.FechaCal = NBMDevice.attachedProbe.dateOfCalibration
+
+                lblSonda.Text = String.Format("{0} - S/N: {1}", SondaSel.Modelo, SondaSel.NumSerie)
+
+                For i As Integer = 0 To ContSondas500
+                    If Not boolSprinter Then
+                        If Sondas550(i).Nombre = SondaSel.Modelo Then
+                            SondaSel.IncertDB = Sondas550(i).Incert
+                            SondaSel.Factor = Sondas550(i).VecesDB
+                            Exit For
+                        End If
+                    Else
+                        If Sondas550_SP(i).Nombre = SondaSel.Modelo Then
+                            SondaSel.IncertDB = Sondas550_SP(i).Incert
+                            SondaSel.Factor = Sondas550_SP(i).VecesDB
+                            Exit For
+                        End If
+                    End If
+                Next
+
+                If SondaSel.Factor = 1 Then
+                    lblIncert.Text = "-NC-"
+                Else
+                    lblIncert.Text = SondaSel.IncertDB & " dB"
+                End If
+
+                If SondaSel.Modelo.Contains("EF") Then
+                    UnidadActual = "V/m"
+                Else
+                    UnidadActual = "A/m"
+                End If
+
+                lblTipoRes.Text = "Max hold"
+                Conectado = True
+                tmrNarda.Interval = 1500
+                tmrNarda.Enabled = True
+                btnConectar.Text = "Desconectar"
+                btnIniciarCamp.Enabled = True
+                InstrumentoRNIToolStripMenuItem.Enabled = False
+                chkNBM550.Enabled = False
+
+            Catch ex As Exception
+
+            Finally
+                btnConectar.Enabled = True
+            End Try
+        Else
+            ' Proceso de desconexión
+            Try
+                tmrNarda.Enabled = False
+                If NBMDevice.disconnectDevice() Then nuevoMensajeEventos("Se desconectó correctamente el instrumento. Apagando el modo REMOTO.")
+                With SondaSel
+                    .Marca = ""
+                    .Modelo = ""
+                    .NumSerie = ""
+                End With
+                LimpiarConexion()
+
+
+                lblSonda.Text = ""
+                actualizarBateria("OFF")
+                lblInstrumento.Text = ""
+                lblTipoRes.Text = ""
+                PictureBox1.Image = Nothing
+                With Instrumento
+                    .Marca = ""
+                    .Modelo = ""
+                    .NumSerie = ""
+                End With
+                lblDisplay.Text = ""
+                lblIncert.Text = ""
+                Conectado = False
+                btnConectar.Text = "Conectar"
+                btnConectar.BackColor = SystemColors.Control
+                chkNBM550.Enabled = True
+
+
+            Catch ex As Exception
+
+            Finally
+                btnConectar.Enabled = True
+
+            End Try
+        End If
+    End Sub
+
+    Sub HandleNardaNotFound()
+        Beep()
+        nuevoMensajeEventos("El instrumento no responde, está apagado o no se encuentra conectado")
+        chkMaxAvg.Enabled = True
+        chkMaxHold.Enabled = True
+        btnIniciarCamp.Enabled = False
+        btnConectar.Text = "Conectar"
+        btnConectar.BackColor = SystemColors.Control
+    End Sub
+
+    Private Sub ConectarNarda(sender As System.Object, e As System.EventArgs)
         Try
             Dim Rta As String
             If Not chkNBM550.Checked Then
@@ -694,18 +799,12 @@ Fin:
                         If Not .IsOpen Then .Open()
                         .DiscardInBuffer()
                         .WriteLine("REMOTE ON;")
-                        
+
                         Delay(500)
 
                         Rta = .ReadExisting
                         If Rta <> "0;" & vbCr & "" And Not Rta.Contains("401;") Then
-                            Beep()
-                            nuevoMensajeEventos("El instrumento no responde, está apagado o no se encuentra conectado")
-                            chkMaxAvg.Enabled = True
-                            chkMaxHold.Enabled = True
-                            btnIniciarCamp.Enabled = False
-                            btnConectar.Text = "Conectar"
-                            btnConectar.BackColor = SystemColors.Control
+                            HandleNardaNotFound()
                             Exit Sub
                         Else
                             nuevoMensajeEventos("NBM-550 conectado. Activando el modo REMOTO.")
@@ -774,13 +873,13 @@ Fin:
                                 UnidadActual = "A/m"
                                 .WriteLine("RESULT_UNIT A/m;")
                         End Select
-                        
+
                         Delay(100)
 
                         .DiscardInBuffer()
                         If chkMaxHold.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX;")
-                            
+
                             Delay(100)
 
                             .DiscardInBuffer()
@@ -788,12 +887,12 @@ Fin:
                             lblTipoRes.Text = "Max Hold"
                         ElseIf chkMaxAvg.Checked = True Then
                             .WriteLine("RESULT_TYPE MAX_AVG;")
-                            
+
                             Delay(100)
 
                             .DiscardInBuffer()
                             .WriteLine("RESET_MAXAVG;")
-                            
+
                             Delay(100)
 
                             lblTipoRes.Text = "Max Avg"
@@ -805,12 +904,12 @@ Fin:
 
                         .DiscardInBuffer()
                         .WriteLine("MEAS_VIEW NORMAL;")
-                        
+
                         Delay(100)
 
                         .DiscardInBuffer()
                         .WriteLine("AUTO_ZERO OFF;") 'APAGA EL AUTOCERO 
-                        
+
                         Delay(100)
 
                         .DiscardInBuffer()
@@ -2496,12 +2595,49 @@ HacerLoop:      Loop
 
     End Sub
 
-
-
     Sub LeerNarda()
 
+        If Not Conectado Or comNarda Is Nothing Then Exit Sub
+
+        Dim res As String
+
+        ' Chequeo de pausa activada
+        If chkPausa.Checked Then
+            Try
+                res = NBMDevice.resetMaxHold()
+                If res = "-999" Then Throw New Exception()
+            Catch ex As Exception
+                'nuevoMensajeEventos("[NBM550] Error reseteando MAX HOLD del instrumento")
+            End Try
+
+            Exit Sub
+        End If
+
+        ' Lectura del nivel máximo acumulado actual
+        Try
+            res = NBMDevice.getCurrentValue(True)
+            If res = "-999" Then Throw New Exception()
+            NivelNarda = CSng(res)
+        Catch ex As Exception
+            'nuevoMensajeEventos("[NBM550] Error leyendo el valor máximo acumulado actual")
+        End Try
+
+        lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
+
+        ' Lectura de valor de la batería
+        Try
+            res = NBMDevice.readBattery()
+            If res = "-999" Then Throw New Exception()
+            actualizarBateria(CInt(res))
+        Catch ex As Exception
+            'nuevoMensajeEventos("[NBM550] Error leyendo el valor de la batería")
+        End Try
+
+    End Sub
+
+    Sub oldLeerNarda()
+
         Dim VecNarda As String()
-        Dim ContError As Integer = 0
         Dim inBuffer As String
         Dim nivelBateria As Integer = 0
 
@@ -2512,7 +2648,7 @@ HacerLoop:      Loop
                         If chkPausa.Checked Then
                             ' SI ESTA EN PAUSA, PEDIR EL VALOR RESETEA EL MAX HOLD
                             comNarda.WriteLine("RESET_MAX;")
-                            
+
                             Delay(300)
 
                             inBuffer = comNarda.ReadExisting
@@ -2537,17 +2673,14 @@ HacerLoop:      Loop
                         lblDisplay.Invoke(Sub() lblDisplay.Text = NivelNarda & " " & UnidadActual)
 
                         comNarda.WriteLine("BATTERY?;")
-                        
+
                         Delay(300)
 
                         inBuffer = comNarda.ReadExisting
                         nivelBateria = CInt(inBuffer.Substring(0, Len(inBuffer) - 2))
                         actualizarBateria(nivelBateria)
-                        ContError = 0
+
                     End If
-
-                    ContError = 0
-
                 End If
             End While
         Catch ex As Exception
@@ -2626,7 +2759,7 @@ HacerLoop:      Loop
                         ''------------------
                         '  refactoring desde aca
 
-                        NBMReader = New NBM550Reader(port)
+                        NBMDevice = New NBM550Reader(port)
 
 
                         '  fin refactor

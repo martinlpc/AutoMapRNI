@@ -32,12 +32,16 @@ Public Class NBM550Reader
             End If
 
             If handleDeviceConnection() Then
-                Return _serialNumber
+                If readAttachedProbe() Then
+                    Return _serialNumber
+                End If
+
+                Return "-999"
             End If
 
-            Return 0
+            Return "-999"
         Catch ex As Exception
-            Return 0
+            Return "-999"
         End Try
 
     End Function
@@ -98,7 +102,7 @@ Public Class NBM550Reader
         Return probe
     End Function
 
-    Public Function readCurrentValue(readMax As Boolean) As String
+    Public Function getCurrentValue(readMax As Boolean) As String
         Try
             Dim res As String = sendCommand("MEAS?;", 300)
             Dim array As String() = res.Split(",")
@@ -112,7 +116,7 @@ Public Class NBM550Reader
             End If
 
             level = Format(CSng(array(getActualLevel) / 1000), "##0.000")
-        
+
             Return level
         Catch ex As Exception
             Return "-999"
@@ -137,13 +141,15 @@ Public Class NBM550Reader
 
     Public Function resetMaxHold() As String
         Try
-            Dim res As String = sendCommand("RESET_MAX?;", 300)
+            Dim res As String = sendCommand("RESET_MAX;", 300)
 
             If res = "-999" Then
                 Throw New Exception("Error resetting max hold")
             End If
+
+            Return 0
         Catch ex As Exception
-                Return "-999"
+            Return "-999"
         End Try
     End Function
 
@@ -190,13 +196,11 @@ Public Class NBM550Reader
 
     End Function
 
-    Public Sub close()
+    Private Sub close()
         If _serialPort IsNot Nothing Then
             If _serialPort.IsOpen() Then
                 _serialPort.Close()
             End If
-            _serialPort.Dispose()
-            _serialPort = Nothing
             isConnected = False
         End If
     End Sub
