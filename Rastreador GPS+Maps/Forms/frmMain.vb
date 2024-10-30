@@ -1368,7 +1368,7 @@ Fin:
                         Dim auxstrMed As String() = Split(ListaResultados.Items(1).SubItems.Item(7).Text, " ")
                         For Each item As ListViewItem In ListaResultados.Items
                             auxstrNivel = Split(item.SubItems.Item(1).Text, " ")
-                            If CSng(auxstrNivel(0)) >= 14 Then 'RESULTADO CON INCERTIDUMBRE
+                            If CSng(auxstrNivel(0)) >= MEP_50PERCENT Then 'RESULTADO CON INCERTIDUMBRE
                                 miArray(i, 0) = CSng(item.Text).ToString 'INDICE
                                 miArray(i, 1) = item.SubItems.Item(4).Text 'FECHA
                                 miArray(i, 2) = item.SubItems.Item(3).Text 'HORA
