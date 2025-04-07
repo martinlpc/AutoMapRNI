@@ -28,15 +28,6 @@ Partial Class frmMain
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.lblCargado = New System.Windows.Forms.Label()
         Me.trkZoom = New System.Windows.Forms.TrackBar()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.btnBuscar = New System.Windows.Forms.Button()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtLat = New System.Windows.Forms.TextBox()
-        Me.txtLng = New System.Windows.Forms.TextBox()
-        Me.opBuscarCoor = New System.Windows.Forms.RadioButton()
-        Me.opBuscarLugar = New System.Windows.Forms.RadioButton()
-        Me.txtLugar = New System.Windows.Forms.TextBox()
         Me.LinkLabel2 = New System.Windows.Forms.LinkLabel()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.lblZoom = New System.Windows.Forms.Label()
@@ -136,7 +127,6 @@ Partial Class frmMain
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBox1.SuspendLayout()
         CType(Me.trkZoom, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox2.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -172,21 +162,21 @@ Partial Class frmMain
         Me.Mapa.ScaleMode = GMap.NET.WindowsForms.ScaleModes.[Integer]
         Me.Mapa.SelectedAreaFillColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(65, Byte), Integer), CType(CType(105, Byte), Integer), CType(CType(225, Byte), Integer))
         Me.Mapa.ShowTileGridLines = False
-        Me.Mapa.Size = New System.Drawing.Size(802, 530)
+        Me.Mapa.Size = New System.Drawing.Size(805, 530)
         Me.Mapa.TabIndex = 0
         Me.Mapa.Zoom = 10.0R
         '
         'GroupBox1
         '
         Me.GroupBox1.AutoSize = True
-        Me.TableLayoutPanel1.SetColumnSpan(Me.GroupBox1, 3)
+        Me.TableLayoutPanel1.SetColumnSpan(Me.GroupBox1, 2)
         Me.GroupBox1.Controls.Add(Me.lblCargado)
         Me.GroupBox1.Controls.Add(Me.Mapa)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox1.Location = New System.Drawing.Point(3, 195)
         Me.GroupBox1.Name = "GroupBox1"
         Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox1, 3)
-        Me.GroupBox1.Size = New System.Drawing.Size(808, 549)
+        Me.GroupBox1.Size = New System.Drawing.Size(811, 549)
         Me.GroupBox1.TabIndex = 1
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Mapa (Shift + arrastre con Click derecho para seleccionar área)"
@@ -216,94 +206,6 @@ Partial Class frmMain
         Me.trkZoom.TickStyle = System.Windows.Forms.TickStyle.TopLeft
         Me.trkZoom.Value = 15
         '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.btnBuscar)
-        Me.GroupBox2.Controls.Add(Me.Label4)
-        Me.GroupBox2.Controls.Add(Me.Label3)
-        Me.GroupBox2.Controls.Add(Me.txtLat)
-        Me.GroupBox2.Controls.Add(Me.txtLng)
-        Me.GroupBox2.Controls.Add(Me.opBuscarCoor)
-        Me.GroupBox2.Controls.Add(Me.opBuscarLugar)
-        Me.GroupBox2.Controls.Add(Me.txtLugar)
-        Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Top
-        Me.GroupBox2.Location = New System.Drawing.Point(308, 3)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(277, 151)
-        Me.GroupBox2.TabIndex = 2
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Búsqueda"
-        '
-        'btnBuscar
-        '
-        Me.btnBuscar.Location = New System.Drawing.Point(161, 36)
-        Me.btnBuscar.Name = "btnBuscar"
-        Me.btnBuscar.Size = New System.Drawing.Size(79, 43)
-        Me.btnBuscar.TabIndex = 6
-        Me.btnBuscar.Text = "Buscar lugar"
-        Me.btnBuscar.UseVisualStyleBackColor = True
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(3, 59)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(48, 13)
-        Me.Label4.TabIndex = 9
-        Me.Label4.Text = "Longitud"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(6, 39)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(39, 13)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Latitud"
-        '
-        'txtLat
-        '
-        Me.txtLat.Location = New System.Drawing.Point(51, 36)
-        Me.txtLat.Name = "txtLat"
-        Me.txtLat.Size = New System.Drawing.Size(104, 20)
-        Me.txtLat.TabIndex = 4
-        '
-        'txtLng
-        '
-        Me.txtLng.Location = New System.Drawing.Point(51, 56)
-        Me.txtLng.Name = "txtLng"
-        Me.txtLng.Size = New System.Drawing.Size(104, 20)
-        Me.txtLng.TabIndex = 5
-        '
-        'opBuscarCoor
-        '
-        Me.opBuscarCoor.AutoSize = True
-        Me.opBuscarCoor.Location = New System.Drawing.Point(6, 19)
-        Me.opBuscarCoor.Name = "opBuscarCoor"
-        Me.opBuscarCoor.Size = New System.Drawing.Size(123, 17)
-        Me.opBuscarCoor.TabIndex = 3
-        Me.opBuscarCoor.Text = "Buscar coordenadas"
-        Me.opBuscarCoor.UseVisualStyleBackColor = True
-        '
-        'opBuscarLugar
-        '
-        Me.opBuscarLugar.AutoSize = True
-        Me.opBuscarLugar.Checked = True
-        Me.opBuscarLugar.Location = New System.Drawing.Point(6, 82)
-        Me.opBuscarLugar.Name = "opBuscarLugar"
-        Me.opBuscarLugar.Size = New System.Drawing.Size(87, 17)
-        Me.opBuscarLugar.TabIndex = 1
-        Me.opBuscarLugar.TabStop = True
-        Me.opBuscarLugar.Text = "Buscar lugar:"
-        Me.opBuscarLugar.UseVisualStyleBackColor = True
-        '
-        'txtLugar
-        '
-        Me.txtLugar.Location = New System.Drawing.Point(6, 105)
-        Me.txtLugar.Name = "txtLugar"
-        Me.txtLugar.Size = New System.Drawing.Size(234, 20)
-        Me.txtLugar.TabIndex = 2
-        '
         'LinkLabel2
         '
         Me.LinkLabel2.AutoSize = True
@@ -327,7 +229,7 @@ Partial Class frmMain
         Me.GroupBox3.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox3.Location = New System.Drawing.Point(3, 3)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(299, 151)
+        Me.GroupBox3.Size = New System.Drawing.Size(384, 151)
         Me.GroupBox3.TabIndex = 3
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "Opciones del mapa"
@@ -408,10 +310,10 @@ Partial Class frmMain
         Me.GroupBox4.Controls.Add(Me.Label12)
         Me.GroupBox4.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.GroupBox4.Location = New System.Drawing.Point(817, 3)
+        Me.GroupBox4.Location = New System.Drawing.Point(820, 3)
         Me.GroupBox4.Name = "GroupBox4"
         Me.TableLayoutPanel1.SetRowSpan(Me.GroupBox4, 2)
-        Me.GroupBox4.Size = New System.Drawing.Size(477, 250)
+        Me.GroupBox4.Size = New System.Drawing.Size(474, 250)
         Me.GroupBox4.TabIndex = 4
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Instrumento de medición RNI"
@@ -695,9 +597,9 @@ Partial Class frmMain
         Me.GroupBox5.Controls.Add(Me.btnExcel)
         Me.GroupBox5.Controls.Add(Me.btnGEarth)
         Me.GroupBox5.Controls.Add(Me.ListaResultados)
-        Me.GroupBox5.Location = New System.Drawing.Point(817, 259)
+        Me.GroupBox5.Location = New System.Drawing.Point(820, 259)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(477, 348)
+        Me.GroupBox5.Size = New System.Drawing.Size(474, 348)
         Me.GroupBox5.TabIndex = 5
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Resultados"
@@ -742,7 +644,7 @@ Partial Class frmMain
         Me.ListaResultados.GridLines = True
         Me.ListaResultados.Location = New System.Drawing.Point(3, 16)
         Me.ListaResultados.Name = "ListaResultados"
-        Me.ListaResultados.Size = New System.Drawing.Size(471, 282)
+        Me.ListaResultados.Size = New System.Drawing.Size(468, 282)
         Me.ListaResultados.SmallImageList = Me.ListaImgs
         Me.ListaResultados.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListaResultados.TabIndex = 0
@@ -819,12 +721,12 @@ Partial Class frmMain
         '
         Me.txtEventos.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtEventos.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtEventos.Location = New System.Drawing.Point(817, 613)
+        Me.txtEventos.Location = New System.Drawing.Point(820, 613)
         Me.txtEventos.Multiline = True
         Me.txtEventos.Name = "txtEventos"
         Me.txtEventos.ReadOnly = True
         Me.txtEventos.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtEventos.Size = New System.Drawing.Size(477, 131)
+        Me.txtEventos.Size = New System.Drawing.Size(474, 131)
         Me.txtEventos.TabIndex = 6
         '
         'MenuStrip1
@@ -975,6 +877,7 @@ Partial Class frmMain
         Me.TipoDeResultadoToolStripMenuItem.Name = "TipoDeResultadoToolStripMenuItem"
         Me.TipoDeResultadoToolStripMenuItem.Size = New System.Drawing.Size(189, 22)
         Me.TipoDeResultadoToolStripMenuItem.Text = "Tipo de resultado"
+        Me.TipoDeResultadoToolStripMenuItem.Visible = False
         '
         'chkMaxHold
         '
@@ -1038,9 +941,9 @@ Partial Class frmMain
         Me.GroupBox6.Controls.Add(Me.lblStatusGPS)
         Me.GroupBox6.Controls.Add(Me.Label6)
         Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Top
-        Me.GroupBox6.Location = New System.Drawing.Point(591, 3)
+        Me.GroupBox6.Location = New System.Drawing.Point(393, 3)
         Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(220, 151)
+        Me.GroupBox6.Size = New System.Drawing.Size(421, 151)
         Me.GroupBox6.TabIndex = 7
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Posición actual"
@@ -1135,18 +1038,16 @@ Partial Class frmMain
         '
         'TableLayoutPanel1
         '
-        Me.TableLayoutPanel1.ColumnCount = 4
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 23.53816!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 21.82854!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.46779!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 37.16551!))
+        Me.TableLayoutPanel1.ColumnCount = 3
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30.06939!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 32.92213!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.93138!))
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox3, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox2, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox4, 3, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox6, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox4, 2, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox6, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.GroupBox1, 0, 1)
-        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox5, 3, 2)
-        Me.TableLayoutPanel1.Controls.Add(Me.txtEventos, 3, 3)
+        Me.TableLayoutPanel1.Controls.Add(Me.GroupBox5, 2, 2)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtEventos, 2, 3)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(0, 25)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -1181,8 +1082,6 @@ Partial Class frmMain
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.trkZoom, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -1205,19 +1104,11 @@ Partial Class frmMain
     End Sub
     Friend WithEvents Mapa As GMap.NET.WindowsForms.GMapControl
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents GroupBox2 As System.Windows.Forms.GroupBox
     Friend WithEvents GroupBox3 As System.Windows.Forms.GroupBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cboProvMapa As System.Windows.Forms.ComboBox
     Friend WithEvents cboModoConexion As System.Windows.Forms.ComboBox
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtLat As System.Windows.Forms.TextBox
-    Friend WithEvents txtLng As System.Windows.Forms.TextBox
-    Friend WithEvents opBuscarCoor As System.Windows.Forms.RadioButton
-    Friend WithEvents opBuscarLugar As System.Windows.Forms.RadioButton
-    Friend WithEvents txtLugar As System.Windows.Forms.TextBox
     Friend WithEvents GroupBox4 As System.Windows.Forms.GroupBox
     Friend WithEvents btnIniciarCamp As System.Windows.Forms.Button
     Friend WithEvents trkZoom As System.Windows.Forms.TrackBar
@@ -1298,7 +1189,6 @@ Partial Class frmMain
     Friend WithEvents vecesDB As System.Windows.Forms.ColumnHeader
     Friend WithEvents incert As System.Windows.Forms.ColumnHeader
     Friend WithEvents LinkLabel2 As System.Windows.Forms.LinkLabel
-    Friend WithEvents btnBuscar As System.Windows.Forms.Button
     Friend WithEvents valPuro As System.Windows.Forms.ColumnHeader
     Friend WithEvents lblDistAct As System.Windows.Forms.Label
     Friend WithEvents picBateria As System.Windows.Forms.PictureBox

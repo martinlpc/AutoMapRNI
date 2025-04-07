@@ -266,7 +266,7 @@ xmlns:atom="http://www.w3.org/2005/Atom"&gt;
 	<remarks></remarks>
 </member><member name="M:AutoMapRNI.GestionCoor.CalcularDist(AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS,AutoMapRNI.GestionCoor.CoordenadasGMS)">
 	<summary>
- Calcula la distancia aproximada, en metros, entre dos puntos geográficos.
+ Calcula la distancia aproximada, en metros, entre dos puntos geográficos usando la fórmula de haversine.
  Se necesita una estructura GMS.
  </summary>
 	<param name="GMSLat1">Latitud del punto 1 en estructura GradMinSeg decimales</param>

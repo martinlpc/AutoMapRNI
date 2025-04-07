@@ -71,7 +71,7 @@
         Return ret
     End Function
     ''' <summary>
-    ''' Calcula la distancia aproximada, en metros, entre dos puntos geográficos.
+    ''' Calcula la distancia aproximada, en metros, entre dos puntos geográficos usando la fórmula de haversine.
     ''' Se necesita una estructura GMS.
     ''' </summary>
     ''' <param name="GMSLat1">Latitud del punto 1 en estructura GradMinSeg decimales</param>
@@ -83,7 +83,11 @@
     Public Function CalcularDist(GMSLat1 As CoordenadasGMS, GMSLng1 As CoordenadasGMS, GMSLat2 As CoordenadasGMS, GMSLng2 As CoordenadasGMS) As Single
 
         'Rad es la constante para convertir angulos (Grados decimales) a radianes
-        Dim Rad As Single = Math.PI / 180
+        Const RAD As Single = Math.PI / 180
+
+        'Para resultado en millas R = 3959
+        'Para usar kilometros R = 6371  
+        Const RADIO_TERRESTRE As Integer = 6371 'Radio Terrestre en KMs
 
         Dim Lat1 As Double = ConvertirAGDec(GMSLat1)
         Dim Lng1 As Double = ConvertirAGDec(GMSLng1)
@@ -91,26 +95,27 @@
         Dim Lat2 As Double = ConvertirAGDec(GMSLat2)
         Dim Lng2 As Double = ConvertirAGDec(GMSLng2)
 
-        'Para resultado en millas R = 3959
-        'Para usar kilometros R = 6371  
+        Dim DeltaLat As Double = (Lat2 * RAD - Lat1 * RAD)
+        Dim DeltaLng As Double = (Lng2 * RAD - Lng1 * RAD)
 
-        Dim R As Integer = 6371 'Radio Terrestre en KMs
-        Dim DeltaLat As Double = (Lat2 * Rad - Lat1 * Rad)
-        Dim DeltaLng As Double = (Lng2 * Rad - Lng1 * Rad)
         Dim A As Double = Math.Pow(Math.Sin(DeltaLat / 2), 2) + _
-            Math.Cos(Lat1 * Rad) * _
-            Math.Cos(Lat2 * Rad) * _
+            Math.Cos(Lat1 * RAD) * _
+            Math.Cos(Lat2 * RAD) * _
             Math.Pow(Math.Sin(DeltaLng / 2), 2)
+
         Dim C As Double = 2 * Math.Atan2(Math.Sqrt(A), Math.Sqrt(1 - A))
-        Dim Dist As Single = Math.Round(R * C * 1000, 2)
+
+        Dim Dist As Single = Math.Round(RADIO_TERRESTRE * C * 1000, 2)
 
         Return Dist 'en Metros
     End Function
-    Public Function CalcMD5(strCheck As String) As String
+    Public Function CalcularChecksumNMEA(ByVal datos As String) As String
         Dim checksum As Integer = 0
-        For Each Caracter As Char In strCheck
-            checksum = checksum Xor Convert.ToByte(Caracter)
+
+        For Each c As Char In datos
+            checksum = checksum Xor Convert.ToByte(c)
         Next
+
         Return checksum.ToString("X2")
     End Function
 End Module

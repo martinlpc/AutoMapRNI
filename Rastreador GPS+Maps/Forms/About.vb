@@ -13,7 +13,7 @@
         ' TODO: personalice la información del ensamblado de la aplicación en el panel "Aplicación" del 
         '    cuadro de diálogo propiedades del proyecto (bajo el menú "Proyecto").
         Me.LabelProductName.Text = My.Application.Info.ProductName
-        Me.LabelVersion.Text = String.Format("Versión {0}", My.Application.Info.Version.ToString)
+        Me.LabelVersion.Text = String.Format("Versión {0}.{1}.{2}", My.Application.Info.Version.Major.ToString, My.Application.Info.Version.Minor.ToString, My.Application.Info.Version.Build.ToString)
         Me.LabelCopyright.Text = My.Application.Info.Copyright
         Me.LabelCompanyName.Text = My.Application.Info.CompanyName
         Me.TextBoxDescription.Text = My.Application.Info.Description
