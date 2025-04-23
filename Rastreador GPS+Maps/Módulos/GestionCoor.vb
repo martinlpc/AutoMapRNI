@@ -1,4 +1,6 @@
-﻿Module GestionCoor
+﻿Imports System.Globalization
+
+Module GestionCoor
     ''' <summary>
     ''' Estructura que aloja una componente de coordenadas en grados, minutos y segundos
     ''' </summary>
@@ -109,6 +111,7 @@
 
         Return Dist 'en Metros
     End Function
+
     Public Function CalcularChecksumNMEA(ByVal datos As String) As String
         Dim checksum As Integer = 0
 
@@ -117,5 +120,33 @@
         Next
 
         Return checksum.ToString("X2")
+    End Function
+
+    Public Function ConvertirCoordenada(coordenada As String, hemisferio As String) As Double
+        Try
+            Dim grados As Integer
+            Dim minutos As Double
+
+            If coordenada.Length = 9 Then
+                grados = Integer.Parse(coordenada.Substring(0, 2))
+                minutos = Double.Parse(coordenada.Substring(2), CultureInfo.InvariantCulture) / 60
+            ElseIf coordenada.Length = 10 Then
+                grados = Integer.Parse(coordenada.Substring(0, 3))
+                minutos = Double.Parse(coordenada.Substring(3), CultureInfo.InvariantCulture) / 60
+            Else
+                Throw New ArgumentException("La coordenada NMEA tiene un formato inválido.")
+            End If
+
+            Dim resultado As Double = grados + minutos
+
+            If hemisferio = "S" Or hemisferio = "W" Then
+                resultado *= -1
+            End If
+
+            Return resultado
+        Catch ex As Exception
+            frmMain.nuevoMensajeEventos("[CLASS GestionCoor] Error al intentar convertir coordenada a decimal")
+            Return 0.0
+        End Try
     End Function
 End Module

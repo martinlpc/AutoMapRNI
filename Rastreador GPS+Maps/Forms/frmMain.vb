@@ -2597,21 +2597,80 @@ HacerLoop:      Loop
             Else
                 ' ------------------------------------------------------------------------------------------------------------
                 If ModoDebug.Checked Then
-                    ' SE GENERA UNA POSICIÓN FIJA EN EL CCTEBA PARA SIMULAR POSICION ESTABLECIDA, SOLAMENTE PARA PRUEBAS
-                    lblStatusGPS.Text = "DEBUGGING"
-                    lblStatusGPS.BackColor = Color.BlueViolet
-                    With LatitudActual
-                        .Grados = 34
-                        .Minutos = 45
-                        .Segundos = 2
-                        .Hemisf = "S"
-                    End With
-                    With LongitudActual
-                        .Grados = 58
-                        .Minutos = 29
-                        .Segundos = 56
-                        .Hemisf = "O"
-                    End With
+                    ' Activar por codigo el simulador de cruce de meridianos/paralelos
+                    Const GPSSIM As Boolean = False
+
+                    If GPSSIM Then
+                        Dim simulator As New GPSSimulator()
+
+                        simulator.ConfigureSimulation(0, -34.995, -57.9544)
+
+                        Dim inBufferGPS As String = ""
+                        Dim reintHechos As Integer = 0
+
+                        While reintHechos <= 5
+                            inBufferGPS &= simulator.GetNextNMEAData()
+
+                            If frmDebug.debug.Checked = True Then
+                                frmDebug.TextBox1.Text &= ">>GlobalSAT inbuffer: " & inBufferGPS & vbNewLine
+                            End If
+
+                            If inBufferGPS = "" Then
+                                MostrarGPSDesconectado()
+                                Exit Sub
+                            End If
+
+                            Dim posRMC As Integer = inBufferGPS.LastIndexOf("$GPRMC")
+                            If posRMC = -1 Then
+                                reintHechos = +1
+                                Continue While
+                            End If
+
+                            ' Extraer sentencia completa
+                            inBufferGPS = inBufferGPS.Substring(posRMC)
+                            Dim finRMC As Integer = inBufferGPS.IndexOf(vbCrLf)
+                            If finRMC = -1 Then
+                                reintHechos = +1
+                                Continue While
+                            End If
+
+                            inBufferGPS = inBufferGPS.Substring(0, finRMC)
+                            Dim arrayGPS As String() = Split(inBufferGPS, ",")
+
+                            '--------------------------------------------------------------------------------------
+                            'CHECKSUM MD5 PARA COMPROBAR SI HUBO ERROR DE TRANSMISIÓN
+                            'SI SE DETECTA ERROR, SE DESCARTA LA LECTURA Y ESPERA A UNA NUEVA LLEGADA DE DATOS NMEA
+                            Dim strAChequear As String = inBufferGPS.Substring(1, inBufferGPS.IndexOf("*") - 1)
+                            Dim checksum As String = CalcularChecksumNMEA(strAChequear)
+
+                            If checksum <> arrayGPS(12).Substring(2, 2) Then
+                                reintHechos += 1
+                                Continue While
+                            End If
+                            '--------------------------------------------------------------------------------------
+
+                            ProcesarDatosGPS(arrayGPS)
+                            System.Threading.Thread.Sleep(1000)
+                            Exit While
+                        End While
+
+                    Else
+                        ' SE GENERA UNA POSICIÓN FIJA EN EL CCTEBA PARA SIMULAR POSICION ESTABLECIDA, SOLAMENTE PARA PRUEBAS
+                        lblStatusGPS.Text = "DEBUGGING"
+                        lblStatusGPS.BackColor = Color.BlueViolet
+                        With LatitudActual
+                            .Grados = 34
+                            .Minutos = 45
+                            .Segundos = 2
+                            .Hemisf = "S"
+                        End With
+                        With LongitudActual
+                            .Grados = 58
+                            .Minutos = 29
+                            .Segundos = 56
+                            .Hemisf = "O"
+                        End With
+                    End If
 
                     OverlayPosActual.Markers.Clear()
 
@@ -2823,38 +2882,45 @@ HacerLoop:      Loop
             End If
         ElseIf status = "A" Then
             ' Convertir latitud
-            Dim latGrados As String = arrayGPS(3).Substring(0, 2)
-            Dim latDecimal As String = arrayGPS(3).Substring(2).Replace(".", ",")
-            Dim latDecimalConvertido As Single = CSng(latDecimal) / 60
 
-            Dim lat As String
-            If arrayGPS(4).Contains("S") Then
-                lat = "-" & latGrados & "," & latDecimalConvertido.ToString.Substring(2)
-            Else
-                lat = latGrados & "," & latDecimalConvertido.ToString.Substring(2)
-            End If
+            'Dim latGrados As String = arrayGPS(3).Substring(0, 2)
+            'Dim latDecimal As String = arrayGPS(3).Substring(2).Replace(".", ",")
+            'Dim latDecimalConvertido As Single = CSng(latDecimal) / 60
 
+            'Dim lat As String
+            'If arrayGPS(4).Contains("S") Then
+            'lat = "-" & latGrados & "," & latDecimalConvertido.ToString.Substring(2)
+            'Else
+            'lat = latGrados & "," & latDecimalConvertido.ToString.Substring(2)
+            'End If
+            '-------
+            Dim lat As Double = ConvertirCoordenada(arrayGPS(3), arrayGPS(4))
+            
             ' Convertir longitud
-            Dim lngGrados As String = arrayGPS(5).Substring(0, 3)
-            Dim lngDecimal As String = arrayGPS(5).Substring(3).Replace(".", ",")
-            Dim lngDecimalConvertido As Single = CSng(lngDecimal) / 60
 
-            Dim lng As String
-            If arrayGPS(6).Contains("W") Then
-                lng = "-" & lngGrados & "," & lngDecimalConvertido.ToString.Substring(2)
-            Else
-                lng = lngGrados & "," & lngDecimalConvertido.ToString.Substring(2)
-            End If
+            'Dim lngGrados As String = arrayGPS(5).Substring(0, 3)
+            'Dim lngDecimal As String = arrayGPS(5).Substring(3).Replace(".", ",")
+            'Dim lngDecimalConvertido As Single = CSng(lngDecimal) / 60
 
+            'Dim lng As String
+            'If arrayGPS(6).Contains("W") Then
+            'lng = "-" & lngGrados & "," & lngDecimalConvertido.ToString.Substring(2)
+            'Else
+            'lng = lngGrados & "," & lngDecimalConvertido.ToString.Substring(2)
+            'End If
+            '----------
+
+            Dim lon As Double = ConvertirCoordenada(arrayGPS(5), arrayGPS(6))
+            
             ' Actualizar datos de posición
-            LatitudActual = ConvertirAGMS(CDbl(lat), False)
-            LongitudActual = ConvertirAGMS(CDbl(lng), True)
+            LatitudActual = ConvertirAGMS(lat, False)
+            LongitudActual = ConvertirAGMS(lon, True)
 
             ' Actualizar interfaz
             lblStatusGPS.Text = "Posicionado"
             lblStatusGPS.BackColor = Color.GreenYellow
-            txtLatActual.Text = lat
-            txtLngActual.Text = lng
+            'txtLatActual.Text = lat
+            'txtLngActual.Text = lng
 
             If Not StatusGpS Then
                 My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Asterisk)
@@ -2863,6 +2929,7 @@ HacerLoop:      Loop
             End If
         End If
     End Sub
+
 
     Private Sub MostrarGPSDesconectado()
         lblStatusGPS.Text = "Desconectado"
