@@ -1,4 +1,7 @@
-﻿Versión al 07-04-2025: 1.14.1
+﻿Versión al 28-04-2025: 1.20
+	- Se implementó ConvertirCoordenadas() para solucionar el bug de cambio de paralelo/meridiano
+
+Versión al 07-04-2025: 1.14.1
 	- Insertando una funcion de conversion de coordenadas para intentar eliminar el bug de cambio de grados
 
 Versión al 01-07-2024: 1.14.0
