@@ -1,5 +1,5 @@
 ﻿Versión al 07-04-2025: 1.14.1
-	- Implementado ConvertirCoordenadas() para solucionar el bug que ocurria cuando cruzaba un meridiano/paralelo
+	- Insertando una funcion de conversion de coordenadas para intentar eliminar el bug de cambio de grados
 
 Versión al 01-07-2024: 1.14.0
 	- Se refactorizó parte del código para mejor lectura y rendimiento
