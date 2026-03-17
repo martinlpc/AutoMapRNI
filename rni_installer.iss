@@ -1,7 +1,7 @@
 [Setup]
-#define AppVersion "1_20_0"
+#define AppVersion "1_20_1"
 AppName="AutoMap RNI"
-AppVersion=1.20.0
+AppVersion=1.20.1
 DefaultDirName="{pf}\ENACOM\AutoMap RNI"
 DefaultGroupName=ENACOM
 PrivilegesRequired=admin

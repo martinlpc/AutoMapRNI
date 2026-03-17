@@ -1269,7 +1269,10 @@ Fin:
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         ' ACTUALIZANDO INSTRUCCIONES PARA OFFICE2010 Y SU RESPECTIVA LIBRERIA INTEROP (EXCEL14)
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-        Dim m_Excel, m_Excel2, M_Excel3 As Excel.Application ' Obj Excel
+        'Dim m_Excel, m_Excel2, M_Excel3 As Excel.Application ' Obj Excel
+        Dim m_Excel As Microsoft.Office.Interop.Excel._Application = Nothing
+        Dim m_Excel2 As Microsoft.Office.Interop.Excel._Application = Nothing
+        Dim M_Excel3 As Microsoft.Office.Interop.Excel._Application = Nothing
         Dim objLibroExcel, objLibro2, objLibro3 As Excel.Workbook 'Obj Workbook
         Dim objHojaExcel, objHoja2, objHoja3 As Excel.Worksheet 'Obj Worksheet
         Dim inBuffer As String
@@ -1296,7 +1299,7 @@ Fin:
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         Try
-            m_Excel = New Excel.Application
+            m_Excel = New Microsoft.Office.Interop.Excel.Application()
             objLibroExcel = m_Excel.Workbooks.Open(Application.StartupPath & "\rep\Modelo_reporte.xlsx")
             'Crear instancia de primera hoja de trabajo
             objHojaExcel = m_Excel.Worksheets(1)
@@ -1388,7 +1391,7 @@ Fin:
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             ' GENERACION DE PLANILLA CON VALORES EN POTENCIA ''''''''''''
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-            M_Excel3 = New Excel.Application
+            M_Excel3 = New Microsoft.Office.Interop.Excel.Application
             objLibro3 = M_Excel3.Workbooks.Open(Application.StartupPath & "\rep\Modelo_reporte_P.xlsx")
             objHoja3 = M_Excel3.Worksheets(1)
             With objHoja3
@@ -1452,7 +1455,7 @@ Fin:
             'SI SE DETECTO ALGUN VALOR QUE SUPERE EL 50% DE LA MEP....
             ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             If contNivAltos > 0 Then
-                m_Excel2 = New Excel.Application
+                m_Excel2 = New Microsoft.Office.Interop.Excel.Application
                 objLibro2 = m_Excel2.Workbooks.Open(Application.StartupPath & "\rep\Modelo_averif.xlsx")
                 objHoja2 = m_Excel2.Worksheets(1)
                 With objHoja2
@@ -1537,28 +1540,107 @@ Fin:
             MsgBox(ex.Message)
         Finally
             ' Cerrado de la aplicación
-            If Not m_Excel Is Nothing Then
-                objHojaExcel = Nothing
-                objLibroExcel = Nothing
-                m_Excel.Quit()
-                m_Excel = Nothing
-            End If
-            If Not m_Excel2 Is Nothing Then
-                objHoja2 = Nothing
-                objLibro2 = Nothing
-                m_Excel2.Quit()
-                m_Excel2 = Nothing
-            End If
-            If Not M_Excel3 Is Nothing Then
-                objHoja3 = Nothing
-                objLibro3 = Nothing
-                M_Excel3.Quit()
-                M_Excel3 = Nothing
-            End If
+            Try
+                If Not objHojaExcel Is Nothing Then
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(objHojaExcel)
+                    objHojaExcel = Nothing
+                End If
+                If Not objLibroExcel Is Nothing Then
+                    objLibroExcel.Close(False)
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(objLibroExcel)
+                    objLibroExcel = Nothing
+                End If
+                If Not m_Excel Is Nothing Then
+                    Try
+                        m_Excel.Quit()
+                    Catch
+                        ' Si Quit falla, ignorar el error
+                    End Try
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(m_Excel)
+                    m_Excel = Nothing
+                End If
+            Catch
+                ' Ignorar errores de limpieza de m_Excel
+            End Try
+
+            Try
+                If Not objHoja2 Is Nothing Then
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(objHoja2)
+                    objHoja2 = Nothing
+                End If
+                If Not objLibro2 Is Nothing Then
+                    objLibro2.Close(False)
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(objLibro2)
+                    objLibro2 = Nothing
+                End If
+                If Not m_Excel2 Is Nothing Then
+                    Try
+                        m_Excel2.Quit()
+                    Catch
+                        ' Si Quit falla, ignorar el error
+                    End Try
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(m_Excel2)
+                    m_Excel2 = Nothing
+                End If
+            Catch
+                ' Ignorar errores de limpieza de m_Excel2
+            End Try
+
+            Try
+                If Not objHoja3 Is Nothing Then
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(objHoja3)
+                    objHoja3 = Nothing
+                End If
+                If Not objLibro3 Is Nothing Then
+                    objLibro3.Close(False)
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(objLibro3)
+                    objLibro3 = Nothing
+                End If
+                If Not M_Excel3 Is Nothing Then
+                    Try
+                        M_Excel3.Quit()
+                    Catch
+                        ' Si Quit falla, ignorar el error
+                    End Try
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(M_Excel3)
+                    M_Excel3 = Nothing
+                End If
+            Catch
+                ' Ignorar errores de limpieza de M_Excel3
+            End Try
+
             If ProcesoGPS.ThreadState = ThreadState.Suspended Then ProcesoGPS.Resume()
             If ProcesoLeerNarda.ThreadState = ThreadState.Suspended Then ProcesoLeerNarda.Resume()
+
+            GC.Collect()
+            GC.WaitForPendingFinalizers()
             GC.Collect()
         End Try
+
+        'Finally
+        ' Cerrado de la aplicación
+        '   If Not m_Excel Is Nothing Then
+        'objHojaExcel = Nothing
+        'objLibroExcel = Nothing
+        'm_Excel.Quit()
+        'm_Excel = Nothing
+        'End If
+        'If Not m_Excel2 Is Nothing Then
+        'objHoja2 = Nothing
+        'objLibro2 = Nothing
+        'm_Excel2.Quit()
+        'm_Excel2 = Nothing
+        'End If
+        'If Not M_Excel3 Is Nothing Then
+        'objHoja3 = Nothing
+        'objLibro3 = Nothing
+        'M_Excel3.Quit()
+        'M_Excel3 = Nothing
+        'End If
+        'If ProcesoGPS.ThreadState = ThreadState.Suspended Then ProcesoGPS.Resume()
+        'If ProcesoLeerNarda.ThreadState = ThreadState.Suspended Then ProcesoLeerNarda.Resume()
+        'GC.Collect()
+        'End Try
 
     End Sub
 
